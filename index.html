@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ryan Pfister | Security Systems & Smart Building Technology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       VARIABLES
+    ============================================================ */
+    :root {
+      --bg-0:        #070b14;
+      --bg-1:        #0c1220;
+      --bg-card:     #101726;
+      --bg-card-h:   #172032;
+      --border:      rgba(56, 189, 248, 0.10);
+      --border-h:    rgba(56, 189, 248, 0.28);
+      --blue:        #38bdf8;
+      --blue-dim:    rgba(56, 189, 248, 0.08);
+      --green:       #34d399;
+      --green-dim:   rgba(52, 211, 153, 0.08);
+      --purple:      #a78bfa;
+      --purple-dim:  rgba(167, 139, 250, 0.08);
+      --text-hi:     #f0f6ff;
+      --text-lo:     #8b9eb8;
+      --text-faint:  #3d4f6a;
+      --r:           12px;
+      --r-sm:        8px;
+      --ease:        0.22s ease;
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-0);
+      color: var(--text-hi);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-0); }
+    ::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 3px; }
+    ::selection { background: rgba(56,189,248,.18); color: var(--blue); }
+
+    /* ============================================================
+       UTILITIES
+    ============================================================ */
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+    section { padding: 108px 0; }
+
+    .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 52px;
+      line-height: 1.15;
+    }
+    .section-title em { font-style: normal; color: var(--blue); }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 68px;
+      display: flex; align-items: center;
+      padding: 0 28px;
+      background: rgba(7, 11, 20, 0.80);
+      backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid var(--border);
+      transition: var(--ease);
+    }
+    .nav-inner {
+      max-width: 1080px; margin: 0 auto; width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 17px; font-weight: 800; letter-spacing: -0.4px;
+    }
+    .nav-logo span { color: var(--blue); }
+
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      font-size: 13.5px; font-weight: 500; color: var(--text-lo);
+      padding: 7px 13px; border-radius: var(--r-sm);
+      transition: var(--ease);
+    }
+    .nav-links a:hover { color: var(--text-hi); background: var(--blue-dim); }
+    .nav-links a.active { color: var(--blue); }
+
+    .nav-cta {
+      font-size: 13px; font-weight: 600;
+      padding: 8px 18px;
+      background: var(--blue);
+      color: var(--bg-0);
+      border-radius: var(--r-sm);
+      transition: var(--ease);
+    }
+    .nav-cta:hover { background: #7dd3fc; transform: translateY(-1px); }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 68px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-glow {
+      pointer-events: none;
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% -5%, rgba(56,189,248,.07) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 35% at 85% 65%, rgba(52,211,153,.04) 0%, transparent 55%);
+    }
+    .hero-dots {
+      pointer-events: none;
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,.028) 1px, transparent 1px);
+      background-size: 55px 55px;
+    }
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; letter-spacing: 1.5px;
+      color: var(--blue); margin-bottom: 24px;
+    }
+    .hero-chip::before {
+      content: ''; display: block;
+      width: 36px; height: 1px; background: var(--blue);
+    }
+
+    .hero-name {
+      font-size: clamp(52px, 9vw, 96px);
+      font-weight: 900; letter-spacing: -3px; line-height: 0.95;
+      margin-bottom: 20px;
+      background: linear-gradient(140deg, #f0f6ff 0%, #8b9eb8 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-tagline {
+      font-size: clamp(17px, 2.4vw, 23px);
+      font-weight: 400; color: var(--text-lo);
+      margin-bottom: 24px;
+    }
+    .hero-tagline strong { color: var(--blue); font-weight: 600; }
+
+    .hero-bio {
+      font-size: 15.5px; color: var(--text-lo);
+      max-width: 560px; line-height: 1.85;
+      margin-bottom: 38px;
+    }
+
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: 9px;
+      margin-bottom: 44px;
+    }
+    .badge {
+      font-size: 12px; font-weight: 500;
+      padding: 5px 13px; border-radius: 100px;
+    }
+    .badge-blue { background: var(--blue-dim); border: 1px solid rgba(56,189,248,.22); color: var(--blue); }
+    .badge-green { background: var(--green-dim); border: 1px solid rgba(52,211,153,.22); color: var(--green); }
+    .badge-purple { background: var(--purple-dim); border: 1px solid rgba(167,139,250,.22); color: var(--purple); }
+
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; border-radius: var(--r-sm);
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; border: none;
+      transition: var(--ease);
+    }
+    .btn-fill { background: var(--blue); color: var(--bg-0); }
+    .btn-fill:hover { background: #7dd3fc; transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent; color: var(--text-lo);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      color: var(--text-hi); border-color: var(--border-h);
+      background: var(--blue-dim); transform: translateY(-1px);
+    }
+
+    /* ============================================================
+       ABOUT
+    ============================================================ */
+    #about { background: var(--bg-1); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: start;
+    }
+    .about-text p {
+      font-size: 15.5px; color: var(--text-lo);
+      line-height: 1.9; margin-bottom: 18px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-text p strong { color: var(--text-hi); font-weight: 600; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .stat {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 22px 24px;
+      transition: var(--ease);
+    }
+    .stat:hover { border-color: var(--border-h); background: var(--bg-card-h); }
+    .stat-val {
+      font-size: 34px; font-weight: 900; color: var(--blue);
+      letter-spacing: -1px; line-height: 1; margin-bottom: 6px;
+    }
+    .stat-key { font-size: 13px; color: var(--text-lo); line-height: 1.4; }
+
+    /* ============================================================
+       EXPERIENCE
+    ============================================================ */
+    .exp-stack { display: flex; flex-direction: column; gap: 10px; }
+    .exp-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 26px 30px;
+      transition: var(--ease); position: relative; overflow: hidden;
+    }
+    .exp-card::after {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: var(--blue);
+      opacity: 0; transition: var(--ease);
+    }
+    .exp-card:hover { border-color: var(--border-h); background: var(--bg-card-h); }
+    .exp-card:hover::after { opacity: 1; }
+
+    .exp-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 16px; margin-bottom: 6px;
+    }
+    .exp-role { font-size: 17px; font-weight: 700; }
+    .exp-when {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px; color: var(--text-faint);
+      white-space: nowrap; padding-top: 3px;
+    }
+    .exp-where {
+      font-size: 13.5px; font-weight: 600; color: var(--blue);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 6px;
+    }
+    .exp-where .loc { color: var(--text-faint); font-weight: 400; }
+
+    .exp-bullets { display: flex; flex-direction: column; gap: 7px; }
+    .exp-bullets li {
+      font-size: 13.5px; color: var(--text-lo);
+      padding-left: 16px; position: relative; line-height: 1.7;
+    }
+    .exp-bullets li::before {
+      content: '›';
+      position: absolute; left: 0;
+      color: var(--blue); font-size: 15px; line-height: 1.5;
+    }
+
+    .tech-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+    .chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; padding: 3px 9px; border-radius: 4px;
+      background: rgba(56,189,248,.06); border: 1px solid rgba(56,189,248,.12);
+      color: var(--blue);
+    }
+
+    /* ============================================================
+       EDUCATION
+    ============================================================ */
+    #education { background: var(--bg-1); }
+    .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 18px; }
+    .edu-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 26px;
+      transition: var(--ease);
+    }
+    .edu-card:hover { border-color: var(--border-h); background: var(--bg-card-h); }
+    .edu-ico {
+      width: 42px; height: 42px; border-radius: var(--r-sm);
+      background: rgba(56,189,248,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 16px;
+    }
+    .edu-school { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .edu-degree { font-size: 13px; color: var(--blue); margin-bottom: 5px; font-weight: 500; }
+    .edu-dates { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-faint); margin-bottom: 12px; }
+    .edu-body { font-size: 13px; color: var(--text-lo); line-height: 1.75; }
+
+    /* ============================================================
+       SKILLS
+    ============================================================ */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .skill-block {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 24px;
+      transition: var(--ease);
+    }
+    .skill-block:hover { border-color: var(--border-h); }
+    .skill-head {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: 14px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .pill {
+      font-size: 12.5px; padding: 5px 11px; border-radius: 6px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+      color: var(--text-lo); transition: var(--ease);
+    }
+    .pill:hover { background: var(--blue-dim); border-color: rgba(56,189,248,.2); color: var(--text-hi); }
+
+    /* ============================================================
+       HONORS
+    ============================================================ */
+    #honors { background: var(--bg-1); }
+    .honors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .honor-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 28px 24px; text-align: center;
+      transition: var(--ease);
+    }
+    .honor-card:hover { border-color: var(--border-h); background: var(--bg-card-h); }
+    .honor-ico { font-size: 34px; margin-bottom: 14px; }
+    .honor-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .honor-from { font-size: 13px; color: var(--blue); margin-bottom: 4px; }
+    .honor-yr { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-faint); }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    .contact-wrap { max-width: 620px; margin: 0 auto; text-align: center; }
+    .contact-wrap .label, .contact-wrap .section-title { text-align: center; }
+    .contact-desc {
+      font-size: 15.5px; color: var(--text-lo);
+      line-height: 1.85; margin-bottom: 44px;
+    }
+    .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; }
+    .contact-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 26px; border-radius: var(--r-sm);
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-lo); font-size: 14.5px; font-weight: 500;
+      transition: var(--ease);
+    }
+    .contact-link:hover {
+      border-color: var(--border-h); color: var(--text-hi);
+      background: var(--bg-card-h); transform: translateY(-2px);
+    }
+    .contact-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 28px; text-align: center;
+    }
+    footer p { font-size: 12.5px; color: var(--text-faint); }
+    footer a { color: var(--blue); }
+    footer a:hover { text-decoration: underline; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 820px) {
+      section { padding: 80px 0; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .nav-links, .nav-cta { display: none; }
+    }
+    @media (max-width: 560px) {
+      .hero-name { letter-spacing: -2px; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+      .exp-top { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">Ryan <span>Pfister</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#honors">Honors</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-dots"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-chip">Security Systems · Smart Buildings · Public Safety</div>
+      <h1 class="hero-name">Ryan<br>Pfister</h1>
+      <p class="hero-tagline">Smart Building Intern at <strong>Siemens</strong> &middot; B.S. Security Systems</p>
+      <p class="hero-bio">
+        A technically-driven security systems student bridging building automation, cybersecurity,
+        and public safety. Currently commissioning BAS systems at Siemens while serving as a
+        Volunteer Firefighter &amp; EMT. Eagle Scout. New York.
+      </p>
+      <div class="hero-badges">
+        <span class="badge badge-blue">BACnet &middot; Modbus &middot; LonWorks</span>
+        <span class="badge badge-blue">Building Automation Systems</span>
+        <span class="badge badge-green">Firefighter / EMT</span>
+        <span class="badge badge-green">Eagle Scout</span>
+        <span class="badge badge-purple">Cisco CCNA</span>
+        <span class="badge badge-purple">Splunk Certified</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-fill">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          Get in Touch
+        </a>
+        <a href="#experience" class="btn btn-ghost">
+          View Experience
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     ABOUT
+============================================================ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="fade-up">
+        <div class="label">01 / About</div>
+        <h2 class="section-title">Building systems that<br><em>protect</em> and connect</h2>
+        <div class="about-text">
+          <p>
+            I'm pursuing a <strong>Bachelor of Science in Security Systems</strong> at Farmingdale State
+            College (graduating May 2027), concentrating in Networking. My work spans building
+            automation, cybersecurity, and critical infrastructure — grounded by three years of
+            hands-on internship experience at <strong>Siemens Smart Buildings</strong>.
+          </p>
+          <p>
+            Outside of tech, I serve my community as a <strong>Volunteer Firefighter and EMT</strong>
+            with the Middle Island Fire Department — where I was recognized as EMT of the Year (2026)
+            and Probationary Firefighter of the Year (2023).
+          </p>
+          <p>
+            Eagle Scout. Cisco networking student. Splunk analyst. I thrive at the intersection of
+            physical systems, digital infrastructure, and community service.
+          </p>
+        </div>
+      </div>
+      <div class="stats-grid fade-up">
+        <div class="stat">
+          <div class="stat-val">2+</div>
+          <div class="stat-key">Years at Siemens Smart Buildings</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">19+</div>
+          <div class="stat-key">Professional licenses &amp; certifications</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">120%</div>
+          <div class="stat-key">Revenue lift from POS implementation</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">5+</div>
+          <div class="stat-key">Years volunteering with FIRST Robotics</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     EXPERIENCE
+============================================================ -->
+<section id="experience">
+  <div class="container">
+    <div class="label">02 / Experience</div>
+    <h2 class="section-title">Where I've <em>worked</em></h2>
+    <div class="exp-stack">
+
+      <!-- Siemens current -->
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">Smart Building Specialist Intern</div>
+          <div class="exp-when">Aug 2025 &ndash; Present</div>
+        </div>
+        <div class="exp-where">Siemens Smart Buildings <span class="loc">&middot; Long Island, NY &middot; Part-time</span></div>
+        <ul class="exp-bullets">
+          <li>Invited to continue part-time through graduation after two consecutive summer internships &mdash; now in third year at Siemens.</li>
+          <li>Support commissioning, startup, and configuration of building automation systems (BAS) on active commercial construction sites.</li>
+          <li>Perform network configuration, data server backups, and PC workstation setup for building control systems.</li>
+          <li>Troubleshoot system sequences of operations; prepare commissioning reports and as-built documentation for engineering.</li>
+          <li>Support customer training on BAS operations and system interfaces during project handoff.</li>
+        </ul>
+        <div class="tech-chips">
+          <span class="chip">BACnet</span>
+          <span class="chip">Modbus</span>
+          <span class="chip">LonWorks</span>
+          <span class="chip">Siemens Apogee</span>
+          <span class="chip">Siemens Desigo</span>
+          <span class="chip">HVAC Controls</span>
+          <span class="chip">BMS</span>
+          <span class="chip">DDC Systems</span>
+        </div>
+      </div>
+
+      <!-- Siemens summer -->
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">Smart Building Specialist Intern</div>
+          <div class="exp-when">May 2024 &ndash; Aug 2025</div>
+        </div>
+        <div class="exp-where">Siemens Smart Buildings <span class="loc">&middot; Bohemia, NY &middot; Summer Internship</span></div>
+        <ul class="exp-bullets">
+          <li>Completed two consecutive summer internships supporting BAS commissioning across commercial construction sites.</li>
+          <li>Worked with experienced technicians to ensure control systems were programmed, tested, and operating per project scope and sequence of operations.</li>
+        </ul>
+        <div class="tech-chips">
+          <span class="chip">Building Automation</span>
+          <span class="chip">Control Systems</span>
+          <span class="chip">HVAC</span>
+        </div>
+      </div>
+
+      <!-- Code Enforcement -->
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">Code Enforcement Officer</div>
+          <div class="exp-when">Nov 2023 &ndash; May 2026</div>
+        </div>
+        <div class="exp-where">Town of Brookhaven &mdash; Dept. of Public Safety <span class="loc">&middot; Farmingville, NY</span></div>
+        <ul class="exp-bullets">
+          <li>Enforced town codes and NY State Vehicle &amp; Traffic Laws, issuing field appearance tickets daily.</li>
+          <li>Collaborated with town divisions and local law enforcement to ensure security at public facilities.</li>
+          <li>Responded to service calls promptly to maintain public safety throughout Brookhaven Township.</li>
+        </ul>
+        <div class="tech-chips">
+          <span class="chip">Code Enforcement</span>
+          <span class="chip">Public Safety</span>
+          <span class="chip">Law Enforcement</span>
+        </div>
+      </div>
+
+      <!-- Middle Island FD -->
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">Firefighter / EMT</div>
+          <div class="exp-when">Sep 2022 &ndash; Present</div>
+        </div>
+        <div class="exp-where">Middle Island Fire Department <span class="loc">&middot; Middle Island, NY &middot; Volunteer</span></div>
+        <ul class="exp-bullets">
+          <li>Respond to emergency calls as a Volunteer Firefighter and EMT (ProBoard National Firefighter I certified).</li>
+          <li>Trained in ICS-100, ICS-700, NIMS, and American Heart Association Basic Life Support.</li>
+          <li>Serve as department webmaster &mdash; design and maintain the community-facing website.</li>
+          <li>Integrated POS systems for the annual Big Bucks raffle, streamlining the process and increasing fundraising revenue.</li>
+        </ul>
+        <div class="tech-chips">
+          <span class="chip">Emergency Response</span>
+          <span class="chip">AHA BLS</span>
+          <span class="chip">ICS / NIMS</span>
+          <span class="chip">Web Management</span>
+        </div>
+      </div>
+
+      <!-- POS Consultant -->
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">POS Systems Consultant</div>
+          <div class="exp-when">Oct 2022 &ndash; Present</div>
+        </div>
+        <div class="exp-where">Section Xi NYSPHSAA <span class="loc">&middot; Suffolk County, NY</span></div>
+        <ul class="exp-bullets">
+          <li>Implemented a mobile ticket purchasing POS system for SectionXI Athletics, increasing revenue by approximately <strong>120%</strong>.</li>
+          <li>Provided remote and in-person support for POS hardware and maintained ongoing system operations.</li>
+        </ul>
+        <div class="tech-chips">
+          <span class="chip">POS Systems</span>
+          <span class="chip">IT Support</span>
+          <span class="chip">Hardware</span>
+        </div>
+      </div>
+
+      <!-- FIRST -->
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">Technical Volunteer</div>
+          <div class="exp-when">Sep 2020 &ndash; Feb 2026</div>
+        </div>
+        <div class="exp-where">FIRST Robotics <span class="loc">&middot; Long Island, NY</span></div>
+        <ul class="exp-bullets">
+          <li>Managed scoring, live video webcast, audience audio, visual displays, and wireless networking at FIRST Robotics competitions.</li>
+          <li>Oversaw equipment setup and takedown; implemented wireless network strategies to enhance competition experience.</li>
+        </ul>
+        <div class="tech-chips">
+          <span class="chip">Networking</span>
+          <span class="chip">AV / Video</span>
+          <span class="chip">Event Technology</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     EDUCATION
+============================================================ -->
+<section id="education">
+  <div class="container">
+    <div class="label">03 / Education</div>
+    <h2 class="section-title">Academic <em>background</em></h2>
+    <div class="edu-grid">
+
+      <div class="edu-card fade-up">
+        <div class="edu-ico">🎓</div>
+        <div class="edu-school">Farmingdale State College</div>
+        <div class="edu-degree">B.S. Security Systems &middot; Networking Concentration</div>
+        <div class="edu-dates">Aug 2023 &ndash; May 2027</div>
+        <div class="edu-body">
+          Studying security systems with a focus on networking and cybersecurity. Preparing
+          for a career at the intersection of physical security and digital infrastructure.
+        </div>
+      </div>
+
+      <div class="edu-card fade-up">
+        <div class="edu-ico">🌐</div>
+        <div class="edu-school">Cisco Networking Academy</div>
+        <div class="edu-degree">Computer Systems Networking &amp; Telecommunications</div>
+        <div class="edu-dates">Sep 2021 &ndash; May 2026</div>
+        <div class="edu-body">
+          Completed IT Essentials, CCNAv7 Network Fundamentals, CCNAv7 Intro to Networks,
+          and CCNA Enterprise Networking, Security &amp; Automation.
+        </div>
+      </div>
+
+      <div class="edu-card fade-up">
+        <div class="edu-ico">🤖</div>
+        <div class="edu-school">Longwood Robotics</div>
+        <div class="edu-degree">Electronics Lead &mdash; FIRST Robotics Team</div>
+        <div class="edu-dates">Sep 2018 &ndash; Jun 2023</div>
+        <div class="edu-body">
+          Led the electronics department for Longwood's competitive FIRST Robotics team,
+          designing and implementing electrical systems for competition robots.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SKILLS
+============================================================ -->
+<section id="skills">
+  <div class="container">
+    <div class="label">04 / Skills</div>
+    <h2 class="section-title">Technologies &amp; <em>capabilities</em></h2>
+    <div class="skills-grid">
+
+      <div class="skill-block fade-up">
+        <div class="skill-head">Building Automation</div>
+        <div class="pills">
+          <span class="pill">BACnet</span>
+          <span class="pill">Modbus</span>
+          <span class="pill">LonWorks</span>
+          <span class="pill">Siemens Apogee</span>
+          <span class="pill">Siemens Desigo</span>
+          <span class="pill">HVAC Controls</span>
+          <span class="pill">BMS</span>
+          <span class="pill">DDC Systems</span>
+        </div>
+      </div>
+
+      <div class="skill-block fade-up">
+        <div class="skill-head">Networking &amp; Cyber</div>
+        <div class="pills">
+          <span class="pill">Computer Networking</span>
+          <span class="pill">Cisco CCNA</span>
+          <span class="pill">Network Configuration</span>
+          <span class="pill">Cybersecurity</span>
+          <span class="pill">Splunk</span>
+          <span class="pill">Enterprise Security</span>
+          <span class="pill">Wireless Networking</span>
+        </div>
+      </div>
+
+      <div class="skill-block fade-up">
+        <div class="skill-head">IT &amp; Systems</div>
+        <div class="pills">
+          <span class="pill">Computer Repair</span>
+          <span class="pill">PC Workstation Setup</span>
+          <span class="pill">POS Systems</span>
+          <span class="pill">Server Administration</span>
+          <span class="pill">Data Backups</span>
+          <span class="pill">Technical Documentation</span>
+          <span class="pill">Web Management</span>
+        </div>
+      </div>
+
+      <div class="skill-block fade-up">
+        <div class="skill-head">Public Safety</div>
+        <div class="pills">
+          <span class="pill">Firefighting (ProBoard FF I)</span>
+          <span class="pill">Emergency Medical Tech</span>
+          <span class="pill">Basic Life Support (AHA)</span>
+          <span class="pill">ICS-100 / ICS-700</span>
+          <span class="pill">NIMS</span>
+          <span class="pill">Code Enforcement</span>
+          <span class="pill">Emergency Management</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     HONORS
+============================================================ -->
+<section id="honors">
+  <div class="container">
+    <div class="label">05 / Recognition</div>
+    <h2 class="section-title">Honors &amp; <em>awards</em></h2>
+    <div class="honors-grid">
+
+      <div class="honor-card fade-up">
+        <div class="honor-ico">🏆</div>
+        <div class="honor-name">EMT of the Year</div>
+        <div class="honor-from">Middle Island Fire Department</div>
+        <div class="honor-yr">May 2026</div>
+      </div>
+
+      <div class="honor-card fade-up">
+        <div class="honor-ico">🥇</div>
+        <div class="honor-name">Probationary Firefighter of the Year</div>
+        <div class="honor-from">Middle Island Fire Department</div>
+        <div class="honor-yr">January 2023</div>
+      </div>
+
+      <div class="honor-card fade-up">
+        <div class="honor-ico">⚜️</div>
+        <div class="honor-name">Eagle Scout</div>
+        <div class="honor-from">Troop 560, Boy Scouts of America</div>
+        <div class="honor-yr">Highest rank in Scouting</div>
+      </div>
+
+      <div class="honor-card fade-up">
+        <div class="honor-ico">🔐</div>
+        <div class="honor-name">19+ Certifications</div>
+        <div class="honor-from">Splunk, Cisco, CompTIA &amp; more</div>
+        <div class="honor-yr">Ongoing</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CONTACT
+============================================================ -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="label">06 / Contact</div>
+      <h2 class="section-title">Let's <em>connect</em></h2>
+      <p class="contact-desc">
+        Interested in discussing smart building technology, cybersecurity, security systems,
+        or open opportunities? I&rsquo;d love to hear from you.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:mifd413@gmail.com" class="contact-link">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          mifd413@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener" class="contact-link">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          linkedin.com/in/rdpfister
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="container">
+    <p>&copy; 2025 Ryan Pfister &middot; <a href="https://www.linkedin.com/in/rdpfister/">linkedin.com/in/rdpfister</a></p>
+  </div>
+</footer>
+
+
+<script>
+  /* Scroll-in animations */
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+  /* Active nav link */
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('.nav-links a');
+  const spy = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        const a = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    }),
+    { rootMargin: '-38% 0px -62% 0px' }
+  );
+  sections.forEach(s => spy.observe(s));
+</script>
+
+</body>
+</html>
