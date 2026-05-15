@@ -11,29 +11,54 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <style>
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
-    .proj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:14px;transition:var(--ease);position:relative;overflow:hidden}
-    .proj-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue-dim),transparent 60%);opacity:0;transition:var(--ease)}
-    .proj-card:hover{border-color:var(--border-h);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+
+    /* Regular project card */
+    .proj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:14px;transition:var(--ease);position:relative;overflow:hidden;backdrop-filter:blur(16px)}
+    .proj-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,182,212,.04) 0%,transparent 55%);opacity:0;transition:opacity .4s;pointer-events:none}
+    .proj-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent);transform:scaleX(0);transition:transform .4s ease;transform-origin:left}
+    .proj-card:hover{border-color:var(--border-h);transform:translateY(-5px);box-shadow:0 20px 56px rgba(0,0,0,.5),0 0 0 1px var(--border-h)}
     .proj-card:hover::before{opacity:1}
-    .proj-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:36px 40px}
-    @media(max-width:720px){.proj-card.featured{grid-template-columns:1fr;padding:28px}}
-    .proj-icon{width:48px;height:48px;border-radius:var(--r-sm);background:var(--blue-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+    .proj-card:hover::after{transform:scaleX(1)}
+
+    /* Featured card */
+    .proj-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:44px 48px}
+    @media(max-width:760px){.proj-card.featured{grid-template-columns:1fr;padding:28px;gap:28px}}
+
+    .proj-icon{width:48px;height:48px;border-radius:var(--r-sm);background:var(--blue-dim);border:1px solid rgba(6,182,212,.18);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
     .proj-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue)}
-    .proj-title{font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.2;position:relative;z-index:1}
-    .proj-featured-title{font-size:clamp(26px,4vw,36px);font-weight:900;letter-spacing:-.5px;line-height:1.15}
-    .proj-featured-title em{font-style:normal;color:var(--blue)}
-    .proj-desc{font-size:14px;color:var(--text-lo);line-height:1.8;position:relative;z-index:1}
-    .proj-featured-desc{font-size:15.5px;color:var(--text-lo);line-height:1.85}
-    .proj-chips{display:flex;flex-wrap:wrap;gap:7px;position:relative;z-index:1}
-    .proj-links{display:flex;gap:10px;margin-top:auto;position:relative;z-index:1}
-    .proj-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-lo);padding:7px 14px;border:1px solid var(--border);border-radius:var(--r-sm);transition:var(--ease)}
-    .proj-link:hover{color:var(--text-hi);border-color:var(--border-h);background:var(--blue-dim)}
-    .proj-link svg{width:14px;height:14px}
-    .impact-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--green);background:var(--green-dim);border:1px solid rgba(52,211,153,.22);padding:4px 12px;border-radius:100px}
+    .proj-title{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+    .proj-featured-title{font-size:clamp(24px,3.5vw,34px);font-weight:900;letter-spacing:-.04em;line-height:1.15}
+    .proj-featured-title em{font-style:normal;background:linear-gradient(135deg,var(--blue),var(--purple));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradient-flow 5s ease infinite}
+    .proj-desc{font-size:13.5px;color:var(--text-lo);line-height:1.8}
+    .proj-featured-desc{font-size:15px;color:var(--text-lo);line-height:1.9}
+    .proj-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .proj-links{display:flex;gap:9px;margin-top:auto}
+    .proj-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:var(--text-lo);padding:7px 14px;border:1px solid var(--border);border-radius:var(--r-sm);transition:var(--ease);backdrop-filter:blur(8px)}
+    .proj-link:hover{color:var(--text-hi);border-color:var(--border-h);background:var(--blue-dim);transform:translateY(-1px)}
+    .proj-link svg{width:13px;height:13px}
+
+    .impact-badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--green);background:var(--green-dim);border:1px solid rgba(16,185,129,.2);padding:4px 12px;border-radius:100px;align-self:flex-start}
+
+    /* Code terminal visual */
+    .code-terminal{background:rgba(2,8,23,.8);border:1px solid var(--border);border-radius:var(--r);padding:24px 28px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text-lo);line-height:2;backdrop-filter:blur(16px);position:relative;overflow:hidden}
+    .code-terminal::before{content:'';position:absolute;top:0;left:0;right:0;height:32px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;align-items:center}
+    .terminal-dots{position:absolute;top:10px;left:14px;display:flex;gap:6px;z-index:1}
+    .terminal-dots span{width:10px;height:10px;border-radius:50%;display:block}
+    .terminal-dots span:nth-child(1){background:#f43f5e;opacity:.7}
+    .terminal-dots span:nth-child(2){background:#f59e0b;opacity:.7}
+    .terminal-dots span:nth-child(3){background:#10b981;opacity:.7}
+    .code-body{padding-top:20px}
+
+    /* Shine overlay for tilt */
+    .card-shine{position:absolute;inset:0;pointer-events:none;border-radius:inherit;transition:opacity .3s;opacity:0}
+    .proj-card:hover .card-shine{opacity:1}
   </style>
 </head>
 <body>
+
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
 
 <div id="progress"></div>
 <nav id="nav">
@@ -65,45 +90,51 @@
   <div class="container">
     <div class="label">Portfolio</div>
     <h1>My <em>Projects</em></h1>
-    <p>A selection of technical and community projects spanning building automation, IT systems, web, and public safety.</p>
+    <p>Building automation, IT systems, web development, and public safety tech — from active Siemens deployments to community projects.</p>
   </div>
 </div>
 
-<section style="padding-top:48px">
+<section style="padding-top:40px;padding-bottom:96px">
   <div class="container">
     <div class="projects-grid">
 
       <!-- Featured: Siemens BAS -->
-      <div class="proj-card featured fade-up">
+      <div class="proj-card featured fade-up tilt">
+        <div class="card-shine"></div>
         <div>
-          <div class="proj-label" style="margin-bottom:12px">Featured &middot; Ongoing</div>
+          <div class="proj-label" style="margin-bottom:14px">⚡ Featured &middot; Ongoing</div>
           <h2 class="proj-featured-title">Siemens <em>Smart Building</em><br>Commissioning</h2>
-          <p class="proj-featured-desc" style="margin:16px 0">Supporting the commissioning, startup, and configuration of building automation systems across active commercial construction sites on Long Island. Working with protocols like BACnet, Modbus, and LonWorks to bring intelligent building controls to life.</p>
+          <p class="proj-featured-desc" style="margin:18px 0 20px">Supporting the commissioning, startup, and configuration of BAS systems across active commercial construction sites on Long Island. Protocols, DDC programming, network configuration, and handoff training.</p>
           <div class="proj-chips" style="margin-bottom:20px">
             <span class="chip">BACnet</span><span class="chip">Modbus</span><span class="chip">LonWorks</span><span class="chip">Apogee</span><span class="chip">Desigo</span><span class="chip">HVAC Controls</span><span class="chip">DDC</span>
           </div>
           <span class="impact-badge">✦ 3 years &middot; Invited back each term</span>
         </div>
-        <div style="background:var(--bg-0);border:1px solid var(--border);border-radius:var(--r);padding:28px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-lo);line-height:1.9">
-          <span style="color:var(--blue)">// BAS commissioning workflow</span><br>
-          <span style="color:var(--green)">function</span> commissionController(ctrl) {<br>
-          &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">configure</span>(BACnet.params);<br>
-          &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">runDiagnostics</span>();<br>
-          &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">verifySequence</span>(ops);<br>
-          &nbsp;&nbsp;<span style="color:var(--green)">return</span> ctrl.<span style="color:var(--blue)">signOff</span>();<br>
-          }
+        <div class="code-terminal">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <div class="code-body">
+            <span style="color:var(--text-faint)">// BAS commissioning workflow</span><br>
+            <span style="color:var(--purple)">function</span> <span style="color:var(--blue)">commissionController</span>(ctrl) {<br>
+            &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">configure</span>(<span style="color:var(--green)">BACnet</span>.params);<br>
+            &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">runDiagnostics</span>();<br>
+            &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">verifySequence</span>(ops);<br>
+            &nbsp;&nbsp;<span style="color:var(--purple)">return</span> ctrl.<span style="color:var(--blue)">signOff</span>();<br>
+            }<br><br>
+            <span style="color:var(--text-faint)">&gt; Status: </span><span style="color:var(--green)">COMMISSIONED ✓</span>
+          </div>
         </div>
       </div>
 
       <!-- Portfolio site -->
-      <div class="proj-card fade-up">
+      <div class="proj-card fade-up tilt">
+        <div class="card-shine"></div>
         <div class="proj-icon">🌐</div>
         <div>
           <div class="proj-label">Web &middot; 2025</div>
           <div class="proj-title">rdpfister.com</div>
         </div>
-        <p class="proj-desc">This portfolio — designed and built from scratch with hand-written HTML/CSS/JS. Hosted on a personal VPS via nginx with Let's Encrypt SSL, deployed through GitHub.</p>
-        <div class="proj-chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">nginx</span><span class="chip">GitHub</span><span class="chip">Let's Encrypt</span></div>
+        <p class="proj-desc">This portfolio — built from scratch with hand-written HTML/CSS/JS. Hosted on a personal VPS via nginx with Let's Encrypt SSL, git-deployed from GitHub.</p>
+        <div class="proj-chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">nginx</span><span class="chip">Linux</span><span class="chip">Let's Encrypt</span></div>
         <div class="proj-links">
           <a href="https://github.com/ryanpfister/myPortfolio" target="_blank" rel="noopener" class="proj-link">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
@@ -117,42 +148,46 @@
       </div>
 
       <!-- SectionXI POS -->
-      <div class="proj-card fade-up">
+      <div class="proj-card fade-up tilt">
+        <div class="card-shine"></div>
         <div class="proj-icon">🎟️</div>
         <div>
           <div class="proj-label">IT Systems &middot; 2022</div>
           <div class="proj-title">SectionXI Mobile Ticketing POS</div>
         </div>
-        <p class="proj-desc">Designed and implemented a mobile point-of-sale system for SectionXI Athletics in Suffolk County, replacing a manual process and driving measurable revenue growth.</p>
+        <p class="proj-desc">Designed and implemented a mobile point-of-sale system for SectionXI Athletics in Suffolk County, replacing a manual cash process and driving measurable revenue growth.</p>
         <div class="proj-chips"><span class="chip">POS Systems</span><span class="chip">IT Support</span><span class="chip">Hardware</span><span class="chip">Suffolk County</span></div>
-        <span class="impact-badge" style="align-self:flex-start">✦ 120% revenue increase</span>
+        <span class="impact-badge">✦ ~120% revenue increase</span>
       </div>
 
       <!-- MIFD Website -->
-      <div class="proj-card fade-up">
+      <div class="proj-card fade-up tilt">
+        <div class="card-shine"></div>
         <div class="proj-icon">🚒</div>
         <div>
           <div class="proj-label">Web &middot; Ongoing</div>
           <div class="proj-title">Middle Island FD Website</div>
         </div>
-        <p class="proj-desc">Serve as webmaster for the Middle Island Fire Department — designing, building, and maintaining the department's public-facing website to keep the community informed.</p>
+        <p class="proj-desc">Serving as webmaster for the Middle Island Fire Department — designing, building, and maintaining the department's public-facing website to keep the community informed and engaged.</p>
         <div class="proj-chips"><span class="chip">Web Design</span><span class="chip">CMS</span><span class="chip">Community</span></div>
       </div>
 
       <!-- FIRST Robotics AV -->
-      <div class="proj-card fade-up">
+      <div class="proj-card fade-up tilt">
+        <div class="card-shine"></div>
         <div class="proj-icon">📡</div>
         <div>
           <div class="proj-label">Networking / AV &middot; 2020–2026</div>
-          <div class="proj-title">FIRST Robotics AV & Network</div>
+          <div class="proj-title">FIRST Robotics AV &amp; Network</div>
         </div>
         <p class="proj-desc">Deployed and managed wireless network infrastructure, live video webcasting, scoring systems, and audience displays at FIRST Robotics competitions across Long Island for 5+ years.</p>
         <div class="proj-chips"><span class="chip">Wireless Networking</span><span class="chip">Live Video</span><span class="chip">AV Systems</span><span class="chip">Event Tech</span></div>
-        <span class="impact-badge" style="align-self:flex-start">✦ 5+ years volunteering</span>
+        <span class="impact-badge">✦ 5+ years volunteering</span>
       </div>
 
       <!-- MIFD POS -->
-      <div class="proj-card fade-up">
+      <div class="proj-card fade-up tilt">
+        <div class="card-shine"></div>
         <div class="proj-icon">💰</div>
         <div>
           <div class="proj-label">IT Systems &middot; Ongoing</div>
@@ -178,14 +213,28 @@
 </footer>
 
 <script>
-  const html=document.documentElement,toggle=document.getElementById('themeToggle');
-  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
-  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
-  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
-  const bar=document.getElementById('progress');
-  window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
-  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+const html=document.documentElement,toggle=document.getElementById('themeToggle');
+(function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+const bar=document.getElementById('progress');
+window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+if(window.scrollY>20)nav.classList.add('scrolled');
+const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+if(dot&&ring){let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button,.chip,.pill').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}}),{threshold:.06});
+document.querySelectorAll('.fade-up,.stagger').forEach(el=>io.observe(el));
+document.querySelectorAll('.tilt').forEach(card=>{
+  const shine=card.querySelector('.card-shine');
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(800px) rotateX(${-y*8}deg) rotateY(${x*8}deg) translateY(-5px)`;
+    if(shine)shine.style.background=`radial-gradient(circle at ${(x+.5)*100}% ${(y+.5)*100}%,rgba(6,182,212,.1),transparent 60%)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';if(shine)shine.style.background='';});
+});
 </script>
 </body>
 </html>

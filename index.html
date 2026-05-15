@@ -4,134 +4,150 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ryan Pfister | Security Systems & Smart Building Technology</title>
-
-  <!-- SEO -->
   <meta name="description" content="Security Systems student & Smart Building Intern at Siemens. Specializing in BAS, cybersecurity & networking. Firefighter, EMT, Eagle Scout. New York.">
   <meta name="keywords" content="Ryan Pfister, security systems, building automation, BAS, smart buildings, Siemens, cybersecurity, networking, Farmingdale State College, New York, firefighter, EMT, Eagle Scout">
   <meta name="author" content="Ryan Pfister">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://rdpfister.com">
-
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://rdpfister.com">
   <meta property="og:title" content="Ryan Pfister | Security Systems & Smart Building Technology">
-  <meta property="og:description" content="Security Systems student & Smart Building Intern at Siemens. Specializing in BAS, cybersecurity & networking. Firefighter, EMT, Eagle Scout. New York.">
-  <meta property="og:site_name" content="Ryan Pfister">
-
-  <!-- Twitter Card -->
+  <meta property="og:description" content="Security Systems student & Smart Building Intern at Siemens. BAS, cybersecurity & networking. Firefighter, EMT, Eagle Scout.">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Ryan Pfister | Security Systems & Smart Building Technology">
-  <meta name="twitter:description" content="Security Systems student & Smart Building Intern at Siemens. Specializing in BAS, cybersecurity & networking. Firefighter, EMT, Eagle Scout. New York.">
-
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Person","name":"Ryan Pfister","url":"https://rdpfister.com","email":"mailto:mifd413@gmail.com","jobTitle":"Smart Building Specialist Intern","worksFor":{"@type":"Organization","name":"Siemens"},"alumniOf":{"@type":"EducationalOrganization","name":"Farmingdale State College"},"knowsAbout":["Building Automation Systems","Cybersecurity","Computer Networking","HVAC Controls","Emergency Medical Services","BACnet","Modbus"],"sameAs":["https://www.linkedin.com/in/rdpfister/","https://github.com/ryanpfister"]}
-  </script>
-
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ryan Pfister","url":"https://rdpfister.com","email":"mailto:mifd413@gmail.com","jobTitle":"Smart Building Specialist Intern","worksFor":{"@type":"Organization","name":"Siemens"},"alumniOf":{"@type":"EducationalOrganization","name":"Farmingdale State College"},"knowsAbout":["Building Automation Systems","Cybersecurity","Computer Networking","BACnet","Modbus","Emergency Medical Services"],"sameAs":["https://www.linkedin.com/in/rdpfister/","https://github.com/ryanpfister"]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
-
   <style>
-    /* ── Hero ─────────────────────────────────────────────── */
-    #hero{min-height:100vh;display:flex;align-items:center;padding-top:68px;position:relative;overflow:hidden}
-    .hero-glow{pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(56,189,248,.07) 0%,transparent 65%),radial-gradient(ellipse 45% 35% at 85% 65%,rgba(52,211,153,.04) 0%,transparent 55%)}
-    [data-theme="light"] .hero-glow{background:radial-gradient(ellipse 70% 55% at 50% -5%,rgba(2,132,199,.05) 0%,transparent 65%)}
-    .hero-dots{pointer-events:none;position:absolute;inset:0;background-image:linear-gradient(rgba(56,189,248,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.028) 1px,transparent 1px);background-size:55px 55px}
-    [data-theme="light"] .hero-dots{background-image:linear-gradient(rgba(2,132,199,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(2,132,199,.04) 1px,transparent 1px)}
-    .hero-content{position:relative;z-index:1}
-    .hero-chip{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--blue);margin-bottom:24px}
-    .hero-chip::before{content:'';display:block;width:36px;height:1px;background:var(--blue)}
-    .hero-name{font-size:clamp(52px,9vw,96px);font-weight:900;letter-spacing:-3px;line-height:.95;margin-bottom:20px;background:var(--hero-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .hero-tagline{font-size:clamp(17px,2.4vw,23px);font-weight:400;color:var(--text-lo);margin-bottom:24px}
-    .hero-tagline strong{color:var(--blue);font-weight:600}
-    .hero-bio{font-size:15.5px;color:var(--text-lo);max-width:560px;line-height:1.85;margin-bottom:38px}
-    .hero-badges{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:44px}
-    .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-    @media(max-width:560px){.hero-name{letter-spacing:-2px}.hero-actions{flex-direction:column}}
+    /* ── Hero ─────────────────────────────────────────────────── */
+    #hero{min-height:100vh;display:flex;align-items:center;padding-top:66px;position:relative;overflow:hidden}
+    #pCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+    .hero-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:0}
+    .hero-orb-1{width:600px;height:400px;top:-120px;left:-80px;background:radial-gradient(circle,rgba(6,182,212,.09) 0%,transparent 70%)}
+    .hero-orb-2{width:500px;height:400px;top:20%;right:-100px;background:radial-gradient(circle,rgba(139,92,246,.07) 0%,transparent 70%)}
+    .hero-orb-3{width:400px;height:300px;bottom:-50px;left:30%;background:radial-gradient(circle,rgba(16,185,129,.05) 0%,transparent 70%)}
+    .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr;max-width:780px}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:28px;opacity:0;animation:fade-in .8s .2s ease forwards}
+    .hero-eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);animation:pulse-ring 2s ease infinite}
+    .hero-name{font-size:clamp(56px,10vw,110px);font-weight:900;letter-spacing:-.05em;line-height:.95;margin-bottom:24px;opacity:0;animation:fade-in .8s .35s ease forwards}
+    .hero-name-first{display:block;background:var(--hero-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-name-last{display:block;background:linear-gradient(135deg,var(--blue) 0%,var(--purple) 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradient-flow 5s ease infinite}
+    .hero-role{font-family:'JetBrains Mono',monospace;font-size:clamp(14px,2vw,18px);color:var(--text-lo);margin-bottom:22px;display:flex;align-items:center;gap:8px;opacity:0;animation:fade-in .8s .5s ease forwards}
+    .hero-role-prefix{color:var(--blue);font-weight:600}
+    .hero-cursor{display:inline-block;width:2px;height:1.1em;background:var(--blue);margin-left:2px;vertical-align:text-bottom;animation:blink .9s ease infinite}
+    .hero-bio{font-size:16px;color:var(--text-lo);max-width:560px;line-height:1.9;margin-bottom:32px;opacity:0;animation:fade-in .8s .65s ease forwards}
+    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px;opacity:0;animation:fade-in .8s .8s ease forwards}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fade-in .8s .95s ease forwards}
+    .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:1;opacity:0;animation:fade-in .8s 1.4s ease forwards}
+    .hero-scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--blue),transparent);animation:float 2s ease infinite}
+    .hero-scroll-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--text-faint);text-transform:uppercase}
+    @media(max-width:560px){.hero-name{letter-spacing:-.04em}.hero-actions{flex-direction:column}}
 
-    /* ── About ────────────────────────────────────────────── */
+    /* ── Stats bar ────────────────────────────────────────────── */
+    .stats-section{padding:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-card)}
+    .stats-bar{display:grid;grid-template-columns:repeat(4,1fr)}
+    .stat-item{padding:28px 24px;text-align:center;position:relative;transition:var(--ease)}
+    .stat-item+.stat-item::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:1px;background:var(--border)}
+    .stat-item:hover{background:var(--bg-card-h)}
+    .stat-num{font-size:clamp(28px,4vw,42px);font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px}
+    .stat-label{font-size:12px;color:var(--text-lo);font-weight:500}
+    @media(max-width:640px){.stats-bar{grid-template-columns:1fr 1fr}.stat-item+.stat-item::before{display:none}.stat-item{border-bottom:1px solid var(--border)}}
+
+    /* ── About ────────────────────────────────────────────────── */
     #about{background:var(--bg-1)}
-    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
     .about-text p{font-size:15.5px;color:var(--text-lo);line-height:1.9;margin-bottom:18px}
-    .about-text p:last-child{margin-bottom:0}
     .about-text strong{color:var(--text-hi);font-weight:600}
-    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .stat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;transition:var(--ease)}
-    .stat:hover{border-color:var(--border-h);background:var(--bg-card-h)}
-    .stat-val{font-size:34px;font-weight:900;color:var(--blue);letter-spacing:-1px;line-height:1;margin-bottom:6px}
-    .stat-key{font-size:13px;color:var(--text-lo);line-height:1.4}
+    .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .astat{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px 20px;transition:var(--ease);position:relative;overflow:hidden}
+    .astat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple));transform:scaleX(0);transition:transform .4s ease;transform-origin:left}
+    .astat:hover{border-color:var(--border-h);background:var(--bg-card-h)}
+    .astat:hover::after{transform:scaleX(1)}
+    .astat-val{font-size:32px;font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .astat-key{font-size:12.5px;color:var(--text-lo);line-height:1.4}
     @media(max-width:820px){.about-grid{grid-template-columns:1fr;gap:48px}}
 
-    /* ── Experience ───────────────────────────────────────── */
+    /* ── Experience ───────────────────────────────────────────── */
     .exp-stack{display:flex;flex-direction:column;gap:10px}
-    .exp-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:26px 30px;transition:var(--ease);position:relative;overflow:hidden}
-    .exp-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);opacity:0;transition:var(--ease)}
-    .exp-card:hover{border-color:var(--border-h);background:var(--bg-card-h)}
+    .exp-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px 32px;transition:var(--ease);position:relative;overflow:hidden;backdrop-filter:blur(12px)}
+    .exp-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--blue),var(--purple));transform:scaleY(0);transition:transform .4s ease;transform-origin:top;border-radius:0 0 0 var(--r)}
+    .exp-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,182,212,.03) 0%,transparent 60%);opacity:0;transition:opacity .4s}
+    .exp-card:hover{border-color:var(--border-h);background:var(--bg-card-h);transform:translateX(4px);box-shadow:-4px 0 32px rgba(6,182,212,.08),8px 8px 32px rgba(0,0,0,.3)}
+    .exp-card:hover::before{transform:scaleY(1)}
     .exp-card:hover::after{opacity:1}
-    .exp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:6px}
+    .exp-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:5px}
     .exp-role{font-size:17px;font-weight:700}
-    .exp-when{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-faint);white-space:nowrap;padding-top:3px}
-    .exp-where{font-size:13.5px;font-weight:600;color:var(--blue);margin-bottom:14px}
+    .exp-when{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);white-space:nowrap;padding-top:4px;background:var(--bg-card);border:1px solid var(--border);padding:3px 10px;border-radius:99px}
+    .exp-where{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:14px}
     .exp-where .loc{color:var(--text-faint);font-weight:400}
     .exp-bullets{display:flex;flex-direction:column;gap:7px}
     .exp-bullets li{font-size:13.5px;color:var(--text-lo);padding-left:16px;position:relative;line-height:1.7}
-    .exp-bullets li::before{content:'›';position:absolute;left:0;color:var(--blue);font-size:15px;line-height:1.5}
-    .tech-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
-    @media(max-width:560px){.exp-top{flex-direction:column}}
+    .exp-bullets li::before{content:'›';position:absolute;left:0;color:var(--blue);font-size:16px;line-height:1.5}
+    .tech-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+    @media(max-width:560px){.exp-top{flex-direction:column;gap:8px}}
 
-    /* ── Education ────────────────────────────────────────── */
+    /* ── Education ────────────────────────────────────────────── */
     #education{background:var(--bg-1)}
-    .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
-    .edu-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:26px;transition:var(--ease)}
-    .edu-card:hover{border-color:var(--border-h);background:var(--bg-card-h)}
-    .edu-ico{width:42px;height:42px;border-radius:var(--r-sm);background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
-    .edu-school{font-size:16px;font-weight:700;margin-bottom:4px}
+    .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+    .edu-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;transition:var(--ease);backdrop-filter:blur(12px);position:relative;overflow:hidden}
+    .edu-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent);opacity:0;transition:opacity .4s}
+    .edu-card:hover{border-color:var(--border-h);background:var(--bg-card-h);transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.4)}
+    .edu-card:hover::after{opacity:1}
+    .edu-ico{width:42px;height:42px;border-radius:var(--r-sm);background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;border:1px solid rgba(6,182,212,.15)}
+    .edu-school{font-size:15.5px;font-weight:700;margin-bottom:4px}
     .edu-degree{font-size:13px;color:var(--blue);margin-bottom:5px;font-weight:500}
-    .edu-dates{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);margin-bottom:12px}
+    .edu-dates{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint);margin-bottom:12px}
     .edu-body{font-size:13px;color:var(--text-lo);line-height:1.75}
 
-    /* ── Skills ───────────────────────────────────────────── */
-    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-    .skill-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:var(--ease)}
-    .skill-block:hover{border-color:var(--border-h)}
-    .skill-head{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+    /* ── Skills ───────────────────────────────────────────────── */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .skill-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:var(--ease);backdrop-filter:blur(12px)}
+    .skill-block:hover{border-color:var(--border-h);background:var(--bg-card-h)}
+    .skill-head{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
+    .skill-head::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0}
     .pills{display:flex;flex-wrap:wrap;gap:7px}
-    .pill{font-size:12.5px;padding:5px 11px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:var(--text-lo);transition:var(--ease);cursor:default}
+    .pill{font-size:12px;padding:5px 11px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--text-lo);transition:var(--ease);cursor:default}
     [data-theme="light"] .pill{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06)}
-    .pill:hover{background:var(--blue-dim);border-color:rgba(56,189,248,.2);color:var(--text-hi)}
+    .pill:hover{background:var(--blue-dim);border-color:rgba(6,182,212,.25);color:var(--text-hi);transform:translateY(-1px)}
 
-    /* ── Honors ───────────────────────────────────────────── */
+    /* ── Honors ───────────────────────────────────────────────── */
     #honors{background:var(--bg-1)}
-    .honors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-    .honor-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px;text-align:center;transition:var(--ease)}
-    .honor-card:hover{border-color:var(--border-h);background:var(--bg-card-h)}
-    .honor-ico{font-size:34px;margin-bottom:14px}
-    .honor-name{font-size:15px;font-weight:700;margin-bottom:6px}
-    .honor-from{font-size:13px;color:var(--blue);margin-bottom:4px}
-    .honor-yr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint)}
+    .honors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .honor-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px 22px;text-align:center;transition:var(--ease);backdrop-filter:blur(12px);position:relative;overflow:hidden}
+    .honor-card::before{content:'';position:absolute;inset:-1px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:inherit;z-index:-1;opacity:0;transition:opacity .3s}
+    .honor-card::after{content:'';position:absolute;inset:1px;background:var(--bg-card);border-radius:calc(var(--r) - 1px);z-index:-1;transition:background .3s}
+    .honor-card:hover{transform:translateY(-5px);box-shadow:0 20px 48px rgba(0,0,0,.4)}
+    .honor-card:hover::before{opacity:1}
+    .honor-ico{font-size:32px;margin-bottom:14px;display:block}
+    .honor-name{font-size:14.5px;font-weight:700;margin-bottom:5px}
+    .honor-from{font-size:12.5px;color:var(--blue);margin-bottom:4px;font-weight:500}
+    .honor-yr{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint)}
 
-    /* ── Contact ──────────────────────────────────────────── */
-    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
-    .cf label{display:block;font-size:13px;font-weight:500;color:var(--text-lo);margin-bottom:7px}
-    .cf input,.cf textarea{width:100%;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;color:var(--text-hi);font-family:inherit;font-size:14px;transition:var(--ease);outline:none;resize:vertical}
+    /* ── Contact ──────────────────────────────────────────────── */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+    .cf label{display:block;font-size:12.5px;font-weight:500;color:var(--text-lo);margin-bottom:6px}
+    .cf input,.cf textarea{width:100%;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;color:var(--text-hi);font-family:inherit;font-size:14px;transition:var(--ease);outline:none;resize:vertical;backdrop-filter:blur(12px)}
     .cf input::placeholder,.cf textarea::placeholder{color:var(--text-faint)}
-    .cf input:focus,.cf textarea:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
-    .field{margin-bottom:18px}
-    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .form-msg{margin-top:14px;font-size:13px;display:none}
-    .contact-aside{font-size:14px;color:var(--text-lo);margin-bottom:20px;line-height:1.7}
+    .cf input:focus,.cf textarea:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim),0 0 20px rgba(6,182,212,.06)}
+    .field{margin-bottom:16px}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-msg{margin-top:12px;font-size:13px;display:none}
+    .contact-aside{font-size:14.5px;color:var(--text-lo);margin-bottom:24px;line-height:1.8}
     .contact-links{display:flex;flex-direction:column;gap:10px}
-    .contact-link{display:inline-flex;align-items:center;gap:12px;padding:14px 18px;border-radius:var(--r-sm);background:var(--bg-card);border:1px solid var(--border);color:var(--text-lo);font-size:14px;font-weight:500;transition:var(--ease)}
-    .contact-link:hover{border-color:var(--border-h);color:var(--text-hi);background:var(--bg-card-h);transform:translateY(-2px)}
-    .contact-link svg{width:18px;height:18px;flex-shrink:0}
-    .contact-note{margin-top:24px;font-size:13px;color:var(--text-faint);line-height:1.7}
+    .contact-link{display:inline-flex;align-items:center;gap:12px;padding:14px 18px;border-radius:var(--r);background:var(--bg-card);border:1px solid var(--border);color:var(--text-lo);font-size:13.5px;font-weight:500;transition:var(--ease);backdrop-filter:blur(12px)}
+    .contact-link:hover{border-color:var(--border-h);color:var(--text-hi);background:var(--bg-card-h);transform:translateX(4px);box-shadow:4px 0 24px rgba(6,182,212,.08)}
+    .contact-link svg{width:18px;height:18px;flex-shrink:0;color:var(--blue)}
+    .contact-note{margin-top:24px;font-size:12.5px;color:var(--text-faint);line-height:1.7}
     @media(max-width:820px){.contact-grid{grid-template-columns:1fr;gap:48px}.field-row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
+
+<!-- Custom cursor -->
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
 
 <div id="progress"></div>
 
@@ -147,7 +163,7 @@
       <li><a href="blog.html">Blog</a></li>
     </ul>
     <div class="nav-right">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
@@ -162,35 +178,74 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-dots"></div>
+  <canvas id="pCanvas"></canvas>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="container hero-inner">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Security Systems &middot; Smart Buildings &middot; Public Safety
+    </div>
+    <h1 class="hero-name">
+      <span class="hero-name-first">Ryan</span>
+      <span class="hero-name-last">Pfister</span>
+    </h1>
+    <div class="hero-role">
+      <span class="hero-role-prefix">&gt;</span>
+      <span id="typewriter"></span><span class="hero-cursor"></span>
+    </div>
+    <p class="hero-bio">A technically-driven security systems student bridging building automation, cybersecurity, and public safety. Commissioning BAS at <strong style="color:var(--text-hi)">Siemens</strong> by day. Volunteer <strong style="color:var(--text-hi)">Firefighter &amp; EMT</strong> by night. Eagle Scout always.</p>
+    <div class="hero-tags">
+      <span class="chip">BACnet</span>
+      <span class="chip">Modbus</span>
+      <span class="chip">Cisco CCNA</span>
+      <span class="chip">Splunk</span>
+      <span class="chip">Python</span>
+      <span class="chip">Networking</span>
+      <span class="chip">ICS/SCADA</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-fill magnetic">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Get in Touch
+      </a>
+      <a href="projects.html" class="btn btn-ghost magnetic">
+        View Projects
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span class="hero-scroll-text">Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+
+<!-- STATS BAR -->
+<div class="stats-section">
   <div class="container">
-    <div class="hero-content">
-      <div class="hero-chip">Security Systems · Smart Buildings · Public Safety</div>
-      <h1 class="hero-name">Ryan<br>Pfister</h1>
-      <p class="hero-tagline">Smart Building Intern at <strong>Siemens</strong> &middot; B.S. Security Systems</p>
-      <p class="hero-bio">A technically-driven security systems student bridging building automation, cybersecurity, and public safety. Currently commissioning BAS systems at Siemens while serving as a Volunteer Firefighter &amp; EMT. Eagle Scout. New York.</p>
-      <div class="hero-badges">
-        <span class="badge badge-blue">BACnet &middot; Modbus &middot; LonWorks</span>
-        <span class="badge badge-blue">Building Automation Systems</span>
-        <span class="badge badge-green">Firefighter / EMT</span>
-        <span class="badge badge-green">Eagle Scout</span>
-        <span class="badge badge-purple">Cisco CCNA</span>
-        <span class="badge badge-purple">Splunk Certified</span>
+    <div class="stats-bar stagger">
+      <div class="stat-item">
+        <div class="stat-num" data-target="19" data-suffix="+">0</div>
+        <div class="stat-label">Certifications</div>
       </div>
-      <div class="hero-actions">
-        <a href="#contact" class="btn btn-fill">
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-          Get in Touch
-        </a>
-        <a href="projects.html" class="btn btn-ghost">
-          View Projects
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
+      <div class="stat-item">
+        <div class="stat-num" data-target="3" data-suffix="+">0</div>
+        <div class="stat-label">Years at Siemens</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="120" data-suffix="%">0</div>
+        <div class="stat-label">Revenue lift from POS</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="5" data-suffix="+">0</div>
+        <div class="stat-label">Years with FIRST Robotics</div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 
 <!-- ABOUT -->
@@ -201,16 +256,16 @@
         <div class="label">01 / About</div>
         <h2 class="section-title">Building systems that<br><em>protect</em> and connect</h2>
         <div class="about-text">
-          <p>I'm pursuing a <strong>Bachelor of Science in Security Systems</strong> at Farmingdale State College (graduating May 2027), concentrating in Networking. My work spans building automation, cybersecurity, and critical infrastructure — grounded by three years of hands-on internship experience at <strong>Siemens Smart Buildings</strong>.</p>
-          <p>Outside of tech, I serve my community as a <strong>Volunteer Firefighter and EMT</strong> with the Middle Island Fire Department — where I was recognized as EMT of the Year (2026) and Probationary Firefighter of the Year (2023).</p>
+          <p>I'm pursuing a <strong>Bachelor of Science in Security Systems</strong> at Farmingdale State College (graduating May 2027), concentrating in Networking. My work spans building automation, cybersecurity, and critical infrastructure — grounded by three years of hands-on experience at <strong>Siemens Smart Buildings</strong>.</p>
+          <p>Outside of tech, I serve my community as a <strong>Volunteer Firefighter and EMT</strong> with the Middle Island Fire Department — EMT of the Year (2026), Probationary Firefighter of the Year (2023).</p>
           <p>Eagle Scout. Cisco networking student. Splunk analyst. I thrive at the intersection of physical systems, digital infrastructure, and community service.</p>
         </div>
       </div>
-      <div class="stats-grid fade-up">
-        <div class="stat"><div class="stat-val">2+</div><div class="stat-key">Years at Siemens Smart Buildings</div></div>
-        <div class="stat"><div class="stat-val">19+</div><div class="stat-key">Professional licenses &amp; certifications</div></div>
-        <div class="stat"><div class="stat-val">120%</div><div class="stat-key">Revenue lift from POS implementation</div></div>
-        <div class="stat"><div class="stat-val">5+</div><div class="stat-key">Years volunteering with FIRST Robotics</div></div>
+      <div class="about-stats stagger fade-up">
+        <div class="astat"><div class="astat-val">2+</div><div class="astat-key">Years at Siemens Smart Buildings</div></div>
+        <div class="astat"><div class="astat-val">19+</div><div class="astat-key">Professional licenses &amp; certifications</div></div>
+        <div class="astat"><div class="astat-val">120%</div><div class="astat-key">Revenue lift from POS implementation</div></div>
+        <div class="astat"><div class="astat-val">5+</div><div class="astat-key">Years volunteering with FIRST Robotics</div></div>
       </div>
     </div>
   </div>
@@ -225,20 +280,26 @@
     <div class="exp-stack">
 
       <div class="exp-card fade-up">
-        <div class="exp-top"><div class="exp-role">Smart Building Specialist Intern</div><div class="exp-when">Aug 2025 &ndash; Present</div></div>
+        <div class="exp-top">
+          <div class="exp-role">Smart Building Specialist Intern</div>
+          <div class="exp-when">Aug 2025 &ndash; Present</div>
+        </div>
         <div class="exp-where">Siemens Smart Buildings <span class="loc">&middot; Long Island, NY &middot; Part-time</span></div>
         <ul class="exp-bullets">
-          <li>Invited to continue part-time through graduation after two consecutive summer internships &mdash; now in third year at Siemens.</li>
-          <li>Support commissioning, startup, and configuration of building automation systems (BAS) on active commercial construction sites.</li>
+          <li>Invited to continue part-time through graduation after two consecutive summer internships — now in third year at Siemens.</li>
+          <li>Commission, start up, and configure building automation systems (BAS) on active commercial construction sites.</li>
           <li>Perform network configuration, data server backups, and PC workstation setup for building control systems.</li>
-          <li>Troubleshoot system sequences of operations; prepare commissioning reports and as-built documentation for engineering.</li>
+          <li>Troubleshoot sequences of operations; prepare commissioning reports and as-built documentation for engineering.</li>
           <li>Support customer training on BAS operations and system interfaces during project handoff.</li>
         </ul>
-        <div class="tech-chips"><span class="chip">BACnet</span><span class="chip">Modbus</span><span class="chip">LonWorks</span><span class="chip">Apogee</span><span class="chip">Desigo</span><span class="chip">HVAC Controls</span><span class="chip">BMS</span><span class="chip">DDC Systems</span></div>
+        <div class="tech-chips"><span class="chip">BACnet</span><span class="chip">Modbus</span><span class="chip">LonWorks</span><span class="chip">Apogee</span><span class="chip">Desigo</span><span class="chip">HVAC Controls</span><span class="chip">BMS</span><span class="chip">DDC</span></div>
       </div>
 
       <div class="exp-card fade-up">
-        <div class="exp-top"><div class="exp-role">Smart Building Specialist Intern</div><div class="exp-when">May 2024 &ndash; Aug 2025</div></div>
+        <div class="exp-top">
+          <div class="exp-role">Smart Building Specialist Intern</div>
+          <div class="exp-when">May 2024 &ndash; Aug 2025</div>
+        </div>
         <div class="exp-where">Siemens Smart Buildings <span class="loc">&middot; Bohemia, NY &middot; Summer Internship</span></div>
         <ul class="exp-bullets">
           <li>Completed two consecutive summer internships supporting BAS commissioning across commercial construction sites.</li>
@@ -248,44 +309,55 @@
       </div>
 
       <div class="exp-card fade-up">
-        <div class="exp-top"><div class="exp-role">Code Enforcement Officer</div><div class="exp-when">Nov 2023 &ndash; May 2026</div></div>
-        <div class="exp-where">Town of Brookhaven &mdash; Dept. of Public Safety <span class="loc">&middot; Farmingville, NY</span></div>
+        <div class="exp-top">
+          <div class="exp-role">Code Enforcement Officer</div>
+          <div class="exp-when">Nov 2023 &ndash; May 2026</div>
+        </div>
+        <div class="exp-where">Town of Brookhaven — Dept. of Public Safety <span class="loc">&middot; Farmingville, NY</span></div>
         <ul class="exp-bullets">
           <li>Enforced town codes and NY State Vehicle &amp; Traffic Laws, issuing field appearance tickets daily.</li>
           <li>Collaborated with town divisions and local law enforcement to ensure security at public facilities.</li>
-          <li>Responded to service calls to maintain public safety throughout Brookhaven Township.</li>
         </ul>
         <div class="tech-chips"><span class="chip">Code Enforcement</span><span class="chip">Public Safety</span><span class="chip">Law Enforcement</span></div>
       </div>
 
       <div class="exp-card fade-up">
-        <div class="exp-top"><div class="exp-role">Firefighter / EMT</div><div class="exp-when">Sep 2022 &ndash; Present</div></div>
+        <div class="exp-top">
+          <div class="exp-role">Firefighter / EMT</div>
+          <div class="exp-when">Sep 2022 &ndash; Present</div>
+        </div>
         <div class="exp-where">Middle Island Fire Department <span class="loc">&middot; Middle Island, NY &middot; Volunteer</span></div>
         <ul class="exp-bullets">
           <li>Respond to emergency calls as a Volunteer Firefighter and EMT (ProBoard National Firefighter I certified).</li>
           <li>Trained in ICS-100, ICS-700, NIMS, and American Heart Association Basic Life Support.</li>
           <li>Serve as department webmaster — design and maintain the community-facing website.</li>
-          <li>Integrated POS systems for the annual Big Bucks raffle, streamlining the process and increasing fundraising revenue.</li>
+          <li>Integrated POS systems for the annual Big Bucks raffle, increasing fundraising revenue.</li>
         </ul>
         <div class="tech-chips"><span class="chip">Emergency Response</span><span class="chip">AHA BLS</span><span class="chip">ICS / NIMS</span><span class="chip">Web Management</span></div>
       </div>
 
       <div class="exp-card fade-up">
-        <div class="exp-top"><div class="exp-role">POS Systems Consultant</div><div class="exp-when">Oct 2022 &ndash; Present</div></div>
+        <div class="exp-top">
+          <div class="exp-role">POS Systems Consultant</div>
+          <div class="exp-when">Oct 2022 &ndash; Present</div>
+        </div>
         <div class="exp-where">Section Xi NYSPHSAA <span class="loc">&middot; Suffolk County, NY</span></div>
         <ul class="exp-bullets">
-          <li>Implemented a mobile ticket purchasing POS system for SectionXI Athletics, increasing revenue by approximately <strong>120%</strong>.</li>
-          <li>Provided remote and in-person support for POS hardware and maintained ongoing system operations.</li>
+          <li>Implemented a mobile ticket purchasing POS system for SectionXI Athletics, increasing revenue by approximately <strong style="color:var(--text-hi)">120%</strong>.</li>
+          <li>Provided remote and on-site support for POS hardware and maintained ongoing system operations.</li>
         </ul>
         <div class="tech-chips"><span class="chip">POS Systems</span><span class="chip">IT Support</span><span class="chip">Hardware</span></div>
       </div>
 
       <div class="exp-card fade-up">
-        <div class="exp-top"><div class="exp-role">Technical Volunteer</div><div class="exp-when">Sep 2020 &ndash; Feb 2026</div></div>
+        <div class="exp-top">
+          <div class="exp-role">Technical Volunteer</div>
+          <div class="exp-when">Sep 2020 &ndash; Feb 2026</div>
+        </div>
         <div class="exp-where">FIRST Robotics <span class="loc">&middot; Long Island, NY</span></div>
         <ul class="exp-bullets">
-          <li>Managed scoring, live video webcast, audience audio, visual displays, and wireless networking at FIRST Robotics competitions.</li>
-          <li>Oversaw equipment setup and takedown; implemented wireless network strategies to enhance competition experience.</li>
+          <li>Managed scoring, live video webcast, audience audio, visual displays, and wireless networking at competitions.</li>
+          <li>Oversaw equipment setup and teardown; implemented wireless network strategies to enhance competition experience.</li>
         </ul>
         <div class="tech-chips"><span class="chip">Networking</span><span class="chip">AV / Video</span><span class="chip">Event Technology</span></div>
       </div>
@@ -300,22 +372,22 @@
   <div class="container">
     <div class="label">03 / Education</div>
     <h2 class="section-title">Academic <em>background</em></h2>
-    <div class="edu-grid">
-      <div class="edu-card fade-up">
+    <div class="edu-grid stagger">
+      <div class="edu-card">
         <div class="edu-ico">🎓</div>
         <div class="edu-school">Farmingdale State College</div>
         <div class="edu-degree">B.S. Security Systems &middot; Networking Concentration</div>
         <div class="edu-dates">Aug 2023 &ndash; May 2027</div>
-        <div class="edu-body">Studying security systems with a focus on networking and cybersecurity. Preparing for a career at the intersection of physical security and digital infrastructure.</div>
+        <div class="edu-body">Studying security systems with a focus on networking and cybersecurity, preparing for a career at the intersection of physical security and digital infrastructure.</div>
       </div>
-      <div class="edu-card fade-up">
+      <div class="edu-card">
         <div class="edu-ico">🌐</div>
         <div class="edu-school">Cisco Networking Academy</div>
         <div class="edu-degree">Computer Systems Networking &amp; Telecommunications</div>
         <div class="edu-dates">Sep 2021 &ndash; May 2026</div>
         <div class="edu-body">Completed IT Essentials, CCNAv7 Network Fundamentals, CCNAv7 Intro to Networks, and CCNA Enterprise Networking, Security &amp; Automation.</div>
       </div>
-      <div class="edu-card fade-up">
+      <div class="edu-card">
         <div class="edu-ico">🤖</div>
         <div class="edu-school">Longwood Robotics</div>
         <div class="edu-degree">Electronics Lead &mdash; FIRST Robotics Team</div>
@@ -332,22 +404,22 @@
   <div class="container">
     <div class="label">04 / Skills</div>
     <h2 class="section-title">Technologies &amp; <em>capabilities</em></h2>
-    <div class="skills-grid">
-      <div class="skill-block fade-up">
+    <div class="skills-grid stagger">
+      <div class="skill-block">
         <div class="skill-head">Building Automation</div>
         <div class="pills"><span class="pill">BACnet</span><span class="pill">Modbus</span><span class="pill">LonWorks</span><span class="pill">Siemens Apogee</span><span class="pill">Siemens Desigo</span><span class="pill">HVAC Controls</span><span class="pill">BMS</span><span class="pill">DDC Systems</span></div>
       </div>
-      <div class="skill-block fade-up">
+      <div class="skill-block">
         <div class="skill-head">Networking &amp; Cyber</div>
         <div class="pills"><span class="pill">Computer Networking</span><span class="pill">Cisco CCNA</span><span class="pill">Network Config</span><span class="pill">Cybersecurity</span><span class="pill">Splunk</span><span class="pill">Enterprise Security</span><span class="pill">Wireless Networking</span></div>
       </div>
-      <div class="skill-block fade-up">
+      <div class="skill-block">
         <div class="skill-head">IT &amp; Systems</div>
         <div class="pills"><span class="pill">Computer Repair</span><span class="pill">PC Setup</span><span class="pill">POS Systems</span><span class="pill">Server Admin</span><span class="pill">Data Backups</span><span class="pill">Tech Documentation</span><span class="pill">Web Management</span></div>
       </div>
-      <div class="skill-block fade-up">
+      <div class="skill-block">
         <div class="skill-head">Public Safety</div>
-        <div class="pills"><span class="pill">Firefighting (ProBoard FF I)</span><span class="pill">Emergency Medical Tech</span><span class="pill">Basic Life Support (AHA)</span><span class="pill">ICS-100 / ICS-700</span><span class="pill">NIMS</span><span class="pill">Code Enforcement</span><span class="pill">Emergency Mgmt</span></div>
+        <div class="pills"><span class="pill">Firefighting (ProBoard FF I)</span><span class="pill">Emergency Medical Tech</span><span class="pill">Basic Life Support</span><span class="pill">ICS-100 / ICS-700</span><span class="pill">NIMS</span><span class="pill">Code Enforcement</span></div>
       </div>
     </div>
   </div>
@@ -359,11 +431,11 @@
   <div class="container">
     <div class="label">05 / Recognition</div>
     <h2 class="section-title">Honors &amp; <em>awards</em></h2>
-    <div class="honors-grid">
-      <div class="honor-card fade-up"><div class="honor-ico">🏆</div><div class="honor-name">EMT of the Year</div><div class="honor-from">Middle Island Fire Department</div><div class="honor-yr">May 2026</div></div>
-      <div class="honor-card fade-up"><div class="honor-ico">🥇</div><div class="honor-name">Probationary Firefighter of the Year</div><div class="honor-from">Middle Island Fire Department</div><div class="honor-yr">January 2023</div></div>
-      <div class="honor-card fade-up"><div class="honor-ico">⚜️</div><div class="honor-name">Eagle Scout</div><div class="honor-from">Troop 560, Boy Scouts of America</div><div class="honor-yr">Highest rank in Scouting</div></div>
-      <div class="honor-card fade-up"><div class="honor-ico">🔐</div><div class="honor-name">19+ Certifications</div><div class="honor-from">Splunk, Cisco, FEMA &amp; more</div><div class="honor-yr">Ongoing</div></div>
+    <div class="honors-grid stagger">
+      <div class="honor-card"><span class="honor-ico">🏆</span><div class="honor-name">EMT of the Year</div><div class="honor-from">Middle Island Fire Department</div><div class="honor-yr">May 2026</div></div>
+      <div class="honor-card"><span class="honor-ico">🥇</span><div class="honor-name">Probationary Firefighter of the Year</div><div class="honor-from">Middle Island Fire Department</div><div class="honor-yr">January 2023</div></div>
+      <div class="honor-card"><span class="honor-ico">⚜️</span><div class="honor-name">Eagle Scout</div><div class="honor-from">Troop 560, Boy Scouts of America</div><div class="honor-yr">Highest rank in Scouting</div></div>
+      <div class="honor-card"><span class="honor-ico">🔐</span><div class="honor-name">19+ Certifications</div><div class="honor-from">Splunk, Cisco, FEMA &amp; more</div><div class="honor-yr">Ongoing</div></div>
     </div>
   </div>
 </section>
@@ -373,25 +445,15 @@
 <section id="contact">
   <div class="container">
     <div class="contact-grid">
-
       <div class="fade-up">
         <div class="label">06 / Contact</div>
         <h2 class="section-title">Let's <em>connect</em></h2>
         <form class="cf" id="cf" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
           <div class="field-row">
-            <div class="field">
-              <label for="fname">Name</label>
-              <input type="text" id="fname" name="name" required placeholder="Your name">
-            </div>
-            <div class="field">
-              <label for="femail">Email</label>
-              <input type="email" id="femail" name="email" required placeholder="your@email.com">
-            </div>
+            <div class="field"><label for="fname">Name</label><input type="text" id="fname" name="name" required placeholder="Your name"></div>
+            <div class="field"><label for="femail">Email</label><input type="email" id="femail" name="email" required placeholder="your@email.com"></div>
           </div>
-          <div class="field">
-            <label for="fmsg">Message</label>
-            <textarea id="fmsg" name="message" rows="5" required placeholder="Hi Ryan, I'd love to discuss..."></textarea>
-          </div>
+          <div class="field"><label for="fmsg">Message</label><textarea id="fmsg" name="message" rows="5" required placeholder="Hi Ryan, I'd love to discuss..."></textarea></div>
           <button type="submit" class="btn btn-fill" style="width:100%;justify-content:center">
             <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             Send Message
@@ -399,9 +461,8 @@
           <p class="form-msg" id="form-msg"></p>
         </form>
       </div>
-
       <div class="fade-up">
-        <p class="contact-aside" style="margin-top:80px">Or reach me directly on any of these platforms. I'm open to opportunities in security systems, smart buildings, and cybersecurity.</p>
+        <p class="contact-aside" style="margin-top:76px">Or reach me directly. Open to opportunities in security systems, smart buildings, and cybersecurity.</p>
         <div class="contact-links">
           <a href="mailto:mifd413@gmail.com" class="contact-link">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -418,7 +479,6 @@
         </div>
         <p class="contact-note">Based in New York &middot; Open to full-time and internship opportunities in security systems, smart buildings &amp; cybersecurity.</p>
       </div>
-
     </div>
   </div>
 </section>
@@ -438,31 +498,121 @@
 
 
 <script>
-  // Theme
-  const html = document.documentElement;
-  const toggle = document.getElementById('themeToggle');
-  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
-  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
-  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+/* ── Theme ────────────────────────────────────────────────────── */
+const html=document.documentElement,toggle=document.getElementById('themeToggle');
+(function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
 
-  // Scroll progress
-  const bar=document.getElementById('progress');
-  window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+/* ── Scroll progress ──────────────────────────────────────────── */
+const bar=document.getElementById('progress');
+window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
 
-  // Fade-up
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
-  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+/* ── Nav frosted glass on scroll ─────────────────────────────── */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
 
-  // Scroll spy
-  const secs=document.querySelectorAll('section[id]');
-  const navAs=document.querySelectorAll('.nav-links a[href^="#"]');
-  const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){navAs.forEach(a=>a.classList.remove('active'));const a=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);if(a)a.classList.add('active');}}),{rootMargin:'-38% 0px -62% 0px'});
-  secs.forEach(s=>spy.observe(s));
+/* ── Custom cursor ────────────────────────────────────────────── */
+const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();
+document.querySelectorAll('a,button,.chip,.pill').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+});
+document.addEventListener('mousedown',()=>ring.classList.add('click'));
+document.addEventListener('mouseup',()=>ring.classList.remove('click'));
 
-  // Contact form
-  const cf=document.getElementById('cf');
-  const fm=document.getElementById('form-msg');
-  if(cf){cf.addEventListener('submit',async e=>{e.preventDefault();const btn=cf.querySelector('button[type="submit"]');btn.disabled=true;btn.textContent='Sending…';try{const r=await fetch(cf.action,{method:'POST',body:new FormData(cf),headers:{Accept:'application/json'}});if(r.ok){fm.textContent='✓ Message sent! I\'ll be in touch soon.';fm.style.color='var(--green)';cf.reset();}else{fm.textContent='Something went wrong — please email me directly.';fm.style.color='var(--purple)';}fm.style.display='block';}catch{fm.textContent='Network error — please email me directly.';fm.style.color='var(--purple)';fm.style.display='block';}btn.disabled=false;btn.innerHTML='<svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Send Message';});}
+/* ── Canvas particle network ──────────────────────────────────── */
+(function(){
+  const canvas=document.getElementById('pCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[],mouse={x:-999,y:-999};
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  function mkPt(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.4+.4,a:Math.random()*.5+.15,c:Math.random()>.65?[139,92,246]:[6,182,212]};}
+  function init(){pts=[];const n=Math.min(Math.floor(W*H/13000),100);for(let i=0;i<n;i++)pts.push(mkPt());}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i];
+      const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){const f=(110-d)/110*.35;p.vx+=dx/d*f;p.vy+=dy/d*f;}
+      p.vx*=.978;p.vy*=.978;p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.a})`;ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],ex=p.x-q.x,ey=p.y-q.y,ed=Math.sqrt(ex*ex+ey*ey);
+        if(ed<130){const a=(1-ed/130)*.22;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(6,182,212,${a})`;ctx.lineWidth=.6;ctx.stroke();}
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();init();},{passive:true});
+  window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  resize();init();draw();
+})();
+
+/* ── Typewriter ───────────────────────────────────────────────── */
+(function(){
+  const roles=['Security Systems Student','BAS Commissioning Tech','Firefighter / EMT','Network Engineer','Eagle Scout'];
+  let ri=0,ci=0,del=false;
+  const tw=document.getElementById('typewriter');
+  if(!tw)return;
+  function tick(){
+    const r=roles[ri];
+    if(!del){tw.textContent=r.slice(0,++ci);if(ci===r.length){del=true;setTimeout(tick,2000);return;}setTimeout(tick,72);}
+    else{tw.textContent=r.slice(0,--ci);if(ci===0){del=false;ri=(ri+1)%roles.length;setTimeout(tick,300);return;}setTimeout(tick,36);}
+  }
+  setTimeout(tick,800);
+})();
+
+/* ── Counter animation ────────────────────────────────────────── */
+function animateCount(el){
+  const target=+el.dataset.target,suf=el.dataset.suffix||'',dur=1400,start=performance.now();
+  (function step(now){const t=Math.min((now-start)/dur,1),ease=1-Math.pow(1-t,3);el.textContent=Math.round(target*ease)+(t===1?suf:'');if(t<1)requestAnimationFrame(step);})(start);
+}
+
+/* ── Intersection observer ────────────────────────────────────── */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  e.target.classList.add('visible');
+  e.target.querySelectorAll('[data-target]').forEach(animateCount);
+  io.unobserve(e.target);
+}),{threshold:.06});
+document.querySelectorAll('.fade-up,.stagger').forEach(el=>io.observe(el));
+
+/* ── Magnetic buttons ─────────────────────────────────────────── */
+document.querySelectorAll('.magnetic').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect(),x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;
+    btn.style.transform=`translate(${x*.18}px,${y*.18}px)`;
+  });
+  btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
+});
+
+/* ── Card tilt ────────────────────────────────────────────────── */
+document.querySelectorAll('.tilt').forEach(card=>{
+  const shine=card.querySelector('.card-shine');
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`perspective(700px) rotateX(${-y*10}deg) rotateY(${x*10}deg) translateY(-4px)`;
+    if(shine)shine.style.background=`radial-gradient(circle at ${(x+.5)*100}% ${(y+.5)*100}%,rgba(6,182,212,.12),transparent 65%)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';if(shine)shine.style.background='';});
+});
+
+/* ── Scroll spy ───────────────────────────────────────────────── */
+const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.nav-links a[href^="#"]');
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){navAs.forEach(a=>a.classList.remove('active'));const a=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);if(a)a.classList.add('active');}}),{rootMargin:'-35% 0px -65% 0px'}).observe(document.querySelectorAll('section[id]')[0]);
+secs.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){navAs.forEach(a=>a.classList.remove('active'));const a=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);if(a)a.classList.add('active');}}),{rootMargin:'-35% 0px -65% 0px'}).observe(s));
+
+/* ── Contact form ─────────────────────────────────────────────── */
+const cf=document.getElementById('cf'),fm=document.getElementById('form-msg');
+if(cf){cf.addEventListener('submit',async e=>{e.preventDefault();const btn=cf.querySelector('button[type="submit"]');btn.disabled=true;btn.textContent='Sending…';try{const r=await fetch(cf.action,{method:'POST',body:new FormData(cf),headers:{Accept:'application/json'}});if(r.ok){fm.textContent='✓ Message sent! I\'ll be in touch soon.';fm.style.color='var(--green)';cf.reset();}else{fm.textContent='Something went wrong — please email me directly.';fm.style.color='var(--purple)';}fm.style.display='block';}catch{fm.textContent='Network error — please email me directly.';fm.style.display='block';}btn.disabled=false;btn.innerHTML='<svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Send Message';});}
 </script>
 </body>
 </html>

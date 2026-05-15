@@ -11,29 +11,39 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <style>
-    .cat-section{margin-bottom:64px}
-    .cat-header{display:flex;align-items:center;gap:14px;margin-bottom:24px}
-    .cat-icon{width:44px;height:44px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-    .cat-icon.blue{background:var(--blue-dim);border:1px solid rgba(56,189,248,.2)}
-    .cat-icon.green{background:var(--green-dim);border:1px solid rgba(52,211,153,.2)}
-    .cat-icon.purple{background:var(--purple-dim);border:1px solid rgba(167,139,250,.2)}
-    .cat-name{font-size:18px;font-weight:800}
-    .cat-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);letter-spacing:1px}
-    .certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-    .cert-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;gap:16px;align-items:flex-start;transition:var(--ease)}
-    .cert-card:hover{border-color:var(--border-h);background:var(--bg-card-h);transform:translateY(-2px)}
-    .cert-badge{width:40px;height:40px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-    .cert-body{}
-    .cert-name{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:4px}
-    .cert-issuer{font-size:12px;color:var(--blue);font-weight:500}
-    .cert-type{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-faint);margin-top:3px}
-    .stats-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:64px}
-    .stat-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 28px;text-align:center;flex:1;min-width:140px}
-    .stat-pill-val{font-size:36px;font-weight:900;color:var(--blue);letter-spacing:-1px;line-height:1;margin-bottom:4px}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:64px}
+    @media(max-width:640px){.stats-row{grid-template-columns:1fr 1fr}}
+    .stat-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px 20px;text-align:center;backdrop-filter:blur(16px);transition:var(--ease);position:relative;overflow:hidden}
+    .stat-pill::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple));transform:scaleX(0);transition:transform .4s ease;transform-origin:left}
+    .stat-pill:hover{border-color:var(--border-h);background:var(--bg-card-h)}
+    .stat-pill:hover::after{transform:scaleX(1)}
+    .stat-pill-val{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .stat-pill-label{font-size:12px;color:var(--text-lo)}
+
+    .cat-section{margin-bottom:56px}
+    .cat-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+    .cat-icon{width:44px;height:44px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .cat-icon.blue{background:var(--blue-dim);border:1px solid rgba(6,182,212,.18)}
+    .cat-icon.green{background:var(--green-dim);border:1px solid rgba(16,185,129,.18)}
+    .cat-icon.purple{background:var(--purple-dim);border:1px solid rgba(139,92,246,.18)}
+    .cat-name{font-size:17px;font-weight:800;letter-spacing:-.02em}
+    .cat-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-faint);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+
+    .certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+    .cert-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;gap:14px;align-items:flex-start;transition:var(--ease);backdrop-filter:blur(12px);position:relative;overflow:hidden}
+    .cert-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,182,212,.03) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+    .cert-card:hover{border-color:var(--border-h);background:var(--bg-card-h);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.4)}
+    .cert-card:hover::before{opacity:1}
+    .cert-badge{width:38px;height:38px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+    .cert-name{font-size:13.5px;font-weight:700;line-height:1.3;margin-bottom:4px}
+    .cert-issuer{font-size:11.5px;color:var(--blue);font-weight:500}
+    .cert-type{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-faint);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
   </style>
 </head>
 <body>
+
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
 
 <div id="progress"></div>
 <nav id="nav">
@@ -69,14 +79,14 @@
   </div>
 </div>
 
-<section style="padding-top:48px">
+<section style="padding-top:40px;padding-bottom:96px">
   <div class="container">
 
-    <div class="stats-row fade-up">
-      <div class="stat-pill"><div class="stat-pill-val">19+</div><div class="stat-pill-label">Total credentials</div></div>
-      <div class="stat-pill"><div class="stat-pill-val">4</div><div class="stat-pill-label">Cisco courses</div></div>
-      <div class="stat-pill"><div class="stat-pill-val">2</div><div class="stat-pill-label">Splunk certs</div></div>
-      <div class="stat-pill"><div class="stat-pill-val">3+</div><div class="stat-pill-label">FEMA / ICS certs</div></div>
+    <div class="stats-row stagger">
+      <div class="stat-pill"><div class="stat-pill-val" data-target="19" data-suffix="+">0</div><div class="stat-pill-label">Total credentials</div></div>
+      <div class="stat-pill"><div class="stat-pill-val" data-target="4">0</div><div class="stat-pill-label">Cisco courses</div></div>
+      <div class="stat-pill"><div class="stat-pill-val" data-target="2">0</div><div class="stat-pill-label">Splunk certs</div></div>
+      <div class="stat-pill"><div class="stat-pill-val" data-target="3" data-suffix="+">0</div><div class="stat-pill-label">FEMA / ICS certs</div></div>
     </div>
 
     <!-- Networking -->
@@ -85,22 +95,22 @@
         <div class="cat-icon blue">🌐</div>
         <div><div class="cat-name">Networking</div><div class="cat-count">Cisco Networking Academy</div></div>
       </div>
-      <div class="certs-grid">
+      <div class="certs-grid stagger">
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--blue-dim)">🔵</div>
-          <div class="cert-body"><div class="cert-name">CCNA: Enterprise Networking, Security &amp; Automation</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
+          <div><div class="cert-name">CCNA: Enterprise Networking, Security &amp; Automation</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--blue-dim)">🔵</div>
-          <div class="cert-body"><div class="cert-name">CCNAv7: Introduction to Networks</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
+          <div><div class="cert-name">CCNAv7: Introduction to Networks</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--blue-dim)">🔵</div>
-          <div class="cert-body"><div class="cert-name">CCNAv7: Network Fundamentals</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
+          <div><div class="cert-name">CCNAv7: Network Fundamentals</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--blue-dim)">💻</div>
-          <div class="cert-body"><div class="cert-name">IT Essentials</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
+          <div><div class="cert-name">IT Essentials</div><div class="cert-issuer">Cisco Networking Academy</div><div class="cert-type">Course Completion</div></div>
         </div>
       </div>
     </div>
@@ -111,53 +121,53 @@
         <div class="cat-icon purple">🔐</div>
         <div><div class="cat-name">Cybersecurity</div><div class="cat-count">Splunk</div></div>
       </div>
-      <div class="certs-grid">
+      <div class="certs-grid stagger">
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--purple-dim)">🛡️</div>
-          <div class="cert-body"><div class="cert-name">Introduction to Enterprise Security</div><div class="cert-issuer">Splunk</div><div class="cert-type">Certificate of Completion</div></div>
+          <div><div class="cert-name">Introduction to Enterprise Security</div><div class="cert-issuer">Splunk</div><div class="cert-type">Certificate of Completion</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--purple-dim)">📊</div>
-          <div class="cert-body"><div class="cert-name">Intro to Splunk (eLearning)</div><div class="cert-issuer">Splunk</div><div class="cert-type">Certificate of Completion</div></div>
+          <div><div class="cert-name">Intro to Splunk (eLearning)</div><div class="cert-issuer">Splunk</div><div class="cert-type">Certificate of Completion</div></div>
         </div>
       </div>
     </div>
 
-    <!-- Public Safety & Emergency -->
+    <!-- Public Safety -->
     <div class="cat-section fade-up">
       <div class="cat-header">
         <div class="cat-icon green">🚒</div>
         <div><div class="cat-name">Public Safety &amp; Emergency Services</div><div class="cat-count">FEMA &middot; ProBoard &middot; AHA &middot; NIMS</div></div>
       </div>
-      <div class="certs-grid">
+      <div class="certs-grid stagger">
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--green-dim)">🔥</div>
-          <div class="cert-body"><div class="cert-name">National Firefighter I</div><div class="cert-issuer">ProBoard / NFPA 1001</div><div class="cert-type">Professional License</div></div>
+          <div><div class="cert-name">National Firefighter I</div><div class="cert-issuer">ProBoard / NFPA 1001</div><div class="cert-type">Professional License</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--green-dim)">🏥</div>
-          <div class="cert-body"><div class="cert-name">Basic Life Support (BLS)</div><div class="cert-issuer">American Heart Association</div><div class="cert-type">Professional Certification</div></div>
+          <div><div class="cert-name">Basic Life Support (BLS)</div><div class="cert-issuer">American Heart Association</div><div class="cert-type">Professional Certification</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--green-dim)">📋</div>
-          <div class="cert-body"><div class="cert-name">ICS-100: Introduction to ICS</div><div class="cert-issuer">FEMA / EMI</div><div class="cert-type">Certification</div></div>
+          <div><div class="cert-name">ICS-100: Introduction to ICS</div><div class="cert-issuer">FEMA / EMI</div><div class="cert-type">Certification</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--green-dim)">📋</div>
-          <div class="cert-body"><div class="cert-name">ICS-700: NIMS Overview</div><div class="cert-issuer">FEMA / EMI</div><div class="cert-type">Certification</div></div>
+          <div><div class="cert-name">ICS-700: NIMS Overview</div><div class="cert-issuer">FEMA / EMI</div><div class="cert-type">Certification</div></div>
         </div>
         <div class="cert-card">
           <div class="cert-badge" style="background:var(--green-dim)">🏛️</div>
-          <div class="cert-body"><div class="cert-name">National Incident Management System (NIMS)</div><div class="cert-issuer">FEMA</div><div class="cert-type">Certification</div></div>
+          <div><div class="cert-name">National Incident Management System (NIMS)</div><div class="cert-issuer">FEMA</div><div class="cert-type">Certification</div></div>
         </div>
         <div class="cert-card" style="border-style:dashed">
-          <div class="cert-badge" style="background:rgba(255,255,255,.04)">+</div>
-          <div class="cert-body"><div class="cert-name" style="color:var(--text-faint)">9+ additional certifications</div><div class="cert-issuer" style="color:var(--text-faint)">Various issuers</div><div class="cert-type">View on LinkedIn for full list</div></div>
+          <div class="cert-badge" style="background:rgba(255,255,255,.04);color:var(--text-faint)">+</div>
+          <div><div class="cert-name" style="color:var(--text-faint)">9+ additional certifications</div><div class="cert-issuer" style="color:var(--text-faint)">Various issuers</div><div class="cert-type">View on LinkedIn for full list</div></div>
         </div>
       </div>
     </div>
 
-    <div style="text-align:center;margin-top:16px" class="fade-up">
+    <div style="text-align:center;margin-top:8px" class="fade-up">
       <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener" class="btn btn-ghost">
         View all 19+ on LinkedIn
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -179,14 +189,20 @@
 </footer>
 
 <script>
-  const html=document.documentElement,toggle=document.getElementById('themeToggle');
-  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
-  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
-  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
-  const bar=document.getElementById('progress');
-  window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
-  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+const html=document.documentElement,toggle=document.getElementById('themeToggle');
+(function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+const bar=document.getElementById('progress');
+window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+if(window.scrollY>20)nav.classList.add('scrolled');
+const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+if(dot&&ring){let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button,.chip,.pill').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
+function animateCount(el){const target=+el.dataset.target,suf=el.dataset.suffix||'',dur=1200,start=performance.now();(function step(now){const t=Math.min((now-start)/dur,1),ease=1-Math.pow(1-t,3);el.textContent=Math.round(target*ease)+(t===1?suf:'');if(t<1)requestAnimationFrame(step);})(start);}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');e.target.querySelectorAll('[data-target]').forEach(animateCount);io.unobserve(e.target);}}),{threshold:.06});
+document.querySelectorAll('.fade-up,.stagger').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>

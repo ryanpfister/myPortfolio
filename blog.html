@@ -11,33 +11,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
   <style>
-    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
-    .post-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:12px;transition:var(--ease)}
-    .post-card:hover{border-color:var(--border-h);background:var(--bg-card-h);transform:translateY(-3px)}
-    .post-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .post-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint)}
-    .post-cat{font-size:11px;font-weight:600;padding:3px 10px;border-radius:100px}
-    .post-title{font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.25;color:var(--text-hi)}
+    .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+
+    /* Featured post */
+    .featured-post{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--bg-card);backdrop-filter:blur(20px);transition:var(--ease);position:relative}
+    .featured-post::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent);z-index:1}
+    .featured-post:hover{border-color:var(--border-h);transform:translateY(-4px);box-shadow:0 20px 56px rgba(0,0,0,.5),0 0 0 1px var(--border-h)}
+    .featured-body{padding:40px 44px}
+    .featured-visual{background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(139,92,246,.08));display:flex;align-items:center;justify-content:center;padding:44px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-lo);line-height:2;border-left:1px solid var(--border);position:relative;overflow:hidden}
+    .featured-visual::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,182,212,.04),transparent,rgba(139,92,246,.04))}
+    @media(max-width:720px){.featured-post{grid-template-columns:1fr}.featured-visual{display:none}}
+
+    /* Post cards */
+    .post-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:12px;transition:var(--ease);position:relative;overflow:hidden;backdrop-filter:blur(16px)}
+    .post-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,182,212,.03) 0%,transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none}
+    .post-card:hover{border-color:var(--border-h);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+    .post-card:hover::after{opacity:1}
     .post-card:hover .post-title{color:var(--blue)}
-    .post-excerpt{font-size:14px;color:var(--text-lo);line-height:1.8;flex:1}
+
+    .post-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .post-date{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint)}
+    .post-cat{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:100px}
+    .post-title{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.25;color:var(--text-hi);transition:color .3s}
+    .post-excerpt{font-size:13.5px;color:var(--text-lo);line-height:1.8;flex:1}
     .post-read{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--blue);margin-top:4px;transition:var(--ease)}
     .post-card:hover .post-read{gap:10px}
-    .post-read svg{width:14px;height:14px;transition:var(--ease)}
-    .featured-post{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:var(--bg-card);transition:var(--ease)}
-    .featured-post:hover{border-color:var(--border-h);transform:translateY(-3px)}
-    .featured-body{padding:40px}
-    .featured-visual{background:linear-gradient(135deg,var(--blue-dim),var(--purple-dim));display:flex;align-items:center;justify-content:center;padding:48px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-lo);line-height:1.9}
-    @media(max-width:720px){.featured-post{grid-template-columns:1fr}.featured-visual{display:none}}
-    .newsletter{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:40px;text-align:center;margin-top:64px}
-    .newsletter h3{font-size:22px;font-weight:800;margin-bottom:8px}
-    .newsletter p{font-size:14px;color:var(--text-lo);margin-bottom:24px}
+    .post-read svg{width:13px;height:13px;transition:var(--ease)}
+
+    /* Newsletter */
+    .newsletter{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:44px;text-align:center;margin-top:64px;backdrop-filter:blur(16px);position:relative;overflow:hidden}
+    .newsletter::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent)}
+    .newsletter h3{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+    .newsletter p{font-size:14px;color:var(--text-lo);margin-bottom:28px}
     .nl-form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
-    .nl-form input{flex:1;min-width:200px;background:var(--bg-0);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px;color:var(--text-hi);font-family:inherit;font-size:14px;outline:none;transition:var(--ease)}
-    .nl-form input:focus{border-color:var(--border-h)}
+    .nl-form input{flex:1;min-width:200px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px;color:var(--text-hi);font-family:inherit;font-size:14px;outline:none;transition:var(--ease)}
+    .nl-form input:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
     .nl-form input::placeholder{color:var(--text-faint)}
   </style>
 </head>
 <body>
+
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
 
 <div id="progress"></div>
 <nav id="nav">
@@ -73,26 +88,26 @@
   </div>
 </div>
 
-<section style="padding-top:48px">
+<section style="padding-top:40px;padding-bottom:96px">
   <div class="container">
     <div class="blog-grid">
 
       <!-- Featured post -->
       <a href="blog-bacnet.html" class="featured-post fade-up">
         <div class="featured-body">
-          <div class="post-meta" style="margin-bottom:14px">
+          <div class="post-meta" style="margin-bottom:16px">
             <span class="post-date">May 2025</span>
-            <span class="post-cat badge-blue badge">Building Automation</span>
+            <span class="post-cat badge badge-cyan">Building Automation</span>
           </div>
-          <div class="post-title" style="font-size:26px;margin-bottom:14px">BACnet: The Protocol That Makes Smart Buildings Talk</div>
+          <div class="post-title" style="font-size:clamp(22px,3vw,28px);margin-bottom:16px">BACnet: The Protocol That Makes Smart Buildings Talk</div>
           <p class="post-excerpt">Every time you walk into a modern office building and the lights adjust automatically, the HVAC knows the room is occupied, or the access control logs your badge swipe — BACnet is probably involved. Here's how it works and why it matters.</p>
-          <div class="post-read" style="margin-top:20px">
+          <div class="post-read" style="margin-top:24px">
             Read article
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </div>
         </div>
         <div class="featured-visual">
-          <div>
+          <div style="position:relative;z-index:1">
             <span style="color:var(--blue)">&gt; BACnet/IP</span><br>
             Device: AHU-1<br>
             Object: AI-1 (Temp)<br>
@@ -114,10 +129,10 @@
       <a href="#" class="post-card fade-up">
         <div class="post-meta">
           <span class="post-date">Coming soon</span>
-          <span class="post-cat badge-purple badge">Cybersecurity</span>
+          <span class="post-cat badge badge-violet">Cybersecurity</span>
         </div>
         <div class="post-title">Why OT Security Is the Next Big Frontier</div>
-        <p class="post-excerpt">Operational Technology networks — the systems that control buildings, factories, and utilities — are increasingly connected to IT networks. That convergence creates security risks that most organizations aren't ready for.</p>
+        <p class="post-excerpt">Operational Technology networks — the systems that control buildings, factories, and utilities — are increasingly connected to IT networks. That convergence creates security risks most organizations aren't ready for.</p>
         <div class="post-read">
           Coming soon
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -128,10 +143,10 @@
       <a href="#" class="post-card fade-up">
         <div class="post-meta">
           <span class="post-date">Coming soon</span>
-          <span class="post-cat badge-green badge">Public Safety</span>
+          <span class="post-cat badge badge-green">Public Safety</span>
         </div>
         <div class="post-title">What Tech Can Learn from the Fire Service</div>
-        <p class="post-excerpt">Firefighting has one of the most rigorous incident management systems in the world — ICS. After years working both sides, I've come to believe that the tech industry could learn a lot from how emergency services handle chaos.</p>
+        <p class="post-excerpt">Firefighting has one of the most rigorous incident management systems in the world — ICS. After years working both sides, I believe tech could learn a lot from how emergency services handle chaos.</p>
         <div class="post-read">
           Coming soon
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -140,7 +155,6 @@
 
     </div>
 
-    <!-- Newsletter CTA -->
     <div class="newsletter fade-up">
       <h3>Get notified when I post</h3>
       <p>No spam. Just new articles on building automation, security, and tech. Unsubscribe anytime.</p>
@@ -149,7 +163,6 @@
         <button type="submit" class="btn btn-fill">Subscribe</button>
       </form>
     </div>
-
   </div>
 </section>
 
@@ -165,14 +178,19 @@
 </footer>
 
 <script>
-  const html=document.documentElement,toggle=document.getElementById('themeToggle');
-  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
-  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
-  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
-  const bar=document.getElementById('progress');
-  window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
-  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+const html=document.documentElement,toggle=document.getElementById('themeToggle');
+(function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+const bar=document.getElementById('progress');
+window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);},{passive:true});
+if(window.scrollY>20)nav.classList.add('scrolled');
+const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+if(dot&&ring){let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button,.chip,.pill').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}}),{threshold:.06});
+document.querySelectorAll('.fade-up,.stagger').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>

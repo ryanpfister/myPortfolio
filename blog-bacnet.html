@@ -49,7 +49,7 @@
     .code-block .val{color:var(--green)}
     .code-block .label{color:var(--purple)}
 
-    .callout{background:var(--blue-dim);border:1px solid rgba(56,189,248,.2);border-radius:var(--r);padding:20px 24px;margin:28px 0;font-size:15px}
+    .callout{background:var(--blue-dim);border:1px solid rgba(6,182,212,.2);border-radius:var(--r);padding:20px 24px;margin:28px 0;font-size:15px;backdrop-filter:blur(12px)}
     .callout strong{color:var(--blue)}
 
     .table-wrap{overflow-x:auto;margin:28px 0}
@@ -68,6 +68,9 @@
   </style>
 </head>
 <body>
+
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
 
 <div id="progress"></div>
 <nav id="nav">
@@ -243,6 +246,8 @@
   const html=document.documentElement,toggle=document.getElementById('themeToggle');
   (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
   toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+  const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);},{passive:true});if(window.scrollY>20)nav.classList.add('scrolled');
+  const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');if(dot&&ring){let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
   function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
   const bar=document.getElementById('progress');
   window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
