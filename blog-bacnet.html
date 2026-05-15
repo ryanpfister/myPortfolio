@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BACnet: The Protocol That Makes Smart Buildings Talk | Ryan Pfister</title>
+  <meta name="description" content="An introduction to BACnet — the open-standard protocol behind modern building automation systems. How it works, why it matters, and what I've learned commissioning BAS systems at Siemens.">
+  <link rel="canonical" href="https://rdpfister.com/blog-bacnet.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="BACnet: The Protocol That Makes Smart Buildings Talk">
+  <meta property="og:description" content="How BACnet works, why it matters for smart buildings, and what I've learned commissioning BAS systems at Siemens.">
+  <meta property="og:url" content="https://rdpfister.com/blog-bacnet.html">
+  <meta property="article:published_time" content="2025-05-15">
+  <meta property="article:author" content="Ryan Pfister">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"BACnet: The Protocol That Makes Smart Buildings Talk","author":{"@type":"Person","name":"Ryan Pfister","url":"https://rdpfister.com"},"datePublished":"2025-05-15","publisher":{"@type":"Person","name":"Ryan Pfister"},"description":"An introduction to BACnet — the open-standard protocol behind modern building automation systems."}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .article-wrap{max-width:720px;margin:0 auto}
+    .article-header{padding:140px 0 56px;position:relative}
+    .article-back{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-lo);margin-bottom:32px;transition:var(--ease)}
+    .article-back:hover{color:var(--blue)}
+    .article-back svg{width:14px;height:14px}
+    .article-meta{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+    .article-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint)}
+    .article-h1{font-size:clamp(32px,6vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
+    .article-intro{font-size:18px;color:var(--text-lo);line-height:1.85;border-left:3px solid var(--blue);padding-left:20px}
+    .article-author{display:flex;align-items:center;gap:12px;margin-top:32px;padding-top:28px;border-top:1px solid var(--border)}
+    .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--blue-dim);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--blue);font-size:16px;flex-shrink:0}
+    .author-name{font-size:14px;font-weight:700}
+    .author-role{font-size:12px;color:var(--text-lo)}
+
+    /* Article body */
+    .article-body{padding:56px 0 80px;font-size:16px;color:var(--text-lo);line-height:1.9}
+    .article-body h2{font-size:26px;font-weight:800;color:var(--text-hi);letter-spacing:-.3px;margin:48px 0 16px}
+    .article-body h3{font-size:19px;font-weight:700;color:var(--text-hi);margin:32px 0 12px}
+    .article-body p{margin-bottom:20px}
+    .article-body strong{color:var(--text-hi);font-weight:600}
+    .article-body a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+    .article-body ul,.article-body ol{margin:0 0 20px 20px}
+    .article-body li{margin-bottom:8px;line-height:1.75}
+    .article-body li::marker{color:var(--blue)}
+
+    .code-block{background:var(--bg-0);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin:28px 0;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.9;overflow-x:auto}
+    .code-block .comment{color:var(--text-faint)}
+    .code-block .key{color:var(--blue)}
+    .code-block .val{color:var(--green)}
+    .code-block .label{color:var(--purple)}
+
+    .callout{background:var(--blue-dim);border:1px solid rgba(56,189,248,.2);border-radius:var(--r);padding:20px 24px;margin:28px 0;font-size:15px}
+    .callout strong{color:var(--blue)}
+
+    .table-wrap{overflow-x:auto;margin:28px 0}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);padding:10px 16px;border-bottom:1px solid var(--border);text-align:left}
+    td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--text-lo);vertical-align:top}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:var(--bg-card);color:var(--text-hi)}
+
+    .article-tags{display:flex;flex-wrap:wrap;gap:8px;padding-top:32px;border-top:1px solid var(--border);margin-bottom:48px}
+    .related{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;margin-bottom:80px}
+    .related-title{font-size:13px;font-weight:600;color:var(--text-faint);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+    .related-link{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--text-hi);font-weight:600;font-size:15px;transition:var(--ease)}
+    .related-link:hover{color:var(--blue)}
+    .related-link svg{width:16px;height:16px;color:var(--blue);flex-shrink:0}
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="certifications.html">Certs</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener" class="nav-github" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+      <a href="index.html#contact" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-bg"></div>
+<div class="page-dots"></div>
+
+<div class="container">
+  <div class="article-wrap">
+    <div class="article-header">
+      <a href="blog.html" class="article-back">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Blog
+      </a>
+      <div class="article-meta">
+        <span class="article-date">May 15, 2025</span>
+        <span class="badge badge-blue">Building Automation</span>
+        <span class="badge badge-purple">Networking</span>
+      </div>
+      <h1 class="article-h1">BACnet: The Protocol That Makes Smart Buildings Talk</h1>
+      <p class="article-intro">Every time you walk into a modern office building and the lights adjust automatically, the HVAC knows the room is occupied, or the access control logs your badge swipe — BACnet is probably involved. Here's what it is, how it works, and what I've learned working with it firsthand at Siemens.</p>
+      <div class="article-author">
+        <div class="author-avatar">RP</div>
+        <div><div class="author-name">Ryan Pfister</div><div class="author-role">Smart Building Intern at Siemens &middot; Security Systems Student</div></div>
+      </div>
+    </div>
+
+    <div class="article-body">
+
+      <h2>What Is BACnet?</h2>
+      <p><strong>BACnet</strong> (Building Automation and Control Networks) is an open-standard communication protocol specifically designed for building automation systems. Developed by ASHRAE and ratified as an ISO standard in 2003, it's the common language that lets devices from different manufacturers — thermostats, air handlers, lighting controllers, fire panels, elevators — all communicate on a single network.</p>
+      <p>Before BACnet, building systems were siloed. Your HVAC controller from one vendor couldn't talk to the lighting system from another. You needed proprietary gateways and custom integrations for everything. BACnet changed that by providing a universal data model and communication protocol that any vendor could implement.</p>
+
+      <div class="callout"><strong>Why it matters:</strong> A large commercial building might have hundreds of controllers from a dozen vendors. BACnet is what lets a building operator monitor and control all of them from a single workstation — or lets a modern BMS platform like Siemens Desigo integrate them into one coherent system.</div>
+
+      <h2>The BACnet Object Model</h2>
+      <p>BACnet represents everything in a building system as <strong>objects</strong> with <strong>properties</strong>. This is the core abstraction that makes the protocol so flexible.</p>
+
+      <p>The most common object types you'll encounter:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Object Type</th><th>Abbreviation</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Analog Input</td><td>AI</td><td>Temperature sensor reading (72.4°F)</td></tr>
+            <tr><td>Analog Output</td><td>AO</td><td>Damper position command (0–100%)</td></tr>
+            <tr><td>Analog Value</td><td>AV</td><td>Setpoint (70°F cooling setpoint)</td></tr>
+            <tr><td>Binary Input</td><td>BI</td><td>Fan status (running / stopped)</td></tr>
+            <tr><td>Binary Output</td><td>BO</td><td>Lights on/off command</td></tr>
+            <tr><td>Binary Value</td><td>BV</td><td>Occupied mode flag</td></tr>
+            <tr><td>Schedule</td><td>SCH</td><td>HVAC occupancy schedule</td></tr>
+            <tr><td>Trend Log</td><td>TL</td><td>Historical temperature data</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Every object has a set of properties. The most important one is the <strong>Present Value</strong> — the current reading or command state of that object. When you're commissioning a system, you spend a lot of time reading and writing Present Values to verify that controllers are responding correctly.</p>
+
+      <div class="code-block">
+        <span class="comment">// Reading a BACnet object via BACnet/IP</span><br>
+        ReadProperty-Request {<br>
+        &nbsp;&nbsp;<span class="key">object-identifier:</span> <span class="val">(analog-input, 1)</span>   <span class="comment">// AI-1</span><br>
+        &nbsp;&nbsp;<span class="key">property-identifier:</span> <span class="val">present-value</span><br>
+        }<br><br>
+        ReadProperty-ACK {<br>
+        &nbsp;&nbsp;<span class="key">object-identifier:</span> <span class="val">(analog-input, 1)</span><br>
+        &nbsp;&nbsp;<span class="key">property-identifier:</span> <span class="val">present-value</span><br>
+        &nbsp;&nbsp;<span class="key">property-value:</span> <span class="val">72.4</span>  <span class="comment">// 72.4°F</span><br>
+        }
+      </div>
+
+      <h2>BACnet Transport Options</h2>
+      <p>BACnet can run over several different physical and network layers, which is one reason it's so widely deployed:</p>
+      <ul>
+        <li><strong>BACnet/IP</strong> — The most common today. BACnet messages carried over standard Ethernet/IP networks. Easy to integrate with IT infrastructure.</li>
+        <li><strong>BACnet MS/TP</strong> — Master-Slave/Token-Passing over RS-485. A serial protocol common for field-level devices like VAV controllers. Very cost-effective for large deployments.</li>
+        <li><strong>BACnet/Ethernet</strong> — Direct Ethernet framing without IP. Less common now.</li>
+        <li><strong>BACnet/MSTP over Arcnet</strong> — Legacy, rarely seen anymore.</li>
+      </ul>
+
+      <p>In practice at Siemens, we typically see a hybrid: BACnet/IP for controllers at the floor or building level, MS/TP for the field devices (VAV boxes, fan coil units) hanging off those controllers. A BACnet router bridges between the two.</p>
+
+      <h2>Change of Value (COV) Subscriptions</h2>
+      <p>Polling every device every few seconds to check its current value would create enormous network traffic in a large building. BACnet solves this elegantly with <strong>Change of Value (COV) subscriptions</strong>.</p>
+      <p>Instead of asking "what's the temperature?" every 30 seconds, a supervisor subscribes to a sensor object and only receives a notification when the value changes beyond a defined increment. This dramatically reduces network load while keeping the BMS current.</p>
+
+      <div class="code-block">
+        <span class="comment">// COV Subscription</span><br>
+        SubscribeCOV-Request {<br>
+        &nbsp;&nbsp;<span class="key">subscriber-process-identifier:</span> <span class="val">1</span><br>
+        &nbsp;&nbsp;<span class="key">monitored-object-identifier:</span> <span class="val">(analog-input, 1)</span><br>
+        &nbsp;&nbsp;<span class="key">issue-confirmed-notifications:</span> <span class="val">TRUE</span><br>
+        &nbsp;&nbsp;<span class="key">lifetime:</span> <span class="val">3600</span>  <span class="comment">// renew every hour</span><br>
+        &nbsp;&nbsp;<span class="key">COV-increment:</span> <span class="val">0.5</span>  <span class="comment">// notify on 0.5°F change</span><br>
+        }
+      </div>
+
+      <h2>What I've Learned in the Field</h2>
+      <p>Working as a commissioning intern at Siemens, BACnet goes from textbook protocol to something very real very quickly. A few things I've picked up:</p>
+
+      <h3>Network configuration matters more than you'd think</h3>
+      <p>Getting BACnet/IP devices to communicate reliably on a construction-site network — where IT infrastructure is often temporary and shared with dozens of contractors — requires careful attention to subnets, BBMD (BACnet Broadcast Management Device) configuration, and network segmentation. A misconfigured BBMD is often the first thing to check when devices can't discover each other.</p>
+
+      <h3>Sequence of operations is everything</h3>
+      <p>The sequence of operations (SOO) document defines exactly how a system should behave — when the AHU should start, how the dampers should respond to occupancy, what happens during a fire alarm. During commissioning, you verify that what's programmed in the controller actually matches the SOO. This is where BACnet read/write access is essential.</p>
+
+      <h3>Interoperability is real, but not guaranteed</h3>
+      <p>BACnet is an open standard, but "BACnet certified" devices still vary in how completely they implement the spec. Always check the PICS (Protocol Implementation Conformance Statement) document for a device to know exactly what BACnet features it supports before you design an integration around it.</p>
+
+      <div class="callout"><strong>Takeaway:</strong> BACnet is the backbone of modern building intelligence. Understanding it — not just as an IT protocol but in the context of how buildings actually operate — is what separates a competent BAS technician from a great one.</div>
+
+      <h2>Further Reading</h2>
+      <ul>
+        <li><strong>ASHRAE Standard 135</strong> — The BACnet standard itself. Dense but authoritative.</li>
+        <li><strong>BACnet International</strong> — Industry organization with great educational resources.</li>
+        <li><strong>Siemens Building Technologies blog</strong> — Practical articles on BAS implementation.</li>
+      </ul>
+
+    </div>
+
+    <div class="article-tags">
+      <span class="chip">BACnet</span>
+      <span class="chip">Building Automation</span>
+      <span class="chip">Smart Buildings</span>
+      <span class="chip">HVAC Controls</span>
+      <span class="chip">Siemens</span>
+      <span class="chip">Networking</span>
+    </div>
+
+    <div class="related">
+      <div class="related-title">Up next</div>
+      <a href="blog.html" class="related-link">
+        Why OT Security Is the Next Big Frontier
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">&copy; 2025 Ryan Pfister</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:mifd413@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const html=document.documentElement,toggle=document.getElementById('themeToggle');
+  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+  const bar=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+</script>
+</body>
+</html>

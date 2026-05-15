@@ -1,0 +1,140 @@
+/* ============================================================
+   SHARED STYLES — rdpfister.com
+   Included by all pages. Page-specific CSS lives in each file.
+============================================================ */
+
+/* ── Variables (dark theme default) ───────────────────────── */
+:root {
+  --bg-0:       #070b14;
+  --bg-1:       #0c1220;
+  --bg-card:    #101726;
+  --bg-card-h:  #172032;
+  --border:     rgba(56,189,248,.10);
+  --border-h:   rgba(56,189,248,.28);
+  --blue:       #38bdf8;
+  --blue-dim:   rgba(56,189,248,.08);
+  --green:      #34d399;
+  --green-dim:  rgba(52,211,153,.08);
+  --purple:     #a78bfa;
+  --purple-dim: rgba(167,139,250,.08);
+  --text-hi:    #f0f6ff;
+  --text-lo:    #8b9eb8;
+  --text-faint: #3d4f6a;
+  --nav-bg:     rgba(7,11,20,.82);
+  --hero-grad:  linear-gradient(140deg,#f0f6ff 0%,#8b9eb8 100%);
+  --r:     12px;
+  --r-sm:  8px;
+  --ease:  .22s ease;
+}
+
+/* ── Light theme overrides ─────────────────────────────────── */
+[data-theme="light"] {
+  --bg-0:       #f8fafc;
+  --bg-1:       #f1f5f9;
+  --bg-card:    #ffffff;
+  --bg-card-h:  #f1f5f9;
+  --border:     rgba(15,23,42,.08);
+  --border-h:   rgba(15,23,42,.22);
+  --blue:       #0284c7;
+  --blue-dim:   rgba(2,132,199,.07);
+  --green:      #059669;
+  --green-dim:  rgba(5,150,105,.07);
+  --purple:     #7c3aed;
+  --purple-dim: rgba(124,58,237,.07);
+  --text-hi:    #0f172a;
+  --text-lo:    #475569;
+  --text-faint: #94a3b8;
+  --nav-bg:     rgba(248,250,252,.90);
+  --hero-grad:  linear-gradient(140deg,#0f172a 0%,#475569 100%);
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:'Inter',sans-serif;background:var(--bg-0);color:var(--text-hi);line-height:1.6;overflow-x:hidden;transition:background .25s,color .25s}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+img{display:block;max-width:100%}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg-0)}
+::-webkit-scrollbar-thumb{background:var(--border-h);border-radius:3px}
+::selection{background:rgba(56,189,248,.18);color:var(--blue)}
+
+/* ── Scroll progress bar ───────────────────────────────────── */
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--blue);z-index:400;width:0%;transition:width .08s linear;pointer-events:none}
+
+/* ── Layout ────────────────────────────────────────────────── */
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+section{padding:108px 0}
+
+/* ── Typography helpers ────────────────────────────────────── */
+.label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.section-title{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.5px;margin-bottom:52px;line-height:1.15}
+.section-title em{font-style:normal;color:var(--blue)}
+
+/* ── Animation ─────────────────────────────────────────────── */
+.fade-up{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease}
+.fade-up.visible{opacity:1;transform:none}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:var(--r-sm);font-size:15px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:var(--ease)}
+.btn-fill{background:var(--blue);color:#070b14}
+.btn-fill:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text-lo);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text-hi);border-color:var(--border-h);background:var(--blue-dim);transform:translateY(-1px)}
+
+/* ── Badges ────────────────────────────────────────────────── */
+.badge{font-size:12px;font-weight:500;padding:5px 13px;border-radius:100px}
+.badge-blue{background:var(--blue-dim);border:1px solid rgba(56,189,248,.22);color:var(--blue)}
+.badge-green{background:var(--green-dim);border:1px solid rgba(52,211,153,.22);color:var(--green)}
+.badge-purple{background:var(--purple-dim);border:1px solid rgba(167,139,250,.22);color:var(--purple)}
+
+/* ── Tech chip ─────────────────────────────────────────────── */
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 9px;border-radius:4px;background:var(--blue-dim);border:1px solid var(--border);color:var(--blue)}
+
+/* ── Navigation ────────────────────────────────────────────── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;padding:0 28px;background:var(--nav-bg);backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid var(--border);transition:background .25s,border-color .25s}
+.nav-inner{max-width:1080px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.nav-logo{font-size:17px;font-weight:800;letter-spacing:-.4px;flex-shrink:0}
+.nav-logo span{color:var(--blue)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:13px;font-weight:500;color:var(--text-lo);padding:7px 11px;border-radius:var(--r-sm);transition:var(--ease);white-space:nowrap}
+.nav-links a:hover{color:var(--text-hi);background:var(--blue-dim)}
+.nav-links a.active{color:var(--blue)}
+.nav-right{display:flex;align-items:center;gap:7px;flex-shrink:0}
+
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--r-sm);background:transparent;color:var(--text-lo);border:1px solid var(--border);cursor:pointer;transition:var(--ease)}
+.theme-toggle:hover{color:var(--text-hi);border-color:var(--border-h);background:var(--blue-dim)}
+.theme-toggle svg{width:15px;height:15px;pointer-events:none}
+
+.nav-github{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--r-sm);color:var(--text-lo);border:1px solid var(--border);transition:var(--ease)}
+.nav-github:hover{color:var(--text-hi);border-color:var(--border-h);background:var(--blue-dim)}
+.nav-github svg{width:16px;height:16px}
+
+.nav-cta{font-size:13px;font-weight:600;padding:8px 16px;background:var(--blue);color:#070b14;border-radius:var(--r-sm);transition:var(--ease);white-space:nowrap}
+.nav-cta:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--border);padding:32px 28px;text-align:center}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;max-width:1080px;margin:0 auto}
+.footer-copy{font-size:12.5px;color:var(--text-faint)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12.5px;color:var(--text-faint);transition:var(--ease)}
+.footer-links a:hover{color:var(--blue)}
+
+/* ── Page header (inner pages) ─────────────────────────────── */
+.page-hero{padding:140px 0 72px;position:relative;overflow:hidden}
+.page-hero .label{margin-bottom:14px}
+.page-hero h1{font-size:clamp(40px,7vw,72px);font-weight:900;letter-spacing:-2.5px;line-height:1;margin-bottom:20px}
+.page-hero h1 em{font-style:normal;color:var(--blue)}
+.page-hero p{font-size:16px;color:var(--text-lo);max-width:540px;line-height:1.85}
+.page-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% -5%,rgba(56,189,248,.06) 0%,transparent 70%);pointer-events:none}
+.page-dots{position:absolute;inset:0;background-image:linear-gradient(rgba(56,189,248,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.025) 1px,transparent 1px);background-size:55px 55px;pointer-events:none}
+
+/* ── Shared JS snippet ─────────────────────────────────────── */
+/* (Applied via inline <script> in each page) */
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media(max-width:860px){section{padding:80px 0}.nav-links{display:none}.nav-cta{display:none}}
+@media(max-width:560px){.btn{justify-content:center}.page-hero h1{letter-spacing:-1.5px}}
+@media(max-width:480px){.footer-inner{flex-direction:column;text-align:center}}

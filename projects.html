@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Ryan Pfister</title>
+  <meta name="description" content="Projects by Ryan Pfister — building automation, web, POS systems, AV/networking, and more.">
+  <link rel="canonical" href="https://rdpfister.com/projects.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+    .proj-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:14px;transition:var(--ease);position:relative;overflow:hidden}
+    .proj-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue-dim),transparent 60%);opacity:0;transition:var(--ease)}
+    .proj-card:hover{border-color:var(--border-h);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+    .proj-card:hover::before{opacity:1}
+    .proj-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:36px 40px}
+    @media(max-width:720px){.proj-card.featured{grid-template-columns:1fr;padding:28px}}
+    .proj-icon{width:48px;height:48px;border-radius:var(--r-sm);background:var(--blue-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+    .proj-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue)}
+    .proj-title{font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.2;position:relative;z-index:1}
+    .proj-featured-title{font-size:clamp(26px,4vw,36px);font-weight:900;letter-spacing:-.5px;line-height:1.15}
+    .proj-featured-title em{font-style:normal;color:var(--blue)}
+    .proj-desc{font-size:14px;color:var(--text-lo);line-height:1.8;position:relative;z-index:1}
+    .proj-featured-desc{font-size:15.5px;color:var(--text-lo);line-height:1.85}
+    .proj-chips{display:flex;flex-wrap:wrap;gap:7px;position:relative;z-index:1}
+    .proj-links{display:flex;gap:10px;margin-top:auto;position:relative;z-index:1}
+    .proj-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--text-lo);padding:7px 14px;border:1px solid var(--border);border-radius:var(--r-sm);transition:var(--ease)}
+    .proj-link:hover{color:var(--text-hi);border-color:var(--border-h);background:var(--blue-dim)}
+    .proj-link svg{width:14px;height:14px}
+    .impact-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--green);background:var(--green-dim);border:1px solid rgba(52,211,153,.22);padding:4px 12px;border-radius:100px}
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="projects.html" class="active">Projects</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="certifications.html">Certs</a></li>
+      <li><a href="blog.html">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener" class="nav-github" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+      <a href="index.html#contact" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-bg"></div>
+<div class="page-dots"></div>
+<div class="page-hero">
+  <div class="container">
+    <div class="label">Portfolio</div>
+    <h1>My <em>Projects</em></h1>
+    <p>A selection of technical and community projects spanning building automation, IT systems, web, and public safety.</p>
+  </div>
+</div>
+
+<section style="padding-top:48px">
+  <div class="container">
+    <div class="projects-grid">
+
+      <!-- Featured: Siemens BAS -->
+      <div class="proj-card featured fade-up">
+        <div>
+          <div class="proj-label" style="margin-bottom:12px">Featured &middot; Ongoing</div>
+          <h2 class="proj-featured-title">Siemens <em>Smart Building</em><br>Commissioning</h2>
+          <p class="proj-featured-desc" style="margin:16px 0">Supporting the commissioning, startup, and configuration of building automation systems across active commercial construction sites on Long Island. Working with protocols like BACnet, Modbus, and LonWorks to bring intelligent building controls to life.</p>
+          <div class="proj-chips" style="margin-bottom:20px">
+            <span class="chip">BACnet</span><span class="chip">Modbus</span><span class="chip">LonWorks</span><span class="chip">Apogee</span><span class="chip">Desigo</span><span class="chip">HVAC Controls</span><span class="chip">DDC</span>
+          </div>
+          <span class="impact-badge">✦ 3 years &middot; Invited back each term</span>
+        </div>
+        <div style="background:var(--bg-0);border:1px solid var(--border);border-radius:var(--r);padding:28px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-lo);line-height:1.9">
+          <span style="color:var(--blue)">// BAS commissioning workflow</span><br>
+          <span style="color:var(--green)">function</span> commissionController(ctrl) {<br>
+          &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">configure</span>(BACnet.params);<br>
+          &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">runDiagnostics</span>();<br>
+          &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">verifySequence</span>(ops);<br>
+          &nbsp;&nbsp;<span style="color:var(--green)">return</span> ctrl.<span style="color:var(--blue)">signOff</span>();<br>
+          }
+        </div>
+      </div>
+
+      <!-- Portfolio site -->
+      <div class="proj-card fade-up">
+        <div class="proj-icon">🌐</div>
+        <div>
+          <div class="proj-label">Web &middot; 2025</div>
+          <div class="proj-title">rdpfister.com</div>
+        </div>
+        <p class="proj-desc">This portfolio — designed and built from scratch with hand-written HTML/CSS/JS. Hosted on a personal VPS via nginx with Let's Encrypt SSL, deployed through GitHub.</p>
+        <div class="proj-chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">nginx</span><span class="chip">GitHub</span><span class="chip">Let's Encrypt</span></div>
+        <div class="proj-links">
+          <a href="https://github.com/ryanpfister/myPortfolio" target="_blank" rel="noopener" class="proj-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            Source
+          </a>
+          <a href="https://rdpfister.com" target="_blank" rel="noopener" class="proj-link">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            Live
+          </a>
+        </div>
+      </div>
+
+      <!-- SectionXI POS -->
+      <div class="proj-card fade-up">
+        <div class="proj-icon">🎟️</div>
+        <div>
+          <div class="proj-label">IT Systems &middot; 2022</div>
+          <div class="proj-title">SectionXI Mobile Ticketing POS</div>
+        </div>
+        <p class="proj-desc">Designed and implemented a mobile point-of-sale system for SectionXI Athletics in Suffolk County, replacing a manual process and driving measurable revenue growth.</p>
+        <div class="proj-chips"><span class="chip">POS Systems</span><span class="chip">IT Support</span><span class="chip">Hardware</span><span class="chip">Suffolk County</span></div>
+        <span class="impact-badge" style="align-self:flex-start">✦ 120% revenue increase</span>
+      </div>
+
+      <!-- MIFD Website -->
+      <div class="proj-card fade-up">
+        <div class="proj-icon">🚒</div>
+        <div>
+          <div class="proj-label">Web &middot; Ongoing</div>
+          <div class="proj-title">Middle Island FD Website</div>
+        </div>
+        <p class="proj-desc">Serve as webmaster for the Middle Island Fire Department — designing, building, and maintaining the department's public-facing website to keep the community informed.</p>
+        <div class="proj-chips"><span class="chip">Web Design</span><span class="chip">CMS</span><span class="chip">Community</span></div>
+      </div>
+
+      <!-- FIRST Robotics AV -->
+      <div class="proj-card fade-up">
+        <div class="proj-icon">📡</div>
+        <div>
+          <div class="proj-label">Networking / AV &middot; 2020–2026</div>
+          <div class="proj-title">FIRST Robotics AV & Network</div>
+        </div>
+        <p class="proj-desc">Deployed and managed wireless network infrastructure, live video webcasting, scoring systems, and audience displays at FIRST Robotics competitions across Long Island for 5+ years.</p>
+        <div class="proj-chips"><span class="chip">Wireless Networking</span><span class="chip">Live Video</span><span class="chip">AV Systems</span><span class="chip">Event Tech</span></div>
+        <span class="impact-badge" style="align-self:flex-start">✦ 5+ years volunteering</span>
+      </div>
+
+      <!-- MIFD POS -->
+      <div class="proj-card fade-up">
+        <div class="proj-icon">💰</div>
+        <div>
+          <div class="proj-label">IT Systems &middot; Ongoing</div>
+          <div class="proj-title">MIFD Big Bucks Raffle POS</div>
+        </div>
+        <p class="proj-desc">Integrated a point-of-sale system for the Middle Island Fire Department's annual Big Bucks raffle, streamlining ticket sales and increasing fundraising revenue for the department.</p>
+        <div class="proj-chips"><span class="chip">POS Systems</span><span class="chip">Fundraising</span><span class="chip">MIFD</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">&copy; 2025 Ryan Pfister</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:mifd413@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const html=document.documentElement,toggle=document.getElementById('themeToggle');
+  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+  const bar=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.08});
+  document.querySelectorAll('.fade-up').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

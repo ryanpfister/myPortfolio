@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume | Ryan Pfister</title>
+  <meta name="description" content="Resume of Ryan Pfister — Security Systems student, Siemens Smart Building Intern, Firefighter/EMT.">
+  <link rel="canonical" href="https://rdpfister.com/resume.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .resume-wrap{max-width:820px;margin:0 auto}
+    .print-bar{display:flex;justify-content:flex-end;margin-bottom:32px}
+    .resume-doc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:56px 64px}
+    @media(max-width:700px){.resume-doc{padding:32px 24px}}
+
+    /* Resume header */
+    .r-name{font-size:36px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
+    .r-title{font-size:15px;color:var(--blue);font-weight:600;margin-bottom:14px}
+    .r-contact{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13px;color:var(--text-lo);margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+    .r-contact a{color:var(--text-lo);transition:var(--ease)}
+    .r-contact a:hover{color:var(--blue)}
+
+    /* Sections */
+    .r-section{margin-bottom:32px}
+    .r-section-title{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .r-item{margin-bottom:20px}
+    .r-item:last-child{margin-bottom:0}
+    .r-item-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:3px;flex-wrap:wrap}
+    .r-role{font-size:15px;font-weight:700}
+    .r-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);white-space:nowrap}
+    .r-org{font-size:13px;color:var(--blue);margin-bottom:8px;font-weight:500}
+    .r-bullets{padding-left:14px}
+    .r-bullets li{font-size:13px;color:var(--text-lo);margin-bottom:4px;line-height:1.65;list-style:disc}
+    .r-bullets li::marker{color:var(--blue)}
+    .r-skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+    .r-skill-group{}
+    .r-skill-label{font-size:12px;font-weight:600;color:var(--text-hi);margin-bottom:4px}
+    .r-skill-items{font-size:12px;color:var(--text-lo);line-height:1.65}
+    .r-certs-list{display:flex;flex-wrap:wrap;gap:8px}
+    .r-cert{font-size:12px;padding:4px 10px;border-radius:5px;background:var(--blue-dim);border:1px solid var(--border);color:var(--text-lo)}
+
+    /* Print styles */
+    @media print {
+      body{background:#fff!important;color:#000!important}
+      #nav,#progress,.print-bar,footer{display:none!important}
+      .page-hero{display:none}
+      .resume-doc{border:none!important;background:#fff!important;padding:0!important;box-shadow:none!important}
+      .resume-wrap{margin:0;max-width:100%}
+      section{padding:0!important}
+      .r-name{color:#000}
+      .r-title,.r-section-title,.r-org{color:#1a56db!important}
+      .r-contact,.r-bullets li,.r-role,.r-skill-items,.r-cert{color:#333!important}
+      .r-contact a{color:#333!important}
+      .r-section-title{border-bottom-color:#ddd!important}
+      .r-contact{border-bottom-color:#ddd!important}
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="resume.html" class="active">Resume</a></li>
+      <li><a href="certifications.html">Certs</a></li>
+      <li><a href="blog.html">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener" class="nav-github" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+      <a href="index.html#contact" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-bg"></div>
+<div class="page-dots"></div>
+<div class="page-hero">
+  <div class="container">
+    <div class="label">Resume</div>
+    <h1>Curriculum <em>Vitae</em></h1>
+    <p>Full work history, education, skills, and certifications. Use the print button to save as PDF.</p>
+  </div>
+</div>
+
+<section style="padding-top:48px">
+  <div class="container">
+    <div class="resume-wrap">
+      <div class="print-bar">
+        <button onclick="window.print()" class="btn btn-ghost" style="gap:8px">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          Print / Save PDF
+        </button>
+      </div>
+
+      <div class="resume-doc">
+        <!-- Header -->
+        <div class="r-name">Ryan Pfister</div>
+        <div class="r-title">Security Systems Student &middot; Smart Building Specialist Intern at Siemens</div>
+        <div class="r-contact">
+          <a href="mailto:mifd413@gmail.com">mifd413@gmail.com</a>
+          <a href="https://rdpfister.com" target="_blank">rdpfister.com</a>
+          <a href="https://linkedin.com/in/rdpfister" target="_blank">linkedin.com/in/rdpfister</a>
+          <a href="https://github.com/ryanpfister" target="_blank">github.com/ryanpfister</a>
+          <span>New York City Metropolitan Area</span>
+        </div>
+
+        <!-- Experience -->
+        <div class="r-section">
+          <div class="r-section-title">Experience</div>
+
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">Smart Building Specialist Intern</div><div class="r-date">Aug 2025 – Present</div></div>
+            <div class="r-org">Siemens Smart Buildings &middot; Long Island, NY &middot; Part-time</div>
+            <ul class="r-bullets">
+              <li>Invited to continue part-time through graduation after two consecutive summer internships (third year at Siemens).</li>
+              <li>Support commissioning, startup, and configuration of building automation systems (BAS) on active commercial construction sites.</li>
+              <li>Perform network configuration, data server backups, and PC workstation setup for building control systems.</li>
+              <li>Troubleshoot system sequences of operations; prepare commissioning reports and as-built documentation.</li>
+              <li>Support customer training on BAS operations and system interfaces during project handoff.</li>
+            </ul>
+          </div>
+
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">Smart Building Specialist Intern</div><div class="r-date">May 2024 – Aug 2025</div></div>
+            <div class="r-org">Siemens Smart Buildings &middot; Bohemia, NY &middot; Summer Internship</div>
+            <ul class="r-bullets">
+              <li>Completed two consecutive summer internships supporting BAS commissioning across commercial construction sites.</li>
+              <li>Ensured control systems were programmed, tested, and operating per sequence of operations and project scope.</li>
+            </ul>
+          </div>
+
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">Code Enforcement Officer</div><div class="r-date">Nov 2023 – May 2026</div></div>
+            <div class="r-org">Town of Brookhaven, Dept. of Public Safety &middot; Farmingville, NY &middot; Part-time</div>
+            <ul class="r-bullets">
+              <li>Enforced town codes and NY State Vehicle &amp; Traffic Laws, issuing field appearance tickets daily.</li>
+              <li>Collaborated with divisions and local law enforcement to ensure security at town facilities.</li>
+            </ul>
+          </div>
+
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">Firefighter / EMT</div><div class="r-date">Sep 2022 – Present</div></div>
+            <div class="r-org">Middle Island Fire Department &middot; Middle Island, NY &middot; Volunteer</div>
+            <ul class="r-bullets">
+              <li>Respond to emergency calls as a Volunteer Firefighter and EMT (ProBoard National Firefighter I certified; ICS-100, ICS-700, NIMS, AHA BLS).</li>
+              <li>Serve as department webmaster — design and maintain the community-facing website.</li>
+              <li>Integrated POS systems for the annual Big Bucks raffle, increasing fundraising revenue.</li>
+            </ul>
+          </div>
+
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">POS Systems Consultant</div><div class="r-date">Oct 2022 – Present</div></div>
+            <div class="r-org">Section Xi NYSPHSAA &middot; Suffolk County, NY</div>
+            <ul class="r-bullets">
+              <li>Implemented mobile ticket purchasing POS system for SectionXI Athletics, increasing revenue by ~120%.</li>
+              <li>Provided remote and in-person support for POS hardware and maintained ongoing system operations.</li>
+            </ul>
+          </div>
+
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">Technical Volunteer</div><div class="r-date">Sep 2020 – Feb 2026</div></div>
+            <div class="r-org">FIRST Robotics &middot; Long Island, NY</div>
+            <ul class="r-bullets">
+              <li>Managed scoring, live video webcast, audience audio, visual displays, and wireless networking at FIRST Robotics competitions.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="r-section">
+          <div class="r-section-title">Education</div>
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">Bachelor of Science, Security Systems</div><div class="r-date">Aug 2023 – May 2027</div></div>
+            <div class="r-org">Farmingdale State College &middot; Concentration: Networking</div>
+          </div>
+          <div class="r-item">
+            <div class="r-item-top"><div class="r-role">Computer Systems Networking &amp; Telecommunications</div><div class="r-date">Sep 2021 – May 2026</div></div>
+            <div class="r-org">Cisco Networking Academy</div>
+            <ul class="r-bullets"><li>IT Essentials &middot; CCNAv7: Network Fundamentals &middot; CCNAv7: Intro to Networks &middot; CCNA: Enterprise Networking, Security &amp; Automation</li></ul>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="r-section">
+          <div class="r-section-title">Technical Skills</div>
+          <div class="r-skills-grid">
+            <div class="r-skill-group"><div class="r-skill-label">Building Automation</div><div class="r-skill-items">BACnet, Modbus, LonWorks, Siemens Apogee, Siemens Desigo, HVAC Controls, BMS, DDC Systems</div></div>
+            <div class="r-skill-group"><div class="r-skill-label">Networking</div><div class="r-skill-items">Cisco CCNA, Network Configuration, Wireless Networking, Enterprise Security</div></div>
+            <div class="r-skill-group"><div class="r-skill-label">Cybersecurity</div><div class="r-skill-items">Splunk, Threat Detection, Enterprise Security, Intro to Splunk</div></div>
+            <div class="r-skill-group"><div class="r-skill-label">IT & Systems</div><div class="r-skill-items">Computer Repair, PC Setup, POS Systems, Server Admin, Data Backups, Web Management</div></div>
+            <div class="r-skill-group"><div class="r-skill-label">Public Safety</div><div class="r-skill-items">Firefighting (ProBoard FF I), EMT, AHA BLS, ICS-100, ICS-700, NIMS, Code Enforcement</div></div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="r-section">
+          <div class="r-section-title">Selected Certifications (19+ total)</div>
+          <div class="r-certs-list">
+            <span class="r-cert">CCNA: Enterprise Networking</span>
+            <span class="r-cert">CCNAv7: Network Fundamentals</span>
+            <span class="r-cert">IT Essentials (Cisco)</span>
+            <span class="r-cert">Intro to Splunk</span>
+            <span class="r-cert">Introduction to Enterprise Security (Splunk)</span>
+            <span class="r-cert">ProBoard National Firefighter I</span>
+            <span class="r-cert">AHA Basic Life Support</span>
+            <span class="r-cert">ICS-100</span>
+            <span class="r-cert">ICS-700</span>
+            <span class="r-cert">NIMS</span>
+          </div>
+        </div>
+
+        <!-- Honors -->
+        <div class="r-section">
+          <div class="r-section-title">Honors &amp; Awards</div>
+          <div class="r-item" style="margin-bottom:8px"><div class="r-item-top"><div class="r-role">EMT of the Year</div><div class="r-date">May 2026</div></div><div class="r-org">Middle Island Fire Department</div></div>
+          <div class="r-item" style="margin-bottom:8px"><div class="r-item-top"><div class="r-role">Probationary Firefighter of the Year</div><div class="r-date">Jan 2023</div></div><div class="r-org">Middle Island Fire Department</div></div>
+          <div class="r-item"><div class="r-item-top"><div class="r-role">Eagle Scout</div></div><div class="r-org">Troop 560, Boy Scouts of America</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">&copy; 2025 Ryan Pfister</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:mifd413@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const html=document.documentElement,toggle=document.getElementById('themeToggle');
+  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+  const bar=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+</script>
+</body>
+</html>
