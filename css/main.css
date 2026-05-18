@@ -218,25 +218,48 @@ footer{border-top:1px solid var(--border);padding:32px 0}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ── 20. MARQUEE TICKER ───────────────────────────────────────── */
-.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.018);padding:13px 0;position:relative}
-.marquee-wrap::before,.marquee-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
-.marquee-wrap::before{left:0;background:linear-gradient(90deg,var(--bg-0),transparent)}
-.marquee-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg-0),transparent)}
-.marquee-track{display:flex;gap:0;width:max-content;animation:marquee-scroll 28s linear infinite}
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.014);padding:14px 0;position:relative}
+.marquee-wrap::before,.marquee-wrap::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.marquee-wrap::before{left:0;background:linear-gradient(90deg,var(--bg-0) 10%,transparent)}
+.marquee-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg-0) 10%,transparent)}
+.marquee-track{display:flex;gap:0;width:max-content;animation:marquee-scroll 36s linear infinite}
 .marquee-track:hover{animation-play-state:paused}
 @keyframes marquee-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.marquee-item{display:inline-flex;align-items:center;gap:8px;padding:0 22px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-faint);white-space:nowrap;transition:color .2s}
+.marquee-item{display:inline-flex;align-items:center;gap:10px;padding:0 24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);white-space:nowrap;transition:color .3s;letter-spacing:.02em}
 .marquee-item:hover{color:var(--blue)}
-.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--text-faint);opacity:.5;flex-shrink:0;transition:.3s}
+.marquee-item:hover .marquee-dot{background:var(--blue);opacity:1;box-shadow:0 0 6px var(--blue-glow)}
 
-/* ── 21. CONTACT CARDS ────────────────────────────────────────── */
-.contact-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:640px){.contact-cards{grid-template-columns:1fr}}
-.contact-card-link{display:flex;align-items:center;gap:16px;padding:20px 24px;border-radius:var(--r);background:var(--bg-card);border:1px solid var(--border);color:var(--text-lo);transition:var(--ease);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer}
-.contact-card-link:hover{border-color:var(--border-h);color:var(--text-hi);background:var(--bg-card-h);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+/* ── 21. CONTACT (2-column hero layout) ───────────────────────── */
+.contact-layout{display:grid;grid-template-columns:1.05fr 1fr;gap:80px;align-items:start}
+@media(max-width:860px){.contact-layout{grid-template-columns:1fr;gap:40px}}
+.contact-lead .section-title{margin-bottom:18px}
+.avail-pill{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border-radius:100px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.28);color:var(--green);font-size:12.5px;font-weight:600;margin-bottom:24px;font-family:'JetBrains Mono',monospace;letter-spacing:.02em;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.avail-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(16,185,129,.55);animation:avail-pulse 2s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes avail-pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}70%{box-shadow:0 0 0 10px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+.contact-pitch{font-size:15.5px;color:var(--text-lo);line-height:1.85;margin-bottom:14px}
+.contact-pitch strong{color:var(--text-hi);font-weight:600}
+.contact-pitch-muted{font-size:13px;color:var(--text-faint);margin-top:18px;line-height:1.75}
+.contact-pitch kbd{font-family:'JetBrains Mono',monospace;font-size:10.5px;background:rgba(255,255,255,.06);border:1px solid var(--border);padding:2px 7px;border-radius:5px;color:var(--text-lo);margin:0 1px}
+
+.contact-meta{margin-top:28px;padding-top:24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+.cmeta-row{display:flex;gap:14px;align-items:baseline;font-size:13px}
+.cmeta-k{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.1em;min-width:88px;flex-shrink:0}
+.cmeta-v{color:var(--text-lo)}
+
+.contact-stack{display:flex;flex-direction:column;gap:10px}
+.contact-card-link{display:flex;align-items:center;gap:16px;padding:20px 24px;border-radius:var(--r);background:var(--bg-card);border:1px solid var(--border);color:var(--text-lo);transition:var(--ease);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;position:relative;overflow:hidden}
+.contact-card-link::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--blue),var(--purple));transform:scaleY(0);transition:transform .4s ease;transform-origin:top}
+.contact-card-link:hover{border-color:var(--border-h);color:var(--text-hi);background:var(--bg-card-h);transform:translateX(4px);box-shadow:-4px 0 24px rgba(6,182,212,.08),8px 8px 32px rgba(0,0,0,.3)}
+.contact-card-link:hover::before{transform:scaleY(1)}
+.contact-card-big{padding:24px 26px}
+.contact-card-big .ccard-icon{width:50px;height:50px}
+.contact-card-big .ccard-val{font-size:16px}
 .ccard-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
-.ccard-label{font-size:11px;color:var(--text-faint);margin-bottom:3px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
-.ccard-val{font-size:14px;font-weight:600;color:var(--text-hi)}
+.ccard-body{flex:1;min-width:0}
+.ccard-label{font-size:10.5px;color:var(--text-faint);margin-bottom:4px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
+.ccard-hint{text-transform:none;letter-spacing:0;font-family:inherit;color:var(--text-faint);font-weight:400}
+.ccard-val{font-size:14px;font-weight:600;color:var(--text-hi);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ccard-arrow{margin-left:auto;color:var(--blue);opacity:0;transform:translateX(-6px);transition:var(--ease);flex-shrink:0}
 .contact-card-link:hover .ccard-arrow{opacity:1;transform:none}
 
