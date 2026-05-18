@@ -341,8 +341,7 @@
     .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
     .skill-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:var(--ease);backdrop-filter:blur(12px)}
     .skill-block:hover{border-color:var(--border-h);background:var(--bg-card-h)}
-    .skill-head{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px}
-    .skill-head::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0}
+    .skill-head{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--blue);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
     .pills{display:flex;flex-wrap:wrap;gap:7px}
     .pill{font-size:12px;padding:5px 11px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--text-lo);transition:var(--ease);cursor:default}
     [data-theme="light"] .pill{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06)}
@@ -422,8 +421,9 @@
   </div>
 </nav>
 
-<!-- Mobile nav overlay -->
-<div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true">
+<!-- Mobile nav overlay — inline style is a SAFETY fallback in case CSS is cached -->
+<div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-hidden="true"
+     style="opacity:0;visibility:hidden;pointer-events:none">
   <a href="#about" class="nav-overlay-link">About</a>
   <a href="projects.html" class="nav-overlay-link">Projects</a>
   <a href="resume.html" class="nav-overlay-link">Resume</a>
@@ -432,13 +432,13 @@
   <div class="nav-overlay-sep"></div>
   <div class="nav-overlay-contact">
     <a href="mailto:mifd413@gmail.com" class="nav-overlay-sm" aria-label="Email">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
     </a>
     <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener" class="nav-overlay-sm" aria-label="LinkedIn">
-      <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
     </a>
     <a href="https://github.com/ryanpfister" target="_blank" rel="noopener" class="nav-overlay-sm" aria-label="GitHub">
-      <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
     </a>
   </div>
 </div>
@@ -682,6 +682,50 @@
 </section>
 <div class="comp-section-end"></div>
 
+<!-- TECH MARQUEE TICKER -->
+<div class="marquee-wrap">
+  <div class="marquee-track" aria-hidden="true">
+    <!-- Set 1 -->
+    <span class="marquee-item"><span class="marquee-dot"></span>BACnet/IP</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Cisco CCNA</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Modbus RTU</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Splunk SIEM</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>pfSense</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Wireshark</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Siemens Apogee</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Siemens Desigo</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>DDC Systems</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>HVAC Controls</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>ICS / SCADA</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>LonWorks</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Python</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>TCP/IP</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Niagara Framework</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>ProBoard FF I</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>EMT Certified</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Eagle Scout</span>
+    <!-- Set 2 (exact duplicate for seamless loop) -->
+    <span class="marquee-item"><span class="marquee-dot"></span>BACnet/IP</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Cisco CCNA</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Modbus RTU</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Splunk SIEM</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>pfSense</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Wireshark</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Siemens Apogee</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Siemens Desigo</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>DDC Systems</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>HVAC Controls</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>ICS / SCADA</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>LonWorks</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Python</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>TCP/IP</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Niagara Framework</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>ProBoard FF I</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>EMT Certified</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Eagle Scout</span>
+  </div>
+</div>
+
 
 <!-- STATS BAR -->
 <div class="stats-section">
@@ -866,19 +910,19 @@
     <h2 class="section-title">Technologies &amp; <em>capabilities</em></h2>
     <div class="skills-grid stagger">
       <div class="skill-block">
-        <div class="skill-head">Building Automation</div>
+        <div class="skill-head">🏢&nbsp; Building Automation</div>
         <div class="pills"><span class="pill">BACnet</span><span class="pill">Modbus</span><span class="pill">LonWorks</span><span class="pill">Siemens Apogee</span><span class="pill">Siemens Desigo</span><span class="pill">HVAC Controls</span><span class="pill">BMS</span><span class="pill">DDC Systems</span></div>
       </div>
       <div class="skill-block">
-        <div class="skill-head">Networking &amp; Cyber</div>
+        <div class="skill-head">🛡️&nbsp; Networking &amp; Cyber</div>
         <div class="pills"><span class="pill">Computer Networking</span><span class="pill">Cisco CCNA</span><span class="pill">Network Config</span><span class="pill">Cybersecurity</span><span class="pill">Splunk</span><span class="pill">Enterprise Security</span><span class="pill">Wireless Networking</span></div>
       </div>
       <div class="skill-block">
-        <div class="skill-head">IT &amp; Systems</div>
+        <div class="skill-head">💻&nbsp; IT &amp; Systems</div>
         <div class="pills"><span class="pill">Computer Repair</span><span class="pill">PC Setup</span><span class="pill">POS Systems</span><span class="pill">Server Admin</span><span class="pill">Data Backups</span><span class="pill">Tech Documentation</span><span class="pill">Web Management</span></div>
       </div>
       <div class="skill-block">
-        <div class="skill-head">Public Safety</div>
+        <div class="skill-head">🚒&nbsp; Public Safety</div>
         <div class="pills"><span class="pill">Firefighting (ProBoard FF I)</span><span class="pill">Emergency Medical Tech</span><span class="pill">Basic Life Support</span><span class="pill">ICS-100 / ICS-700</span><span class="pill">NIMS</span><span class="pill">Code Enforcement</span></div>
       </div>
     </div>
@@ -1204,12 +1248,22 @@ document.querySelectorAll('.magnetic').forEach(btn=>{
 /* ── Mobile nav ─────────────────────────────────────────── */
 const hamburger=document.getElementById('hamburger');
 const navOverlay=document.getElementById('navOverlay');
+let navOpen=false;
 function toggleNav(force){
-  const open=force!==undefined?force:!hamburger.classList.contains('open');
-  hamburger.classList.toggle('open',open);
-  navOverlay.classList.toggle('open',open);
-  hamburger.setAttribute('aria-expanded',open);
-  document.body.style.overflow=open?'hidden':'';
+  navOpen=force!==undefined?force:!navOpen;
+  hamburger.classList.toggle('open',navOpen);
+  hamburger.setAttribute('aria-expanded',navOpen);
+  navOverlay.setAttribute('aria-hidden',!navOpen);
+  if(navOpen){
+    // Explicitly override any stale inline/cached styles
+    navOverlay.style.cssText='opacity:1;visibility:visible;pointer-events:auto';
+    navOverlay.classList.add('open');
+    document.body.style.overflow='hidden';
+  } else {
+    navOverlay.style.cssText='opacity:0;visibility:hidden;pointer-events:none';
+    navOverlay.classList.remove('open');
+    document.body.style.overflow='';
+  }
 }
 hamburger.addEventListener('click',()=>toggleNav());
 navOverlay.querySelectorAll('.nav-overlay-link').forEach(a=>a.addEventListener('click',()=>toggleNav(false)));

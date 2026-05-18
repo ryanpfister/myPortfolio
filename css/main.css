@@ -217,7 +217,19 @@ footer{border-top:1px solid var(--border);padding:32px 0}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(16px);z-index:9999;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:12px;padding:9px 20px;border-radius:100px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── 20. CONTACT CARDS ────────────────────────────────────────── */
+/* ── 20. MARQUEE TICKER ───────────────────────────────────────── */
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.018);padding:13px 0;position:relative}
+.marquee-wrap::before,.marquee-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.marquee-wrap::before{left:0;background:linear-gradient(90deg,var(--bg-0),transparent)}
+.marquee-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg-0),transparent)}
+.marquee-track{display:flex;gap:0;width:max-content;animation:marquee-scroll 28s linear infinite}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marquee-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.marquee-item{display:inline-flex;align-items:center;gap:8px;padding:0 22px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-faint);white-space:nowrap;transition:color .2s}
+.marquee-item:hover{color:var(--blue)}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--border);flex-shrink:0}
+
+/* ── 21. CONTACT CARDS ────────────────────────────────────────── */
 .contact-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media(max-width:640px){.contact-cards{grid-template-columns:1fr}}
 .contact-card-link{display:flex;align-items:center;gap:16px;padding:20px 24px;border-radius:var(--r);background:var(--bg-card);border:1px solid var(--border);color:var(--text-lo);transition:var(--ease);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer}
