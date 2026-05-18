@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=20260518b">
   <style>
     /* ── Loader ─────────────────────────────────────────── */
     .loader{position:fixed;inset:0;z-index:9000;background:var(--bg-0);display:flex;align-items:center;justify-content:center;transition:opacity .7s .05s,visibility .7s .05s}
@@ -429,6 +429,23 @@
 
     /* ── Theme toggle ripple ────────────────────────────── */
     .theme-ripple{position:fixed;border-radius:50%;background:var(--bg-0);transform:translate(-50%,-50%);z-index:8000;pointer-events:none;transition:width .65s cubic-bezier(.4,0,.2,1),height .65s cubic-bezier(.4,0,.2,1),opacity .2s .5s;will-change:width,height}
+
+    /* ── MARQUEE TICKER (inline-block, defeats cached CSS) ──
+       This block intentionally lives inline in index.html so it
+       overrides any cached version of main.css. Uses inline-block
+       + white-space:nowrap which is the OLDEST and most bulletproof
+       way to do a marquee — no flex, no max-content quirks. */
+    .marquee-wrap{overflow:hidden!important;position:relative;white-space:nowrap!important;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.014);padding:14px 0;display:block;line-height:1}
+    .marquee-wrap::before,.marquee-wrap::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+    .marquee-wrap::before{left:0;background:linear-gradient(90deg,var(--bg-0) 10%,transparent)}
+    .marquee-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg-0) 10%,transparent)}
+    .marquee-track{display:inline-block!important;white-space:nowrap!important;animation:marquee-scroll 40s linear infinite;will-change:transform;padding-left:0}
+    .marquee-track:hover{animation-play-state:paused}
+    @keyframes marquee-scroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+    .marquee-item{display:inline-block!important;vertical-align:middle;white-space:nowrap!important;padding:0 24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);letter-spacing:.02em;transition:color .3s;line-height:1.4}
+    .marquee-item:hover{color:var(--blue)}
+    .marquee-dot{display:inline-block;vertical-align:middle;width:4px;height:4px;border-radius:50%;background:var(--text-faint);opacity:.5;margin-right:10px;transition:.3s}
+    .marquee-item:hover .marquee-dot{background:var(--blue);opacity:1;box-shadow:0 0 6px var(--blue-glow)}
   </style>
 </head>
 <body>
