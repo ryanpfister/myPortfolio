@@ -85,8 +85,8 @@ img{display:block;max-width:100%}
 
 /* ── 6. NAVIGATION ────────────────────────────────────────────── */
 #nav{position:fixed;top:0;left:0;right:0;z-index:500;transition:var(--ease)}
-#nav::after{content:'';position:absolute;inset:0;background:transparent;backdrop-filter:blur(0px);border-bottom:1px solid transparent;transition:var(--ease);z-index:-1}
-#nav.scrolled::after{background:rgba(2,8,23,.88);backdrop-filter:blur(24px) saturate(180%);border-bottom-color:var(--border)}
+#nav::after{content:'';position:absolute;inset:0;background:transparent;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);border-bottom:1px solid transparent;transition:var(--ease);z-index:-1}
+#nav.scrolled::after{background:rgba(2,8,23,.88);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom-color:var(--border)}
 [data-theme="light"] #nav.scrolled::after{background:rgba(248,250,252,.92)}
 .nav-inner{max-width:1100px;margin:0 auto;padding:0 28px;height:66px;display:flex;align-items:center;gap:28px;position:relative}
 .nav-logo{font-size:16px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
@@ -180,3 +180,62 @@ footer{border-top:1px solid var(--border);padding:32px 0}
 @media(max-width:860px){section{padding:72px 0}.nav-links{display:none}.nav-cta{display:none}}
 @media(max-width:560px){.btn{justify-content:center}.page-hero h1{letter-spacing:-.025em}}
 @media(max-width:480px){.footer-inner{flex-direction:column;text-align:center}}
+
+/* ── 17. MOBILE NAV ───────────────────────────────────────────── */
+.nav-hamburger{display:none;width:34px;height:34px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-sm);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;transition:var(--ease);flex-shrink:0;z-index:510;position:relative}
+.nav-hamburger span{display:block;width:16px;height:1.5px;background:var(--text-lo);border-radius:2px;transition:var(--ease);transform-origin:center}
+.nav-hamburger:hover{background:var(--bg-card-h);border-color:var(--border-h)}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);background:var(--blue)}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);background:var(--blue)}
+@media(max-width:860px){.nav-hamburger{display:flex}}
+.nav-overlay{position:fixed;inset:0;z-index:490;background:rgba(2,8,23,.97);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:80px 28px 40px;opacity:0;visibility:hidden;transition:opacity .35s cubic-bezier(.4,0,.2,1),visibility .35s}
+.nav-overlay.open{opacity:1;visibility:visible}
+[data-theme="light"] .nav-overlay{background:rgba(248,250,252,.97)}
+.nav-overlay-link{font-size:clamp(22px,6vw,32px);font-weight:800;letter-spacing:-.04em;color:var(--text-lo);padding:14px 32px;border-radius:var(--r);transition:var(--ease);text-align:center;width:100%;max-width:300px;border:1px solid transparent;opacity:0;transform:translateY(20px)}
+.nav-overlay.open .nav-overlay-link{opacity:1;transform:none}
+.nav-overlay.open .nav-overlay-link:nth-child(1){transition-delay:.06s}
+.nav-overlay.open .nav-overlay-link:nth-child(2){transition-delay:.1s}
+.nav-overlay.open .nav-overlay-link:nth-child(3){transition-delay:.14s}
+.nav-overlay.open .nav-overlay-link:nth-child(4){transition-delay:.18s}
+.nav-overlay.open .nav-overlay-link:nth-child(5){transition-delay:.22s}
+.nav-overlay.open .nav-overlay-link:nth-child(6){transition-delay:.26s}
+.nav-overlay-link:hover{color:var(--text-hi);background:var(--bg-card);border-color:var(--border)}
+.nav-overlay-sep{width:40px;height:1px;background:var(--border);margin:10px 0}
+.nav-overlay-contact{display:flex;gap:12px;margin-top:12px}
+.nav-overlay-sm{width:44px;height:44px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;color:var(--text-lo);transition:var(--ease)}
+.nav-overlay-sm:hover{border-color:var(--border-h);color:var(--blue)}
+.nav-overlay-sm svg{width:18px;height:18px}
+
+/* ── 18. BACK TO TOP ──────────────────────────────────────────── */
+.back-top{position:fixed;bottom:28px;right:28px;z-index:400;width:40px;height:40px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s,background .2s,border-color .2s,box-shadow .2s;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);pointer-events:none}
+.back-top.visible{opacity:1;transform:none;pointer-events:auto}
+.back-top:hover{background:var(--bg-card-h);border-color:var(--border-h);box-shadow:0 0 20px var(--blue-glow);transform:translateY(-2px)}
+.back-top svg{width:16px;height:16px;color:var(--blue)}
+
+/* ── 19. TOAST ────────────────────────────────────────────────── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(16px);z-index:9999;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.3);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:12px;padding:9px 20px;border-radius:100px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── 20. CONTACT CARDS ────────────────────────────────────────── */
+.contact-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:640px){.contact-cards{grid-template-columns:1fr}}
+.contact-card-link{display:flex;align-items:center;gap:16px;padding:20px 24px;border-radius:var(--r);background:var(--bg-card);border:1px solid var(--border);color:var(--text-lo);transition:var(--ease);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer}
+.contact-card-link:hover{border-color:var(--border-h);color:var(--text-hi);background:var(--bg-card-h);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.ccard-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.ccard-label{font-size:11px;color:var(--text-faint);margin-bottom:3px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
+.ccard-val{font-size:14px;font-weight:600;color:var(--text-hi)}
+.ccard-arrow{margin-left:auto;color:var(--blue);opacity:0;transform:translateX(-6px);transition:var(--ease);flex-shrink:0}
+.contact-card-link:hover .ccard-arrow{opacity:1;transform:none}
+
+/* ── 21. iOS & TOUCH ──────────────────────────────────────────── */
+@supports(padding:max(0px)){
+  .nav-inner{padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}
+  .footer-inner{padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right));padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  .container{padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}
+  .back-top{bottom:max(28px,env(safe-area-inset-bottom))}
+}
+@media(hover:none){
+  .card:hover,.exp-card:hover,.edu-card:hover,.honor-card:hover,.skill-block:hover{transform:none;box-shadow:none}
+  .btn-fill:hover,.btn-ghost:hover{transform:none}
+}

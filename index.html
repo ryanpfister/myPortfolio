@@ -2,7 +2,11 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ryan Pfister">
+  <meta name="theme-color" content="#020817">
   <title>Ryan Pfister | Security Systems & Smart Building Technology</title>
   <meta name="description" content="Security Systems student & Smart Building Intern at Siemens. Specializing in BAS, cybersecurity & networking. Firefighter, EMT, Eagle Scout. New York.">
   <meta name="keywords" content="Ryan Pfister, security systems, building automation, BAS, smart buildings, Siemens, cybersecurity, networking, Farmingdale State College, New York, firefighter, EMT, Eagle Scout">
@@ -16,6 +20,8 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Ryan Pfister | Security Systems & Smart Building Technology">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ryan Pfister","url":"https://rdpfister.com","email":"mailto:mifd413@gmail.com","jobTitle":"Smart Building Specialist Intern","worksFor":{"@type":"Organization","name":"Siemens"},"alumniOf":{"@type":"EducationalOrganization","name":"Farmingdale State College"},"knowsAbout":["Building Automation Systems","Cybersecurity","Computer Networking","BACnet","Modbus","Emergency Medical Services"],"sameAs":["https://www.linkedin.com/in/rdpfister/","https://github.com/ryanpfister"]}</script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -34,6 +40,7 @@
     /* ── Computer section ────────────────────────────────── */
     .comp-section{position:relative;height:580vh;z-index:1}
     .comp-sticky{
+      position:-webkit-sticky;
       position:sticky;top:0;height:100vh;
       display:flex;align-items:center;justify-content:center;
       gap:clamp(16px,3vw,52px);
@@ -110,7 +117,10 @@
     }
 
     /* ── macOS UI ────────────────────────────────────────── */
-    .macos-ui{aspect-ratio:16/10;position:relative;overflow:hidden;background:#08081c;font-size:clamp(7px,.9vw,11px)}
+    .macos-ui{aspect-ratio:16/10;position:relative;overflow:hidden;background:#08081c;font-size:clamp(8px,1vw,12px)}
+    @media(max-width:600px){.macos-ui{font-size:9px}}
+    /* iOS smooth scroll inside windows */
+    .term-bd,.about-bd,.proj-bd,.skills-bd{-webkit-overflow-scrolling:touch}
 
     /* Wallpaper */
     .macos-wp{position:absolute;inset:0;z-index:0;background:
@@ -405,9 +415,41 @@
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
       </a>
       <a href="#contact" class="nav-cta">Contact</a>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+
+<!-- Mobile nav overlay -->
+<div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true">
+  <a href="#about" class="nav-overlay-link">About</a>
+  <a href="projects.html" class="nav-overlay-link">Projects</a>
+  <a href="resume.html" class="nav-overlay-link">Resume</a>
+  <a href="certifications.html" class="nav-overlay-link">Certs</a>
+  <a href="blog.html" class="nav-overlay-link">Blog</a>
+  <div class="nav-overlay-sep"></div>
+  <div class="nav-overlay-contact">
+    <a href="mailto:mifd413@gmail.com" class="nav-overlay-sm" aria-label="Email">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener" class="nav-overlay-sm" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="https://github.com/ryanpfister" target="_blank" rel="noopener" class="nav-overlay-sm" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="back-top" id="backTop" aria-label="Back to top">
+  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+</button>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
 
 <div class="page-bg"></div>
 <div class="page-dots"></div>
@@ -862,42 +904,51 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
-    <div class="contact-grid">
-      <div class="fade-up">
-        <div class="label">06 / Contact</div>
-        <h2 class="section-title">Let's <em>connect</em></h2>
-        <form class="cf" id="cf" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <div class="field-row">
-            <div class="field"><label for="fname">Name</label><input type="text" id="fname" name="name" required placeholder="Your name"></div>
-            <div class="field"><label for="femail">Email</label><input type="email" id="femail" name="email" required placeholder="your@email.com"></div>
-          </div>
-          <div class="field"><label for="fmsg">Message</label><textarea id="fmsg" name="message" rows="5" required placeholder="Hi Ryan, I'd love to discuss..."></textarea></div>
-          <button type="submit" class="btn btn-fill" style="width:100%;justify-content:center">
-            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            Send Message
-          </button>
-          <p class="form-msg" id="form-msg"></p>
-        </form>
-      </div>
-      <div class="fade-up">
-        <p class="contact-aside" style="margin-top:76px">Or reach me directly. Open to opportunities in security systems, smart buildings, and cybersecurity.</p>
-        <div class="contact-links">
-          <a href="mailto:mifd413@gmail.com" class="contact-link">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            mifd413@gmail.com
-          </a>
-          <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener" class="contact-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            linkedin.com/in/rdpfister
-          </a>
-          <a href="https://github.com/ryanpfister" target="_blank" rel="noopener" class="contact-link">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-            github.com/ryanpfister
-          </a>
-        </div>
-        <p class="contact-note">Based in New York &middot; Open to full-time and internship opportunities in security systems, smart buildings &amp; cybersecurity.</p>
-      </div>
+    <div class="fade-up" style="text-align:center;max-width:560px;margin:0 auto 52px">
+      <div class="label" style="justify-content:center">06 / Contact</div>
+      <h2 class="section-title" style="margin-bottom:16px">Let's <em>connect</em></h2>
+      <p style="font-size:15px;color:var(--text-lo);line-height:1.8">Open to opportunities in security systems, smart buildings, and cybersecurity. Based in New York — reach out any way that works for you.</p>
     </div>
+    <div class="contact-cards fade-up">
+
+      <!-- Email — copies to clipboard -->
+      <div class="contact-card-link" id="emailCard" role="button" tabindex="0" title="Click to copy email">
+        <div class="ccard-icon" style="background:rgba(6,182,212,.12)">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#06b6d4" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <div>
+          <div class="ccard-label">Email</div>
+          <div class="ccard-val">mifd413@gmail.com</div>
+        </div>
+        <svg class="ccard-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+      </div>
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener" class="contact-card-link">
+        <div class="ccard-icon" style="background:rgba(10,102,194,.12)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+        <div>
+          <div class="ccard-label">LinkedIn</div>
+          <div class="ccard-val">in/rdpfister</div>
+        </div>
+        <svg class="ccard-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+
+      <!-- GitHub -->
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener" class="contact-card-link">
+        <div class="ccard-icon" style="background:rgba(255,255,255,.06)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--text-lo)"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        </div>
+        <div>
+          <div class="ccard-label">GitHub</div>
+          <div class="ccard-val">ryanpfister</div>
+        </div>
+        <svg class="ccard-arrow" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+
+    </div>
+    <p class="fade-up" style="text-align:center;margin-top:32px;font-size:12px;color:var(--text-faint);font-family:'JetBrains Mono',monospace">Based in New York &middot; Open to full-time and internship roles</p>
   </div>
 </section>
 
@@ -1150,6 +1201,49 @@ document.querySelectorAll('.magnetic').forEach(btn=>{
   btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
 });
 
+/* ── Mobile nav ─────────────────────────────────────────── */
+const hamburger=document.getElementById('hamburger');
+const navOverlay=document.getElementById('navOverlay');
+function toggleNav(force){
+  const open=force!==undefined?force:!hamburger.classList.contains('open');
+  hamburger.classList.toggle('open',open);
+  navOverlay.classList.toggle('open',open);
+  hamburger.setAttribute('aria-expanded',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+hamburger.addEventListener('click',()=>toggleNav());
+navOverlay.querySelectorAll('.nav-overlay-link').forEach(a=>a.addEventListener('click',()=>toggleNav(false)));
+navOverlay.addEventListener('click',e=>{if(e.target===navOverlay)toggleNav(false);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleNav(false);});
+
+/* ── Back to top ────────────────────────────────────────── */
+const backTop=document.getElementById('backTop');
+window.addEventListener('scroll',()=>{backTop.classList.toggle('visible',window.scrollY>400);},{passive:true});
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ── Toast helper ───────────────────────────────────────── */
+const toastEl=document.getElementById('toast');
+let toastTimer;
+function showToast(msg){
+  toastEl.textContent=msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>toastEl.classList.remove('show'),2200);
+}
+
+/* ── Email copy ─────────────────────────────────────────── */
+const emailCard=document.getElementById('emailCard');
+if(emailCard){
+  emailCard.addEventListener('click',()=>{
+    navigator.clipboard.writeText('mifd413@gmail.com').then(()=>{
+      showToast('✓ Email copied to clipboard');
+    }).catch(()=>{
+      window.location.href='mailto:mifd413@gmail.com';
+    });
+  });
+  emailCard.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')emailCard.click();});
+}
+
 /* ── Scroll spy ─────────────────────────────────────────── */
 const secs=document.querySelectorAll('section[id]');
 const navAs=document.querySelectorAll('.nav-links a[href^="#"]');
@@ -1160,22 +1254,6 @@ secs.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{
     if(a)a.classList.add('active');
   }
 }),{rootMargin:'-35% 0px -65% 0px'}).observe(s));
-
-/* ── Contact form ───────────────────────────────────────── */
-const cf=document.getElementById('cf'),fm=document.getElementById('form-msg');
-if(cf){cf.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const btn=cf.querySelector('button[type="submit"]');
-  btn.disabled=true;btn.textContent='Sending…';
-  try{
-    const r=await fetch(cf.action,{method:'POST',body:new FormData(cf),headers:{Accept:'application/json'}});
-    if(r.ok){fm.textContent='✓ Message sent! I\'ll be in touch soon.';fm.style.color='var(--green)';cf.reset();}
-    else{fm.textContent='Something went wrong — please email me directly.';fm.style.color='var(--purple)';}
-    fm.style.display='block';
-  }catch{fm.textContent='Network error — please email me directly.';fm.style.display='block';}
-  btn.disabled=false;
-  btn.innerHTML='<svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> Send Message';
-});}
 </script>
 </body>
 </html>
