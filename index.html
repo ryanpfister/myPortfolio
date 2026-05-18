@@ -376,6 +376,59 @@
     .contact-link svg{width:18px;height:18px;flex-shrink:0;color:var(--blue)}
     .contact-note{margin-top:24px;font-size:12.5px;color:var(--text-faint);line-height:1.7}
     @media(max-width:820px){.contact-grid{grid-template-columns:1fr;gap:48px}.field-row{grid-template-columns:1fr}}
+
+    /* ── ⌘K Command Palette ──────────────────────────────── */
+    .cmd-overlay{position:fixed;inset:0;z-index:9500;background:rgba(2,8,23,.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;padding-top:13vh;transition:opacity .25s cubic-bezier(.4,0,.2,1),visibility .25s}
+    [data-theme="light"] .cmd-overlay{background:rgba(248,250,252,.7)}
+    .cmd-box{width:min(600px,92vw);background:rgba(15,15,28,.97);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 30px 100px rgba(0,0,0,.7),0 0 0 1px rgba(6,182,212,.12),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);overflow:hidden;transform:scale(.96) translateY(-8px);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+    [data-theme="light"] .cmd-box{background:rgba(255,255,255,.98)}
+    .cmd-overlay.open .cmd-box{transform:none}
+    .cmd-search{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--text-faint)}
+    .cmd-search svg{flex-shrink:0;color:var(--blue)}
+    .cmd-search input{flex:1;background:none;border:none;outline:none;color:var(--text-hi);font-family:inherit;font-size:14px;padding:0}
+    .cmd-search input::placeholder{color:var(--text-faint)}
+    .cmd-search kbd{font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(255,255,255,.05);padding:3px 7px;border-radius:5px;border:1px solid var(--border);color:var(--text-faint);flex-shrink:0}
+    .cmd-list{max-height:380px;overflow-y:auto;padding:6px 0}
+    .cmd-list::-webkit-scrollbar{width:4px}
+    .cmd-group{padding:10px 18px 6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+    .cmd-item{display:flex;align-items:center;gap:12px;padding:9px 18px;cursor:pointer;transition:background .12s,color .12s;color:var(--text-lo);font-size:13.5px;user-select:none}
+    .cmd-item.active{background:rgba(6,182,212,.1);color:var(--text-hi)}
+    .cmd-item.active::before{content:'';position:absolute;left:0;width:3px;height:24px;background:var(--blue);border-radius:0 3px 3px 0;margin-top:-2px}
+    .cmd-item{position:relative}
+    .cmd-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:rgba(255,255,255,.04);transition:var(--ease)}
+    .cmd-item.active .cmd-ico{background:var(--blue-dim);color:var(--blue)}
+    .cmd-arrow{margin-left:auto;opacity:0;color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:13px;transition:opacity .15s}
+    .cmd-item.active .cmd-arrow{opacity:1}
+    .cmd-empty{padding:40px;text-align:center;color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace}
+    .cmd-footer{display:flex;gap:14px;align-items:center;padding:10px 18px;border-top:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.18);font-size:10.5px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
+    .cmd-footer span{display:flex;align-items:center;gap:4px}
+    .cmd-footer kbd{background:rgba(255,255,255,.05);padding:2px 6px;border-radius:4px;border:1px solid var(--border);font-size:9.5px;color:var(--text-lo)}
+
+    /* ── Section side rail ──────────────────────────────── */
+    .side-rail{position:fixed;left:20px;top:50%;transform:translateY(-50%);z-index:300;display:flex;flex-direction:column;gap:4px;padding:8px 4px;opacity:0;transition:opacity .35s;pointer-events:none}
+    .side-rail.visible{opacity:1;pointer-events:auto}
+    .side-rail a{display:block;padding:6px;position:relative}
+    .side-rail a span{display:block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+    .side-rail a:hover span{background:var(--blue)}
+    .side-rail a.active span{background:var(--blue);width:6px;height:22px;border-radius:3px;box-shadow:0 0 8px var(--blue-glow)}
+    .side-rail a::after{content:attr(title);position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);background:rgba(15,15,28,.96);border:1px solid var(--border);color:var(--text-hi);font-size:10.5px;padding:4px 9px;border-radius:5px;font-family:'JetBrains Mono',monospace;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .side-rail a:hover::after{opacity:1}
+    @media(max-width:1100px){.side-rail{display:none}}
+
+    /* ── Matrix rain canvas ─────────────────────────────── */
+    #matrixCanvas{position:fixed;inset:0;z-index:9000;pointer-events:none;mix-blend-mode:screen}
+
+    /* ── Cursor trail particle ──────────────────────────── */
+    .trail-dot{position:fixed;width:5px;height:5px;border-radius:50%;background:rgba(6,182,212,.6);box-shadow:0 0 8px rgba(6,182,212,.6);pointer-events:none;z-index:9990;transform:translate(-50%,-50%);transition:opacity .55s ease-out,transform .55s ease-out;will-change:opacity,transform}
+
+    /* ── Interactive terminal ───────────────────────────── */
+    .term-bd.interactive{cursor:text}
+    .term-input-line{display:flex;align-items:center;font-family:inherit;font-size:inherit;line-height:1.78}
+    .term-prompt-fixed{color:#06b6d4;flex-shrink:0;white-space:pre}
+    .term-input{flex:1;background:none;border:none;outline:none;color:#f1f5f9;font-family:inherit;font-size:inherit;padding:0;caret-color:#06b6d4;min-width:0}
+
+    /* ── Theme toggle ripple ────────────────────────────── */
+    .theme-ripple{position:fixed;border-radius:50%;background:var(--bg-0);transform:translate(-50%,-50%);z-index:8000;pointer-events:none;transition:width .65s cubic-bezier(.4,0,.2,1),height .65s cubic-bezier(.4,0,.2,1),opacity .2s .5s;will-change:width,height}
   </style>
 </head>
 <body>
@@ -450,6 +503,37 @@
 
 <!-- Toast notification -->
 <div class="toast" id="toast"></div>
+
+<!-- ⌘K Command Palette -->
+<div class="cmd-overlay" id="cmdOverlay" role="dialog" aria-modal="true" aria-hidden="true"
+     style="opacity:0;visibility:hidden;pointer-events:none">
+  <div class="cmd-box" role="combobox" aria-expanded="true">
+    <div class="cmd-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="cmdInput" placeholder="Search commands, sections, actions…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="cmd-list" id="cmdList" role="listbox"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd>Navigate</span>
+      <span><kbd>↵</kbd>Select</span>
+      <span><kbd>⌘K</kbd>Toggle</span>
+      <span style="margin-left:auto">Made by Ryan Pfister</span>
+    </div>
+  </div>
+</div>
+
+<!-- Section side rail -->
+<aside class="side-rail" id="sideRail" aria-hidden="true">
+  <a href="#about" data-sec="about" title="About"><span></span></a>
+  <a href="#experience" data-sec="experience" title="Experience"><span></span></a>
+  <a href="#education" data-sec="education" title="Education"><span></span></a>
+  <a href="#skills" data-sec="skills" title="Skills"><span></span></a>
+  <a href="#honors" data-sec="honors" title="Honors"><span></span></a>
+  <a href="#contact" data-sec="contact" title="Contact"><span></span></a>
+</aside>
 
 <div class="page-bg"></div>
 <div class="page-dots"></div>
@@ -1308,6 +1392,418 @@ secs.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{
     if(a)a.classList.add('active');
   }
 }),{rootMargin:'-35% 0px -65% 0px'}).observe(s));
+
+/* ════════════════════════════════════════════════════════════
+   ⌘K COMMAND PALETTE
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const overlay=document.getElementById('cmdOverlay');
+  const input=document.getElementById('cmdInput');
+  const list=document.getElementById('cmdList');
+
+  const commands=[
+    {g:'Sections',i:'🏠',t:'Top of page',k:'home top hero',fn:()=>window.scrollTo({top:0,behavior:'smooth'})},
+    {g:'Sections',i:'👤',t:'About',k:'about bio info',fn:()=>jump('#about')},
+    {g:'Sections',i:'💼',t:'Experience',k:'experience work jobs siemens',fn:()=>jump('#experience')},
+    {g:'Sections',i:'🎓',t:'Education',k:'education school farmingdale',fn:()=>jump('#education')},
+    {g:'Sections',i:'⚡',t:'Skills',k:'skills tech bacnet networking',fn:()=>jump('#skills')},
+    {g:'Sections',i:'🏆',t:'Honors & Awards',k:'honors awards recognition',fn:()=>jump('#honors')},
+    {g:'Sections',i:'📧',t:'Contact',k:'contact reach',fn:()=>jump('#contact')},
+    {g:'Pages',i:'📁',t:'Projects',k:'projects portfolio work',fn:()=>location.href='projects.html'},
+    {g:'Pages',i:'📄',t:'Resume',k:'resume cv',fn:()=>location.href='resume.html'},
+    {g:'Pages',i:'🔐',t:'Certifications',k:'certs certifications credentials',fn:()=>location.href='certifications.html'},
+    {g:'Pages',i:'📝',t:'Blog',k:'blog articles posts writing',fn:()=>location.href='blog.html'},
+    {g:'Actions',i:'📋',t:'Copy email address',k:'copy email clipboard',fn:()=>copyEmailToCb()},
+    {g:'Actions',i:'✉️',t:'Send me an email',k:'mailto email send write',fn:()=>location.href='mailto:mifd413@gmail.com'},
+    {g:'Actions',i:'🌓',t:'Toggle theme',k:'theme dark light mode',fn:()=>document.getElementById('themeToggle').click()},
+    {g:'Social',i:'🐙',t:'GitHub @ryanpfister',k:'github code repo',fn:()=>open('https://github.com/ryanpfister','_blank')},
+    {g:'Social',i:'💼',t:'LinkedIn @rdpfister',k:'linkedin connect',fn:()=>open('https://www.linkedin.com/in/rdpfister/','_blank')},
+    {g:'Easter Eggs',i:'🌧️',t:'Activate Matrix Mode',k:'matrix rain animation easter',fn:()=>window.activateMatrix()},
+    {g:'Easter Eggs',i:'🎮',t:'Konami code hint',k:'konami easter cheat',fn:()=>showToast('Try: ↑↑↓↓←→←→ B A')},
+  ];
+
+  let activeIdx=0;
+  let filtered=[...commands];
+
+  function jump(hash){
+    const el=document.querySelector(hash);
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  }
+  function copyEmailToCb(){
+    navigator.clipboard.writeText('mifd413@gmail.com').then(()=>showToast('✓ Email copied'));
+  }
+
+  function render(){
+    if(filtered.length===0){
+      list.innerHTML='<div class="cmd-empty">No matching commands</div>';
+      return;
+    }
+    let html='';let lastGroup='';
+    filtered.forEach((c,i)=>{
+      if(c.g!==lastGroup){html+=`<div class="cmd-group">${c.g}</div>`;lastGroup=c.g;}
+      html+=`<div class="cmd-item ${i===activeIdx?'active':''}" data-i="${i}" role="option" aria-selected="${i===activeIdx}">
+        <span class="cmd-ico">${c.i}</span>
+        <span>${c.t}</span>
+        <span class="cmd-arrow">↵</span>
+      </div>`;
+    });
+    list.innerHTML=html;
+    list.querySelectorAll('.cmd-item').forEach(el=>{
+      el.addEventListener('click',()=>{activeIdx=+el.dataset.i;exec();});
+      el.addEventListener('mouseenter',()=>{activeIdx=+el.dataset.i;updateActive();});
+    });
+  }
+
+  function filterCmds(q){
+    q=q.toLowerCase().trim();
+    filtered=!q?[...commands]:commands.filter(c=>
+      c.t.toLowerCase().includes(q)||c.k.toLowerCase().includes(q)
+    );
+    activeIdx=0;render();
+  }
+
+  function updateActive(){
+    list.querySelectorAll('.cmd-item').forEach(el=>{
+      const on=+el.dataset.i===activeIdx;
+      el.classList.toggle('active',on);
+      el.setAttribute('aria-selected',on);
+    });
+    const a=list.querySelector('.cmd-item.active');
+    if(a)a.scrollIntoView({block:'nearest'});
+  }
+
+  function exec(){
+    const c=filtered[activeIdx];
+    if(c){closeCmd();setTimeout(()=>c.fn(),120);}
+  }
+
+  function openCmd(){
+    overlay.style.cssText='opacity:1;visibility:visible;pointer-events:auto';
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    input.value='';filterCmds('');
+    setTimeout(()=>input.focus(),60);
+  }
+  function closeCmd(){
+    overlay.style.cssText='opacity:0;visibility:hidden;pointer-events:none';
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  document.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){
+      e.preventDefault();
+      overlay.classList.contains('open')?closeCmd():openCmd();
+      return;
+    }
+    if(!overlay.classList.contains('open'))return;
+    if(e.key==='Escape'){e.preventDefault();closeCmd();}
+    else if(e.key==='ArrowDown'){e.preventDefault();activeIdx=Math.min(filtered.length-1,activeIdx+1);updateActive();}
+    else if(e.key==='ArrowUp'){e.preventDefault();activeIdx=Math.max(0,activeIdx-1);updateActive();}
+    else if(e.key==='Enter'){e.preventDefault();exec();}
+  });
+  input.addEventListener('input',e=>filterCmds(e.target.value));
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeCmd();});
+
+  window.openCmdPalette=openCmd;
+})();
+
+/* ════════════════════════════════════════════════════════════
+   MATRIX RAIN (triggered by Konami code or cmd palette)
+═══════════════════════════════════════════════════════════ */
+let matrixActive=false;
+window.activateMatrix=function(duration){
+  if(matrixActive)return;
+  matrixActive=true;
+  duration=duration||9000;
+  const c=document.createElement('canvas');
+  c.id='matrixCanvas';
+  document.body.appendChild(c);
+  const ctx=c.getContext('2d');
+  let W=c.width=window.innerWidth,H=c.height=window.innerHeight;
+  const sz=15;
+  const cols=Math.floor(W/sz);
+  const drops=Array(cols).fill(0).map(()=>Math.random()*-H);
+  const chars='アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホBACNETPYCISCO0123456789';
+  let alive=true,opacity=0;
+  c.style.opacity='0';
+  c.style.transition='opacity .5s';
+  requestAnimationFrame(()=>{c.style.opacity='1'});
+  const onResize=()=>{W=c.width=window.innerWidth;H=c.height=window.innerHeight;};
+  window.addEventListener('resize',onResize);
+  function tick(){
+    ctx.fillStyle='rgba(2,8,23,0.07)';
+    ctx.fillRect(0,0,W,H);
+    ctx.font=`${sz-1}px 'JetBrains Mono',monospace`;
+    for(let i=0;i<drops.length;i++){
+      const ch=chars[Math.floor(Math.random()*chars.length)];
+      const y=drops[i];
+      ctx.fillStyle=y<60?'#e0fbff':'#06b6d4';
+      ctx.shadowColor='#06b6d4';ctx.shadowBlur=y<60?12:0;
+      ctx.fillText(ch,i*sz,y);
+      ctx.shadowBlur=0;
+      drops[i]=(y>H&&Math.random()>.975)?0:y+sz;
+    }
+    if(alive)requestAnimationFrame(tick);
+  }
+  tick();
+  showToast('🌧️  Matrix mode activated');
+  setTimeout(()=>{
+    c.style.opacity='0';
+    setTimeout(()=>{alive=false;c.remove();window.removeEventListener('resize',onResize);matrixActive=false;},520);
+  },duration);
+};
+
+/* ════════════════════════════════════════════════════════════
+   KONAMI CODE
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const code=['arrowup','arrowup','arrowdown','arrowdown','arrowleft','arrowright','arrowleft','arrowright','b','a'];
+  let pos=0;
+  document.addEventListener('keydown',e=>{
+    const k=e.key.toLowerCase();
+    if(k===code[pos]){
+      pos++;
+      if(pos===code.length){pos=0;window.activateMatrix();}
+    } else {
+      pos=k===code[0]?1:0;
+    }
+  });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   SECTION SIDE RAIL
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const rail=document.getElementById('sideRail');
+  if(!rail)return;
+  const links=rail.querySelectorAll('a');
+  const ids=['about','experience','education','skills','honors','contact'];
+
+  // Show after computer section completes
+  const compSec=document.getElementById('compSection');
+  window.addEventListener('scroll',()=>{
+    const threshold=compSec?compSec.offsetHeight-window.innerHeight-200:600;
+    rail.classList.toggle('visible',window.scrollY>threshold);
+  },{passive:true});
+
+  ids.forEach(id=>{
+    const sec=document.getElementById(id);
+    if(!sec)return;
+    new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(a=>a.classList.toggle('active',a.dataset.sec===id));
+      }
+    }),{rootMargin:'-40% 0px -55% 0px'}).observe(sec);
+  });
+
+  links.forEach(a=>a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth'});
+  }));
+})();
+
+/* ════════════════════════════════════════════════════════════
+   CURSOR PARTICLE TRAIL
+═══════════════════════════════════════════════════════════ */
+(function(){
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  let lastT=0,prevX=0,prevY=0;
+  document.addEventListener('mousemove',e=>{
+    const now=performance.now();
+    if(now-lastT<32)return; // throttle ~30fps
+    const dx=e.clientX-prevX,dy=e.clientY-prevY;
+    const speed=Math.hypot(dx,dy);
+    if(speed<5){lastT=now;prevX=e.clientX;prevY=e.clientY;return;}
+    lastT=now;prevX=e.clientX;prevY=e.clientY;
+    const dot=document.createElement('div');
+    dot.className='trail-dot';
+    dot.style.left=e.clientX+'px';
+    dot.style.top=e.clientY+'px';
+    document.body.appendChild(dot);
+    requestAnimationFrame(()=>{
+      dot.style.opacity='0';
+      dot.style.transform='translate(-50%,-50%) scale(0)';
+    });
+    setTimeout(()=>dot.remove(),580);
+  },{passive:true});
+})();
+
+/* ════════════════════════════════════════════════════════════
+   THEME TOGGLE RIPPLE
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const btn=document.getElementById('themeToggle');
+  if(!btn)return;
+  btn.addEventListener('click',e=>{
+    const r=btn.getBoundingClientRect();
+    const x=r.left+r.width/2,y=r.top+r.height/2;
+    const maxR=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))*2;
+    const rip=document.createElement('div');
+    rip.className='theme-ripple';
+    rip.style.left=x+'px';rip.style.top=y+'px';
+    rip.style.width='0px';rip.style.height='0px';
+    // Use the OUTGOING theme color so the ripple covers OLD before NEW appears
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+    rip.style.background=isDark?'#f8fafc':'#020817';
+    document.body.appendChild(rip);
+    requestAnimationFrame(()=>{
+      rip.style.width=maxR+'px';rip.style.height=maxR+'px';
+    });
+    setTimeout(()=>{rip.style.opacity='0';},650);
+    setTimeout(()=>rip.remove(),900);
+  },true); // capture phase = fires BEFORE the theme actually changes
+})();
+
+/* ════════════════════════════════════════════════════════════
+   INTERACTIVE TERMINAL — after scripted typing, accept commands
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const termEl=document.getElementById('termOut');
+  if(!termEl)return;
+  let inputLine=null,inputBox=null,history=[],histIdx=-1;
+
+  // Watch for the scripted typing to finish (last line has .tcur)
+  const wait=setInterval(()=>{
+    const cur=termEl.querySelector('.tcur');
+    if(cur&&!termEl.dataset.ready){
+      // Wait a moment more in case typing is still going
+      const before=termEl.innerHTML.length;
+      setTimeout(()=>{
+        if(termEl.innerHTML.length===before){
+          clearInterval(wait);
+          enableInteractive();
+        }
+      },1200);
+    }
+  },800);
+
+  function enableInteractive(){
+    termEl.dataset.ready='1';
+    termEl.classList.add('interactive');
+    // Replace the cursor line with an actual input
+    const oldCursor=termEl.querySelector('.tcur');
+    if(oldCursor)oldCursor.parentElement.remove();
+    appendPromptLine();
+    termEl.addEventListener('click',()=>{if(inputBox)inputBox.focus();});
+  }
+
+  function appendPromptLine(){
+    inputLine=document.createElement('div');
+    inputLine.className='term-input-line';
+    inputLine.innerHTML='<span class="term-prompt-fixed">ryan@portfolio ~ % </span>';
+    inputBox=document.createElement('input');
+    inputBox.className='term-input';
+    inputBox.autocomplete='off';inputBox.spellcheck=false;
+    inputBox.addEventListener('keydown',onKey);
+    inputLine.appendChild(inputBox);
+    termEl.appendChild(inputLine);
+    termEl.scrollTop=termEl.scrollHeight;
+  }
+
+  function onKey(e){
+    if(e.key==='Enter'){
+      e.preventDefault();
+      const cmd=inputBox.value.trim();
+      if(cmd){history.unshift(cmd);histIdx=-1;}
+      // Freeze the current line as plain text
+      const frozen=document.createElement('div');
+      frozen.innerHTML=`<span class="tp">ryan@portfolio ~ % </span><span class="tc">${esc(cmd)}</span>`;
+      inputLine.replaceWith(frozen);
+      run(cmd);
+      appendPromptLine();
+      inputBox.focus();
+    } else if(e.key==='ArrowUp'){
+      e.preventDefault();
+      if(history.length&&histIdx<history.length-1){histIdx++;inputBox.value=history[histIdx];}
+    } else if(e.key==='ArrowDown'){
+      e.preventDefault();
+      if(histIdx>0){histIdx--;inputBox.value=history[histIdx];}
+      else{histIdx=-1;inputBox.value='';}
+    }
+  }
+
+  function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+  function out(html){
+    const d=document.createElement('div');d.innerHTML=html;termEl.appendChild(d);
+  }
+
+  function run(cmd){
+    const c=cmd.toLowerCase().trim();
+    const args=c.split(/\s+/);const base=args[0];
+    if(!c)return;
+    switch(base){
+      case 'help':case '?':
+        out('<span class="tv">Available commands:</span>');
+        out('<span class="to">  help, whoami, ls, cat &lt;file&gt;, projects, contact,</span>');
+        out('<span class="to">  skills, theme, clear, sudo, neofetch, social,</span>');
+        out('<span class="to">  matrix, date, echo &lt;text&gt;, open &lt;site&gt;</span>');
+        break;
+      case 'whoami':
+        out('<span class="ts">ryan-pfister</span> — Security Systems student, BAS commissioner, FF/EMT');break;
+      case 'ls':
+        out('<span class="tk">about.txt</span>  <span class="tk">projects/</span>  <span class="tk">resume.pdf</span>  <span class="tk">skills.json</span>  <span class="tk">certifications/</span>  <span class="tk">contact.vcf</span>');break;
+      case 'cat':
+        if(args[1]==='about.txt'||args[1]==='about'){
+          out('<span class="tv">Security Systems student at Farmingdale (May 2027).</span>');
+          out('<span class="tv">Smart Building intern @ Siemens. Volunteer Firefighter/EMT.</span>');
+          out('<span class="tv">Eagle Scout. Networking + cybersecurity + critical infrastructure.</span>');
+        } else if(args[1]==='skills.json'||args[1]==='skills'){
+          out('<span class="to">{</span> <span class="tk">"bas"</span><span class="to">:</span> <span class="ts">["BACnet","Modbus","Apogee","Desigo"]</span><span class="to">,</span>');
+          out('  <span class="tk">"net"</span><span class="to">:</span> <span class="ts">["CCNA","Splunk","pfSense","Wireshark"]</span><span class="to">,</span>');
+          out('  <span class="tk">"safety"</span><span class="to">:</span> <span class="ts">["FF I","EMT","BLS","ICS"]</span> <span class="to">}</span>');
+        } else if(args[1]){out(`<span class="tw">cat: ${esc(args[1])}: No such file</span>`);}
+        else{out('<span class="tw">cat: missing operand</span>');}
+        break;
+      case 'projects':out('<span class="tv">→ Opening projects page…</span>');setTimeout(()=>location.href='projects.html',700);break;
+      case 'contact':out('<span class="tv">→ Jumping to contact section…</span>');setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),500);break;
+      case 'skills':out('<span class="tv">→ Jumping to skills section…</span>');setTimeout(()=>document.getElementById('skills').scrollIntoView({behavior:'smooth'}),500);break;
+      case 'theme':document.getElementById('themeToggle').click();out('<span class="ts">✓ theme toggled</span>');break;
+      case 'matrix':window.activateMatrix();out('<span class="tk">🌧️  matrix mode engaged</span>');break;
+      case 'clear':case 'cls':termEl.innerHTML='';break;
+      case 'date':out(`<span class="tv">${new Date().toString()}</span>`);break;
+      case 'echo':out(`<span class="tc">${esc(args.slice(1).join(' '))}</span>`);break;
+      case 'sudo':
+        if(args[1]==='hire-me'||args.slice(1).join(' ')==='hire me'){
+          out('<span class="ts">[sudo] Excellent decision detected.</span>');
+          out('<span class="tv">→ Opening contact form…</span>');
+          setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),900);
+        } else {
+          out('<span class="tw">[sudo] permission denied: nice try 😉</span>');
+        }
+        break;
+      case 'neofetch':
+        out('<span class="tp">       _</span>');
+        out(`<span class="tp">   ___( )___</span>   ryan@portfolio`);
+        out(`<span class="tp">  /  _____  \\</span>  ─────────────`);
+        out(`<span class="tp"> |  | RP  | |</span>  <span class="to">OS:</span>     <span class="tv">Portfolio v3.0</span>`);
+        out(`<span class="tp"> |  |_____| |</span>  <span class="to">Role:</span>   <span class="tv">Security Systems</span>`);
+        out(`<span class="tp">  \\_________/</span>  <span class="to">Loc:</span>    <span class="tv">Long Island, NY</span>`);
+        out(`<span class="tp"></span>             <span class="to">Stack:</span>  <span class="tv">BAS · Cyber · Net</span>`);
+        out(`             <span class="to">Status:</span> <span class="ts">● online</span>`);
+        break;
+      case 'social':
+        out('<span class="tv">→ github.com/ryanpfister</span>');
+        out('<span class="tv">→ linkedin.com/in/rdpfister</span>');
+        out('<span class="tv">→ mailto: mifd413@gmail.com</span>');break;
+      case 'open':
+        const target={'github':'https://github.com/ryanpfister','linkedin':'https://www.linkedin.com/in/rdpfister/','resume':'resume.html','projects':'projects.html','blog':'blog.html'}[args[1]];
+        if(target){out(`<span class="tv">→ Opening ${args[1]}…</span>`);setTimeout(()=>{target.startsWith('http')?open(target,'_blank'):location.href=target},500);}
+        else out(`<span class="tw">open: unknown target. Try: github, linkedin, resume, projects, blog</span>`);
+        break;
+      case 'exit':case 'quit':case 'logout':
+        out('<span class="tv">There is no exit. The portfolio is forever.</span>');break;
+      default:
+        out(`<span class="tw">zsh: command not found: ${esc(base)}</span>`);
+        out('<span class="to">Type</span> <span class="ts">help</span> <span class="to">for available commands.</span>');
+    }
+    termEl.scrollTop=termEl.scrollHeight;
+  }
+})();
 </script>
 </body>
 </html>
