@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=20260518b">
+  <link rel="stylesheet" href="css/main.css?v=20260518c">
   <style>
     /* ── Loader ─────────────────────────────────────────── */
     .loader{position:fixed;inset:0;z-index:9000;background:var(--bg-0);display:flex;align-items:center;justify-content:center;transition:opacity .7s .05s,visibility .7s .05s}
@@ -430,6 +430,73 @@
     /* ── Theme toggle ripple ────────────────────────────── */
     .theme-ripple{position:fixed;border-radius:50%;background:var(--bg-0);transform:translate(-50%,-50%);z-index:8000;pointer-events:none;transition:width .65s cubic-bezier(.4,0,.2,1),height .65s cubic-bezier(.4,0,.2,1),opacity .2s .5s;will-change:width,height}
 
+    /* ── PARTICLE NETWORK BACKGROUND ─────────────────────── */
+    #bgCanvas{position:fixed;inset:0;z-index:-3;pointer-events:none;opacity:.7}
+
+    /* ── ACHIEVEMENTS ────────────────────────────────────── */
+    .badge-pill{position:fixed;bottom:80px;right:28px;z-index:400;display:flex;align-items:center;gap:7px;height:40px;padding:0 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-lo);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s,background .2s,border-color .2s,box-shadow .2s;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);pointer-events:none}
+    .badge-pill.visible{opacity:1;transform:none;pointer-events:auto}
+    .badge-pill:hover{background:var(--bg-card-h);border-color:var(--border-h);color:var(--text-hi);box-shadow:0 0 20px var(--blue-glow);transform:translateY(-2px)}
+    .badge-pill-emoji{font-size:14px;line-height:1;filter:saturate(1.2)}
+    .badge-pill-count{font-weight:600;color:var(--blue)}
+    @supports(padding:max(0px)){.badge-pill{bottom:max(80px,calc(env(safe-area-inset-bottom) + 80px))}}
+
+    .ach-overlay{position:fixed;inset:0;z-index:9300;background:rgba(2,8,23,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity .25s,visibility .25s}
+    [data-theme="light"] .ach-overlay{background:rgba(248,250,252,.75)}
+    .ach-box{width:min(640px,96vw);max-height:84vh;background:rgba(15,15,28,.97);border:1px solid rgba(255,255,255,.1);border-radius:16px;box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 0 1px rgba(6,182,212,.12),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);overflow:hidden;display:flex;flex-direction:column;transform:scale(.96) translateY(-8px);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+    [data-theme="light"] .ach-box{background:rgba(255,255,255,.98)}
+    .ach-overlay.open .ach-box{transform:none}
+    .ach-head{padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .ach-title{font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--text-hi)}
+    .ach-sub{font-size:11.5px;font-family:'JetBrains Mono',monospace;color:var(--text-faint);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+    .ach-progress{display:flex;align-items:center;gap:10px}
+    .ach-progress-track{width:100px;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+    .ach-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:2px;width:0%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+    .ach-progress-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-hi);font-weight:600}
+    .ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;padding:18px;overflow-y:auto}
+    .ach-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center;transition:all .25s;position:relative;overflow:hidden}
+    .ach-card.unlocked{background:rgba(6,182,212,.06);border-color:rgba(6,182,212,.25)}
+    .ach-card.unlocked::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+    .ach-card.unlocked:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+    .ach-emoji{font-size:28px;line-height:1;margin-bottom:8px;display:block;filter:grayscale(1) opacity(.35);transition:.3s}
+    .ach-card.unlocked .ach-emoji{filter:none}
+    .ach-name{font-size:12px;font-weight:700;color:var(--text-faint);margin-bottom:4px;letter-spacing:-.01em}
+    .ach-card.unlocked .ach-name{color:var(--text-hi)}
+    .ach-desc{font-size:10.5px;color:var(--text-faint);line-height:1.45;font-family:'JetBrains Mono',monospace}
+    .ach-card.unlocked .ach-desc{color:var(--text-lo)}
+    .ach-foot{padding:12px 24px;border-top:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.18);font-size:11px;color:var(--text-faint);text-align:center;font-family:'JetBrains Mono',monospace}
+
+    /* ── GITHUB FEED ─────────────────────────────────────── */
+    #github{background:var(--bg-1)}
+    .gh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+    @media(max-width:820px){.gh-grid{grid-template-columns:1fr}}
+    .gh-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:22px;transition:var(--ease);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;position:relative;overflow:hidden;min-height:170px}
+    .gh-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent);opacity:0;transition:opacity .4s}
+    .gh-card:hover{border-color:var(--border-h);background:var(--bg-card-h);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+    .gh-card:hover::after{opacity:1}
+    .gh-card-head{display:flex;align-items:center;gap:8px}
+    .gh-card-icon{width:18px;height:18px;color:var(--text-lo);flex-shrink:0}
+    .gh-card-name{font-size:14px;font-weight:700;color:var(--text-hi);letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .gh-card-desc{font-size:12.5px;color:var(--text-lo);line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .gh-card-meta{display:flex;align-items:center;gap:14px;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;margin-top:auto}
+    .gh-card-meta-item{display:flex;align-items:center;gap:5px}
+    .gh-lang-dot{width:9px;height:9px;border-radius:50%;background:var(--text-faint);flex-shrink:0}
+    .gh-skeleton{background:linear-gradient(90deg,rgba(255,255,255,.025) 25%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.025) 75%);background-size:200% 100%;animation:gh-shimmer 1.4s linear infinite;border-radius:6px}
+    @keyframes gh-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .gh-skel-line{height:14px;margin-bottom:8px}
+    .gh-skel-line.lg{height:18px;width:60%}
+    .gh-skel-line.sm{width:80%}
+    .gh-skel-line.xs{width:40%;margin-top:auto;margin-bottom:0}
+    .gh-error{grid-column:1/-1;text-align:center;padding:48px 24px;background:var(--bg-card);border:1px dashed var(--border);border-radius:var(--r);color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:13px}
+    .gh-error a{color:var(--blue);text-decoration:underline}
+
+    /* ── SNAKE GAME ──────────────────────────────────────── */
+    .snake-wrap{padding:6px;background:#010109;display:flex;flex-direction:column;align-items:center;gap:6px}
+    #snakeCanvas{background:#000;border:1px solid rgba(6,182,212,.2);border-radius:4px;display:block;image-rendering:pixelated}
+    .snake-hud{display:flex;justify-content:space-between;width:100%;font-family:'JetBrains Mono',monospace;font-size:.78em;color:#94a3b8;padding:0 4px}
+    .snake-hud .ts{color:#10b981}
+    .snake-hud .tw{color:#f59e0b}
+
     /* ── MARQUEE TICKER (inline-block, defeats cached CSS) ──
        This block intentionally lives inline in index.html so it
        overrides any cached version of main.css. Uses inline-block
@@ -449,6 +516,9 @@
   </style>
 </head>
 <body>
+
+<!-- Particle network bg (z-index:-3, behind page-bg & page-dots) -->
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
 
 <!-- Loader -->
 <div class="loader" id="loader">
@@ -520,6 +590,31 @@
 
 <!-- Toast notification -->
 <div class="toast" id="toast"></div>
+
+<!-- Achievement badge pill -->
+<button class="badge-pill" id="badgePill" aria-label="Show achievements">
+  <span class="badge-pill-emoji">🏆</span>
+  <span><span class="badge-pill-count" id="badgeCount">0</span>/12</span>
+</button>
+
+<!-- Achievement modal -->
+<div class="ach-overlay" id="achModal" role="dialog" aria-modal="true" aria-hidden="true"
+     style="opacity:0;visibility:hidden;pointer-events:none">
+  <div class="ach-box">
+    <div class="ach-head">
+      <div>
+        <div class="ach-title">Achievements</div>
+        <div class="ach-sub" id="achSubLine">Explore the site to unlock</div>
+      </div>
+      <div class="ach-progress">
+        <div class="ach-progress-track"><div class="ach-progress-fill" id="achProgressFill"></div></div>
+        <span class="ach-progress-num" id="achProgressNum">0/12</span>
+      </div>
+    </div>
+    <div class="ach-grid" id="achGrid"></div>
+    <div class="ach-foot">Tip — try <kbd style="font-family:inherit;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:3px;border:1px solid var(--border)">⌘K</kbd> or the Konami code</div>
+  </div>
+</div>
 
 <!-- ⌘K Command Palette -->
 <div class="cmd-overlay" id="cmdOverlay" role="dialog" aria-modal="true" aria-hidden="true"
@@ -1004,10 +1099,28 @@
 </section>
 
 
+<!-- GITHUB LIVE FEED -->
+<section id="github">
+  <div class="container">
+    <div class="label">04 / Activity</div>
+    <h2 class="section-title">Latest from <em>GitHub</em></h2>
+    <div class="gh-grid" id="ghGrid">
+      <!-- 6 skeleton cards while loading -->
+      <div class="gh-card"><div class="gh-skel-line lg gh-skeleton"></div><div class="gh-skel-line sm gh-skeleton"></div><div class="gh-skel-line gh-skeleton"></div><div class="gh-skel-line xs gh-skeleton"></div></div>
+      <div class="gh-card"><div class="gh-skel-line lg gh-skeleton"></div><div class="gh-skel-line sm gh-skeleton"></div><div class="gh-skel-line gh-skeleton"></div><div class="gh-skel-line xs gh-skeleton"></div></div>
+      <div class="gh-card"><div class="gh-skel-line lg gh-skeleton"></div><div class="gh-skel-line sm gh-skeleton"></div><div class="gh-skel-line gh-skeleton"></div><div class="gh-skel-line xs gh-skeleton"></div></div>
+      <div class="gh-card"><div class="gh-skel-line lg gh-skeleton"></div><div class="gh-skel-line sm gh-skeleton"></div><div class="gh-skel-line gh-skeleton"></div><div class="gh-skel-line xs gh-skeleton"></div></div>
+      <div class="gh-card"><div class="gh-skel-line lg gh-skeleton"></div><div class="gh-skel-line sm gh-skeleton"></div><div class="gh-skel-line gh-skeleton"></div><div class="gh-skel-line xs gh-skeleton"></div></div>
+      <div class="gh-card"><div class="gh-skel-line lg gh-skeleton"></div><div class="gh-skel-line sm gh-skeleton"></div><div class="gh-skel-line gh-skeleton"></div><div class="gh-skel-line xs gh-skeleton"></div></div>
+    </div>
+  </div>
+</section>
+
+
 <!-- SKILLS -->
 <section id="skills">
   <div class="container">
-    <div class="label">04 / Skills</div>
+    <div class="label">05 / Skills</div>
     <h2 class="section-title">Technologies &amp; <em>capabilities</em></h2>
     <div class="skills-grid stagger">
       <div class="skill-block">
@@ -1034,7 +1147,7 @@
 <!-- HONORS -->
 <section id="honors">
   <div class="container">
-    <div class="label">05 / Recognition</div>
+    <div class="label">06 / Recognition</div>
     <h2 class="section-title">Honors &amp; <em>awards</em></h2>
     <div class="honors-grid stagger">
       <div class="honor-card"><span class="honor-ico">🏆</span><div class="honor-name">EMT of the Year</div><div class="honor-from">Middle Island Fire Department</div><div class="honor-yr">May 2026</div></div>
@@ -1052,7 +1165,7 @@
     <div class="contact-layout">
       <!-- LEFT: lead text -->
       <div class="contact-lead fade-up">
-        <div class="label">06 / Contact</div>
+        <div class="label">07 / Contact</div>
         <h2 class="section-title">Let's <em>connect</em></h2>
         <div class="avail-pill">
           <span class="avail-dot"></span>
@@ -1547,6 +1660,12 @@ secs.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeCmd();});
 
   window.openCmdPalette=openCmd;
+
+  // Auto-open if navigated from 404 page with #cmdk
+  if(location.hash==='#cmdk'){
+    history.replaceState(null,'',location.pathname);
+    setTimeout(openCmd,800);
+  }
 })();
 
 /* ════════════════════════════════════════════════════════════
@@ -1836,12 +1955,385 @@ window.activateMatrix=function(duration){
         break;
       case 'exit':case 'quit':case 'logout':
         out('<span class="tv">There is no exit. The portfolio is forever.</span>');break;
+      case 'snake':case 'play':
+        startSnake();return; // skip prompt re-append (snake will do it)
       default:
         out(`<span class="tw">zsh: command not found: ${esc(base)}</span>`);
         out('<span class="to">Type</span> <span class="ts">help</span> <span class="to">for available commands.</span>');
     }
     termEl.scrollTop=termEl.scrollHeight;
   }
+
+  /* ── Snake game inside the terminal ── */
+  function startSnake(){
+    if(inputBox)inputBox.parentElement?.remove();
+    const wrap=document.createElement('div');wrap.className='snake-wrap';
+    const hud=document.createElement('div');hud.className='snake-hud';
+    const hi=parseInt(localStorage.getItem('rp_snake_hi')||'0',10);
+    hud.innerHTML=`<span><span class="to">score</span> <span class="ts" id="snakeScore">0</span></span><span><span class="to">hi-score</span> <span class="tw">${hi}</span></span><span class="to">arrows · q to quit</span>`;
+    const c=document.createElement('canvas');c.id='snakeCanvas';
+    const cell=12, cols=24, rows=14;
+    c.width=cols*cell;c.height=rows*cell;c.style.width='100%';c.style.maxWidth='320px';c.style.aspectRatio=cols+'/'+rows;
+    wrap.appendChild(hud);wrap.appendChild(c);termEl.appendChild(wrap);
+    const ctx=c.getContext('2d');
+    let snake=[{x:8,y:7},{x:7,y:7},{x:6,y:7}];
+    let dir={x:1,y:0},nextDir=dir;
+    let apple={x:14,y:7};
+    let score=0,tick=0,speed=8,alive=true;
+    const scoreEl=document.getElementById('snakeScore');
+    function randApple(){
+      while(true){
+        const a={x:Math.floor(Math.random()*cols),y:Math.floor(Math.random()*rows)};
+        if(!snake.some(s=>s.x===a.x&&s.y===a.y))return a;
+      }
+    }
+    function onKey(e){
+      if(!alive&&e.key!=='Enter')return;
+      const k=e.key.toLowerCase();
+      if(k==='arrowup'||k==='w'){if(dir.y!==1)nextDir={x:0,y:-1};e.preventDefault();}
+      else if(k==='arrowdown'||k==='s'){if(dir.y!==-1)nextDir={x:0,y:1};e.preventDefault();}
+      else if(k==='arrowleft'||k==='a'){if(dir.x!==1)nextDir={x:-1,y:0};e.preventDefault();}
+      else if(k==='arrowright'||k==='d'){if(dir.x!==-1)nextDir={x:1,y:0};e.preventDefault();}
+      else if(k==='q'||k==='escape'){alive=false;endGame(true);e.preventDefault();}
+    }
+    document.addEventListener('keydown',onKey);
+    function endGame(quit){
+      alive=false;
+      document.removeEventListener('keydown',onKey);
+      wrap.remove();
+      out(`<span class="${quit?'tw':'tw'}">${quit?'>>> quit':'>>> game over'}</span> <span class="to">score:</span> <span class="ts">${score}</span> <span class="to">hi:</span> <span class="tw">${Math.max(hi,score)}</span>`);
+      if(score>hi)localStorage.setItem('rp_snake_hi',String(score));
+      if(score>0&&window.rpUnlock)window.rpUnlock('charmer');
+      appendPromptLine();inputBox.focus();
+    }
+    function step(){
+      if(!alive)return;
+      tick++;
+      if(tick%speed===0){
+        dir=nextDir;
+        const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+        if(head.x<0||head.y<0||head.x>=cols||head.y>=rows||snake.some(s=>s.x===head.x&&s.y===head.y)){
+          return endGame(false);
+        }
+        snake.unshift(head);
+        if(head.x===apple.x&&head.y===apple.y){
+          score++;scoreEl.textContent=score;
+          apple=randApple();
+          if(score%5===0&&speed>3)speed--;
+        } else snake.pop();
+      }
+      // draw
+      ctx.fillStyle='#000';ctx.fillRect(0,0,c.width,c.height);
+      // grid dots
+      ctx.fillStyle='rgba(255,255,255,.03)';
+      for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+        ctx.fillRect(x*cell+cell/2-.5,y*cell+cell/2-.5,1,1);
+      }
+      // apple
+      ctx.fillStyle='#ef4444';ctx.shadowColor='#ef4444';ctx.shadowBlur=8;
+      ctx.fillRect(apple.x*cell+2,apple.y*cell+2,cell-4,cell-4);
+      ctx.shadowBlur=0;
+      // snake
+      snake.forEach((s,i)=>{
+        const t=i/snake.length;
+        ctx.fillStyle=i===0?'#06b6d4':`rgba(6,182,212,${1-t*.5})`;
+        if(i===0){ctx.shadowColor='#06b6d4';ctx.shadowBlur=6;}
+        ctx.fillRect(s.x*cell+1,s.y*cell+1,cell-2,cell-2);
+        ctx.shadowBlur=0;
+      });
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+})();
+
+/* ════════════════════════════════════════════════════════════
+   ACHIEVEMENT SYSTEM
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const KEY='rp_achievements_v1';
+  const badges=[
+    {id:'spotlight',  emoji:'🔍', name:'Spotlight',     desc:'Opened ⌘K palette'},
+    {id:'cheatcode',  emoji:'🎮', name:'Cheat Code',    desc:'Entered Konami'},
+    {id:'explorer',   emoji:'🗺️', name:'Explorer',      desc:'Viewed all sections'},
+    {id:'hacker',     emoji:'💻', name:'Hacker',        desc:'5+ terminal cmds'},
+    {id:'mailbox',    emoji:'📧', name:'Mailbox',       desc:'Copied email'},
+    {id:'daynight',   emoji:'🌓', name:'Day & Night',   desc:'Toggled theme'},
+    {id:'matrix',     emoji:'🌧️', name:'Matrix',        desc:'Triggered the rain'},
+    {id:'homerun',    emoji:'🏠', name:'Home Run',      desc:'Used back-to-top'},
+    {id:'charmer',    emoji:'🐍', name:'Charmer',       desc:'Played Snake'},
+    {id:'poweruser',  emoji:'⌨️', name:'Power User',    desc:'Ran a ⌘K command'},
+    {id:'speedrun',   emoji:'⚡', name:'Speedrun',      desc:'5 badges in a session'},
+    {id:'completionist',emoji:'🥚',name:'Completionist',desc:'Unlock all 11 others'},
+  ];
+
+  function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return{}}}
+  function save(s){localStorage.setItem(KEY,JSON.stringify(s))}
+
+  const pill=document.getElementById('badgePill');
+  const countEl=document.getElementById('badgeCount');
+  const grid=document.getElementById('achGrid');
+  const modal=document.getElementById('achModal');
+  const subLine=document.getElementById('achSubLine');
+  const progFill=document.getElementById('achProgressFill');
+  const progNum=document.getElementById('achProgressNum');
+
+  function render(){
+    const s=load();
+    const got=Object.keys(s).length;
+    countEl.textContent=got;
+    progNum.textContent=`${got}/${badges.length}`;
+    progFill.style.width=(got/badges.length*100)+'%';
+    subLine.textContent=got===0?'Explore the site to unlock':got===badges.length?'Completed! You found them all.':`${badges.length-got} more to find`;
+    grid.innerHTML=badges.map(b=>{
+      const un=!!s[b.id];
+      return `<div class="ach-card ${un?'unlocked':''}">
+        <span class="ach-emoji">${b.emoji}</span>
+        <div class="ach-name">${un?b.name:'???'}</div>
+        <div class="ach-desc">${un?b.desc:'Locked'}</div>
+      </div>`;
+    }).join('');
+    if(got>0)pill.classList.add('visible');
+  }
+
+  let sessionUnlocks=0;
+  window.rpUnlock=function(id){
+    const s=load();
+    if(s[id])return;
+    s[id]=Date.now();
+    save(s);
+    const b=badges.find(x=>x.id===id);
+    if(b)showToast(`${b.emoji}  ${b.name} unlocked`);
+    sessionUnlocks++;
+    // Meta: Speedrun
+    if(sessionUnlocks>=5&&!s.speedrun){
+      s.speedrun=Date.now();save(s);
+      setTimeout(()=>{const sb=badges.find(x=>x.id==='speedrun');showToast(`${sb.emoji}  ${sb.name} unlocked`);render();},1200);
+    }
+    // Meta: Completionist (all 11 others)
+    const need=badges.filter(x=>x.id!=='completionist').map(x=>x.id);
+    if(need.every(n=>load()[n])&&!s.completionist){
+      const s2=load();s2.completionist=Date.now();save(s2);
+      setTimeout(()=>{const sb=badges.find(x=>x.id==='completionist');showToast(`${sb.emoji}  ${sb.name} unlocked!`);render();},1500);
+    }
+    render();
+  };
+
+  // Modal open/close
+  function open(){
+    modal.style.cssText='opacity:1;visibility:visible;pointer-events:auto';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    render();
+  }
+  function close(){
+    modal.style.cssText='opacity:0;visibility:hidden;pointer-events:none';
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+  }
+  pill.addEventListener('click',open);
+  modal.addEventListener('click',e=>{if(e.target===modal)close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))close();});
+
+  // Initial render (shows pill if any unlocks exist)
+  render();
+
+  // Section visit tracker for Explorer badge
+  const sectionsToVisit=['about','experience','education','skills','honors','contact'];
+  const visited=new Set();
+  sectionsToVisit.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    new IntersectionObserver((es,obs)=>{es.forEach(e=>{
+      if(e.isIntersecting){
+        visited.add(id);
+        if(visited.size===sectionsToVisit.length)window.rpUnlock('explorer');
+        obs.unobserve(e.target);
+      }
+    });},{threshold:.25}).observe(el);
+  });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   GITHUB LIVE FEED
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const grid=document.getElementById('ghGrid');
+  if(!grid)return;
+  const CACHE_KEY='rp_gh_v1';
+  const TTL=15*60*1000; // 15 min
+  const langColor={JavaScript:'#f1e05a',TypeScript:'#3178c6',Python:'#3572A5',HTML:'#e34c26',CSS:'#563d7c',Java:'#b07219',C:'#555555','C++':'#f34b7d',Go:'#00ADD8',Shell:'#89e051',Vue:'#41b883',Svelte:'#ff3e00'};
+
+  function relTime(iso){
+    const d=Math.floor((Date.now()-new Date(iso).getTime())/1000);
+    if(d<60)return 'just now';
+    if(d<3600)return `${Math.floor(d/60)}m ago`;
+    if(d<86400)return `${Math.floor(d/3600)}h ago`;
+    if(d<2592000)return `${Math.floor(d/86400)}d ago`;
+    if(d<31536000)return `${Math.floor(d/2592000)}mo ago`;
+    return `${Math.floor(d/31536000)}y ago`;
+  }
+
+  function render(repos){
+    if(!repos||!repos.length){
+      grid.innerHTML=`<div class="gh-error">GitHub API rate-limited or unavailable.<br>View all repos at <a href="https://github.com/ryanpfister" target="_blank" rel="noopener">github.com/ryanpfister</a></div>`;
+      return;
+    }
+    grid.innerHTML=repos.slice(0,6).map(r=>{
+      const dot=langColor[r.language]||'#94a3b8';
+      return `<a href="${r.html_url}" target="_blank" rel="noopener" class="gh-card">
+        <div class="gh-card-head">
+          <svg class="gh-card-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25v3.25a.25.25 0 0 0 .4.2l1.45-1.087a.249.249 0 0 1 .3 0L8.6 15.7a.25.25 0 0 0 .4-.2v-3.25a.25.25 0 0 0-.25-.25h-3.5a.25.25 0 0 0-.25.25Z"/></svg>
+          <span class="gh-card-name">${r.name}</span>
+        </div>
+        <p class="gh-card-desc">${r.description||'<span style="color:var(--text-faint);font-style:italic">No description</span>'}</p>
+        <div class="gh-card-meta">
+          ${r.language?`<span class="gh-card-meta-item"><span class="gh-lang-dot" style="background:${dot}"></span>${r.language}</span>`:''}
+          ${r.stargazers_count>0?`<span class="gh-card-meta-item">★ ${r.stargazers_count}</span>`:''}
+          <span class="gh-card-meta-item">${relTime(r.pushed_at||r.updated_at)}</span>
+        </div>
+      </a>`;
+    }).join('');
+  }
+
+  // Try cache first
+  try{
+    const c=JSON.parse(sessionStorage.getItem(CACHE_KEY)||'null');
+    if(c&&Date.now()-c.t<TTL){render(c.d);return;}
+  }catch{}
+
+  fetch('https://api.github.com/users/ryanpfister/repos?sort=updated&per_page=12')
+    .then(r=>{if(!r.ok)throw new Error('rate-limited');return r.json();})
+    .then(repos=>{
+      // Filter out forks and prioritize originals
+      const owned=repos.filter(r=>!r.fork);
+      const final=(owned.length>=6?owned:repos).slice(0,6);
+      try{sessionStorage.setItem(CACHE_KEY,JSON.stringify({t:Date.now(),d:final}))}catch{}
+      render(final);
+    })
+    .catch(()=>render(null));
+})();
+
+/* ════════════════════════════════════════════════════════════
+   BG PARTICLE NETWORK
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const canvas=document.getElementById('bgCanvas');
+  if(!canvas)return;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[],mouse={x:-9e9,y:-9e9},alive=true;
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.1+.4,a:Math.random()*.4+.2,c:Math.random()>.65?[139,92,246]:[6,182,212]};}
+  function init(){pts=[];const n=Math.min(Math.floor(W*H/22000),60);for(let i=0;i<n;i++)pts.push(mk());}
+  function draw(){
+    if(!alive)return;
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i];
+      if(!reduced){
+        const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<100){const f=(100-d)/100*.3;p.vx+=dx/d*f;p.vy+=dy/d*f;}
+        p.vx*=.97;p.vy*=.97;
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+        if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      }
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.a})`;ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],ex=p.x-q.x,ey=p.y-q.y,ed=Math.sqrt(ex*ex+ey*ey);
+        if(ed<130){const a=(1-ed/130)*.14;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(6,182,212,${a})`;ctx.lineWidth=.5;ctx.stroke();}
+      }
+    }
+    if(!reduced)requestAnimationFrame(draw);
+  }
+  addEventListener('resize',()=>{resize();init();},{passive:true});
+  addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){alive=false;}
+    else if(!alive&&!reduced){alive=true;requestAnimationFrame(draw);}
+  });
+  resize();init();draw();
+})();
+
+/* ════════════════════════════════════════════════════════════
+   TAB-AWAY TITLE TRICK
+═══════════════════════════════════════════════════════════ */
+(function(){
+  const origTitle=document.title;
+  const messages=['👋 Come back!','🔥 New projects waiting…','🚒 Currently on a call…','💻 Still hacking…','🌧️ Matrix mode online…'];
+  let idx=0,timer=null;
+  const origFavicon=document.querySelector('link[rel="icon"]')?.href;
+  const notifyFav='data:image/svg+xml;utf8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#g)"/><text x="16" y="22" font-family="Inter,sans-serif" font-size="14" font-weight="800" fill="white" text-anchor="middle">RP</text><circle cx="26" cy="6" r="6" fill="#10b981" stroke="#020817" stroke-width="2"/></svg>`);
+
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){
+      idx=0;
+      document.title=messages[idx];
+      const fav=document.querySelector('link[rel="icon"]');
+      if(fav)fav.href=notifyFav;
+      timer=setInterval(()=>{
+        idx=(idx+1)%messages.length;
+        document.title=messages[idx];
+      },3000);
+    } else {
+      clearInterval(timer);timer=null;
+      document.title=origTitle;
+      const fav=document.querySelector('link[rel="icon"]');
+      if(fav&&origFavicon)fav.href=origFavicon;
+    }
+  });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   WIRE UP ACHIEVEMENT UNLOCKS to existing handlers
+═══════════════════════════════════════════════════════════ */
+(function(){
+  // ⌘K open → spotlight
+  const origOpen=window.openCmdPalette;
+  if(origOpen){
+    window.openCmdPalette=function(){window.rpUnlock&&window.rpUnlock('spotlight');return origOpen.apply(this,arguments);};
+  }
+  // Matrix → matrix badge
+  const origMatrix=window.activateMatrix;
+  if(origMatrix){
+    window.activateMatrix=function(){window.rpUnlock&&window.rpUnlock('matrix');return origMatrix.apply(this,arguments);};
+  }
+  // Theme toggle → daynight
+  document.getElementById('themeToggle')?.addEventListener('click',()=>window.rpUnlock&&window.rpUnlock('daynight'));
+  // Back to top → homerun
+  document.getElementById('backTop')?.addEventListener('click',()=>window.rpUnlock&&window.rpUnlock('homerun'));
+  // Email copy → mailbox (wrap existing click)
+  document.getElementById('emailCard')?.addEventListener('click',()=>window.rpUnlock&&window.rpUnlock('mailbox'));
+  // Konami → cheatcode (Konami fires activateMatrix; we add a flag through a counter)
+  const origMatrix2=window.activateMatrix;
+  // Already wrapped; piggyback: when Konami sequence completes via keydown, the matrix is fired. We can detect Konami specifically by listening for the sequence ourselves.
+  const code=['arrowup','arrowup','arrowdown','arrowdown','arrowleft','arrowright','arrowleft','arrowright','b','a'];
+  let pos=0;
+  document.addEventListener('keydown',e=>{
+    const k=e.key.toLowerCase();
+    if(k===code[pos]){
+      pos++;
+      if(pos===code.length){pos=0;window.rpUnlock&&window.rpUnlock('cheatcode');}
+    } else {
+      pos=k===code[0]?1:0;
+    }
+  });
+  // Terminal command counter → hacker after 5
+  let termCmds=0;
+  const termObs=new MutationObserver(()=>{
+    const lines=document.querySelectorAll('#termOut .tc');
+    if(lines.length>=5+19){ // 19 is approximately the count of scripted .tc spans from the boot animation
+      window.rpUnlock&&window.rpUnlock('hacker');termObs.disconnect();
+    }
+  });
+  const termOut=document.getElementById('termOut');
+  if(termOut)termObs.observe(termOut,{childList:true,subtree:true});
+  // ⌘K execute → poweruser (wrap cmd-item clicks via delegation)
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.cmd-item'))window.rpUnlock&&window.rpUnlock('poweruser');
+  });
 })();
 </script>
 </body>

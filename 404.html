@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#020817">
+  <title>404 — Kernel Panic | Ryan Pfister</title>
+  <meta name="description" content="Page not found. The portfolio's terminal threw a kernel panic.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css?v=20260518c">
+</head>
+<body>
+
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
+
+<div id="progress"></div>
+
+<nav id="nav" class="scrolled">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="certifications.html">Certs</a></li>
+      <li><a href="blog.html">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="index.html" class="nav-cta">Home</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-bg"></div>
+<div class="page-dots"></div>
+
+<div class="err-wrap">
+
+  <div class="err-monitor">
+    <div class="err-screen">
+      <div class="err-term" id="errTerm">
+        <span class="ts">Ryan Pfister Portfolio — kernel</span><br>
+        <span class="to">────────────────────────────────────</span><br>
+        <br>
+        <span class="tp">$ </span><span class="tc" id="navCmd"></span><span class="err-cursor" id="errCur"></span>
+        <div id="errOutput" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="err-stand-neck"></div>
+  <div class="err-stand-base"></div>
+
+  <div class="err-actions">
+    <a href="index.html" class="btn btn-fill">
+      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Reboot to home
+    </a>
+    <a href="index.html" class="btn btn-ghost" id="errBtnCmdK">
+      Open <kbd style="font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,255,255,.05);padding:1px 6px;border-radius:4px;border:1px solid var(--border);margin-left:4px">⌘K</kbd>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">&copy; 2025 Ryan Pfister</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:mifd413@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Cursor */
+const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+if(dot&&ring){let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
+
+/* Particle bg */
+(function(){
+  const canvas=document.getElementById('bgCanvas');if(!canvas)return;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ctx=canvas.getContext('2d');
+  let W,H,pts=[],mouse={x:-9e9,y:-9e9};
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.1+.4,a:Math.random()*.4+.2,c:Math.random()>.65?[244,63,94]:[6,182,212]};}
+  function init(){pts=[];const n=Math.min(Math.floor(W*H/22000),60);for(let i=0;i<n;i++)pts.push(mk());}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i];
+      if(!reduced){
+        const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<100){const f=(100-d)/100*.3;p.vx+=dx/d*f;p.vy+=dy/d*f;}
+        p.vx*=.97;p.vy*=.97;p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      }
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.c[0]},${p.c[1]},${p.c[2]},${p.a})`;ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],ex=p.x-q.x,ey=p.y-q.y,ed=Math.sqrt(ex*ex+ey*ey);
+        if(ed<130){const a=(1-ed/130)*.14;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(244,63,94,${a})`;ctx.lineWidth=.5;ctx.stroke();}
+      }
+    }
+    if(!reduced)requestAnimationFrame(draw);
+  }
+  addEventListener('resize',()=>{resize();init();},{passive:true});
+  addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;},{passive:true});
+  resize();init();draw();
+})();
+
+/* Terminal typing */
+const path=location.pathname.length>1?location.pathname:'/missing-resource';
+const navCmd=document.getElementById('navCmd');
+const errCur=document.getElementById('errCur');
+const out=document.getElementById('errOutput');
+const cmd=`navigate ${path}`;
+let i=0;
+function typeChar(){
+  if(i<=cmd.length){navCmd.textContent=cmd.slice(0,i++);setTimeout(typeChar,55);}
+  else{errCur.remove();setTimeout(showOutput,400);}
+}
+function showOutput(){
+  const lines=[
+    `<span class="tk">✕ kernel panic at line 0xCAFEBABE</span>`,
+    `<span class="tw">→ ENOENT</span> <span class="tv">file not found:</span> <span class="tc">${path}</span>`,
+    ``,
+    `<span class="to">stack trace:</span>`,
+    `  <span class="to">at</span> <span class="tv">router.resolve(${path})</span>`,
+    `  <span class="to">at</span> <span class="tv">portfolio.serve(req)</span>`,
+    ``,
+    `<span class="ts">$ recovery_suggestions --list</span>`,
+    `<span class="tv">→ press the <span class="ts">[Reboot to home]</span> button below</span>`,
+    `<span class="tv">→ try <span class="ts">⌘K</span> to search for what you wanted</span>`,
+    `<span class="tv">→ view all sections at <a href="index.html" style="color:#06b6d4;text-decoration:underline">rdpfister.com</a></span>`,
+  ];
+  let li=0;
+  (function step(){
+    if(li>=lines.length)return;
+    const d=document.createElement('div');
+    d.innerHTML=lines[li]||'&nbsp;';
+    out.appendChild(d);
+    li++;
+    setTimeout(step,140);
+  })();
+}
+setTimeout(typeChar,600);
+
+/* Open ⌘K button: redirect to home with hash trigger */
+document.getElementById('errBtnCmdK')?.addEventListener('click',e=>{
+  e.preventDefault();
+  location.href='index.html#cmdk';
+});
+</script>
+</body>
+</html>

@@ -274,3 +274,19 @@ footer{border-top:1px solid var(--border);padding:32px 0}
   .card:hover,.exp-card:hover,.edu-card:hover,.honor-card:hover,.skill-block:hover{transform:none;box-shadow:none}
   .btn-fill:hover,.btn-ghost:hover{transform:none}
 }
+
+/* ── 22. PARTICLE BG (shared with 404) ────────────────────────── */
+#bgCanvas{position:fixed;inset:0;z-index:-3;pointer-events:none;opacity:.6}
+
+/* ── 23. 404 MONITOR ──────────────────────────────────────────── */
+.err-wrap{min-height:calc(100vh - 66px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 24px 60px;gap:32px;position:relative}
+.err-monitor{width:min(720px,92vw);background:linear-gradient(180deg,#1e1e30 0%,#0e0e1c 100%);border-radius:16px;padding:13px 13px 30px;border:1px solid rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 0 0 1px rgba(0,0,0,.7),0 30px 80px rgba(0,0,0,.75),0 0 90px rgba(244,63,94,.08),0 0 0 1px rgba(244,63,94,.04);position:relative}
+.err-monitor::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);border-radius:16px 16px 0 0}
+.err-screen{border-radius:6px;overflow:hidden;background:#000;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);aspect-ratio:16/9;position:relative}
+.err-screen::before{content:'';position:absolute;inset:0;z-index:5;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px)}
+.err-term{height:100%;background:#020208;font-family:'JetBrains Mono',monospace;font-size:13px;color:#c8d3ea;padding:14px 18px;line-height:1.8;overflow:hidden}
+.err-term .tp{color:#06b6d4}.err-term .tc{color:#f1f5f9}.err-term .to{color:#64748b}.err-term .tv{color:#94a3b8}.err-term .tw{color:#f59e0b}.err-term .ts{color:#10b981}.err-term .tk{color:#f43f5e}
+.err-cursor{display:inline-block;width:.5em;height:.9em;background:#06b6d4;animation:blink 1s step-end infinite;vertical-align:-.12em;margin-left:1px}
+.err-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.err-stand-neck{width:10%;height:24px;background:linear-gradient(180deg,#1a1a2c,#101020);margin:0 auto;border-left:1px solid rgba(255,255,255,.05);border-right:1px solid rgba(255,255,255,.05)}
+.err-stand-base{width:30%;height:8px;background:linear-gradient(180deg,#1a1a2c,#0d0d1c);border-radius:0 0 8px 8px;border:1px solid rgba(255,255,255,.05);border-top:none;margin:0 auto}
