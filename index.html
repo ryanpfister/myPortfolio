@@ -1928,6 +1928,14 @@ window.activateMatrix=function(duration){
           out('<span class="to">stack:</span>   <span class="tc">Web App · Real-time · Multi-user</span>');
           out('<span class="to">role:</span>    <span class="tc">Team build · Town of Brookhaven</span>');
           out('<span class="to">status:</span>  <span class="tw">archived (cad.rdpfister.com)</span>');
+        } else if(args[1]==='mifd'||args[1]==='middleislandfd'||args[1]==='mifd-website'){
+          out('<span class="ts">▌ Middle Island Fire Department Website</span>');
+          out('<span class="to">────────────────────────────────────────</span>');
+          out('<span class="tv">Designed &amp; built the community-facing website for MIFD.</span>');
+          out('<span class="tv">News, recruitment, events, Big Bucks raffle, department info.</span>');
+          out('<span class="to">stack:</span>   <span class="tc">HTML / CSS / CMS</span>');
+          out('<span class="to">role:</span>    <span class="tc">Webmaster · MIFD volunteer</span>');
+          out('<span class="to">live:</span>    <span class="ts">middleislandfd.com</span>');
         } else if(args[1]==='projects.txt'||args[1]==='projects'){
           out('<span class="tv">→ Opening projects page…</span>');setTimeout(()=>location.href='projects.html',500);
         } else if(args[1]){out(`<span class="tw">cat: ${esc(args[1])}: No such file</span>`);}
@@ -1965,9 +1973,9 @@ window.activateMatrix=function(duration){
         out('<span class="tv">→ linkedin.com/in/rdpfister</span>');
         out('<span class="tv">→ mailto: mifd413@gmail.com</span>');break;
       case 'open':
-        const target={'github':'https://github.com/ryanpfister','linkedin':'https://www.linkedin.com/in/rdpfister/','resume':'resume.html','projects':'projects.html','blog':'blog.html'}[args[1]];
+        const target={'github':'https://github.com/ryanpfister','linkedin':'https://www.linkedin.com/in/rdpfister/','resume':'resume.html','projects':'projects.html','blog':'blog.html','mifd':'https://middleislandfd.com','middleislandfd':'https://middleislandfd.com'}[args[1]];
         if(target){out(`<span class="tv">→ Opening ${args[1]}…</span>`);setTimeout(()=>{target.startsWith('http')?open(target,'_blank'):location.href=target},500);}
-        else out(`<span class="tw">open: unknown target. Try: github, linkedin, resume, projects, blog</span>`);
+        else out(`<span class="tw">open: unknown target. Try: github, linkedin, resume, projects, blog, mifd</span>`);
         break;
       case 'exit':case 'quit':case 'logout':
         out('<span class="tv">There is no exit. The portfolio is forever.</span>');break;
