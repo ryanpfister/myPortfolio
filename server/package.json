@@ -1,0 +1,22 @@
+{
+  "name": "rdpfister-api",
+  "version": "1.0.0",
+  "description": "Backend API for rdpfister.com — blog CMS with SQLite + JWT auth",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "hash": "node hash.js",
+    "seed": "node seed.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^11.3.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "private": true
+}

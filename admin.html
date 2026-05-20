@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compose | Ryan Pfister</title>
+  <title>Admin | Ryan Pfister</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#020817">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -12,30 +12,44 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css?v=20260518c">
   <style>
-    /* ── PIN GATE ─────────────────────────────────────── */
-    .pin-gate{position:fixed;inset:0;z-index:9000;background:var(--bg-0);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center;transition:opacity .35s,visibility .35s}
-    .pin-gate.unlocked{opacity:0;visibility:hidden;pointer-events:none}
-    .pin-box{max-width:380px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:36px 32px;backdrop-filter:blur(20px);position:relative}
-    .pin-box::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent)}
-    .pin-icon{font-size:28px;margin-bottom:14px}
-    .pin-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
-    .pin-sub{font-size:12.5px;color:var(--text-lo);margin-bottom:22px;line-height:1.6}
-    .pin-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;color:var(--text-hi);font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;text-align:center;letter-spacing:.3em;margin-bottom:14px;transition:var(--ease)}
-    .pin-input:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
-    .pin-input.err{border-color:rgba(244,63,94,.5);animation:pin-shake .35s}
-    @keyframes pin-shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-    .pin-btn{width:100%;background:linear-gradient(135deg,var(--blue),#6366f1);color:#fff;border:none;border-radius:var(--r-sm);padding:11px 22px;font-weight:600;font-size:14px;cursor:pointer;transition:var(--ease)}
-    .pin-btn:hover{transform:translateY(-1px);box-shadow:0 0 24px var(--blue-glow)}
-    .pin-note{font-size:11px;color:var(--text-faint);margin-top:18px;line-height:1.5;font-family:'JetBrains Mono',monospace}
+    /* ── LOGIN SCREEN ─────────────────────────────────── */
+    .login-screen{position:fixed;inset:0;z-index:9000;background:var(--bg-0);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;transition:opacity .35s,visibility .35s}
+    .login-screen.gone{opacity:0;visibility:hidden;pointer-events:none}
+    .login-box{max-width:380px;width:100%;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:36px 32px;backdrop-filter:blur(20px);position:relative}
+    .login-box::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent)}
+    .login-icon{font-size:28px;margin-bottom:14px;text-align:center}
+    .login-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px;text-align:center}
+    .login-sub{font-size:12.5px;color:var(--text-lo);margin-bottom:22px;line-height:1.6;text-align:center;font-family:'JetBrains Mono',monospace}
+    .login-field{margin-bottom:12px}
+    .login-label{display:block;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+    .login-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 14px;color:var(--text-hi);font-family:inherit;font-size:14px;outline:none;transition:var(--ease)}
+    .login-input:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
+    .login-input.err{border-color:rgba(244,63,94,.5);animation:login-shake .35s}
+    @keyframes login-shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+    .login-btn{width:100%;background:linear-gradient(135deg,var(--blue),#6366f1);color:#fff;border:none;border-radius:var(--r-sm);padding:11px 22px;font-weight:600;font-size:14px;cursor:pointer;transition:var(--ease);margin-top:6px}
+    .login-btn:hover{transform:translateY(-1px);box-shadow:0 0 24px var(--blue-glow)}
+    .login-btn:disabled{opacity:.6;cursor:wait;transform:none}
+    .login-err{margin-top:12px;padding:9px 12px;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.3);border-radius:var(--r-sm);color:var(--rose);font-size:12px;font-family:'JetBrains Mono',monospace;text-align:center;display:none}
+    .login-err.show{display:block}
+    .login-note{font-size:11px;color:var(--text-faint);margin-top:18px;line-height:1.5;font-family:'JetBrains Mono',monospace;text-align:center}
 
-    /* ── COMPOSER LAYOUT ──────────────────────────────── */
+    /* ── APP LAYOUT ───────────────────────────────────── */
     .compose-wrap{max-width:1400px;margin:0 auto;padding:100px 28px 60px}
     .compose-header{margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
     .compose-title{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.04em;line-height:1.1}
     .compose-title em{font-style:normal;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .compose-sub{font-size:14px;color:var(--text-lo);margin-top:6px;font-family:'JetBrains Mono',monospace}
-    .compose-status{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:100px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--green);font-size:12px;font-family:'JetBrains Mono',monospace}
-    .compose-status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:archived-pulse 2.4s ease infinite}
+    .compose-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .pill-status{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:100px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--green);font-size:12px;font-family:'JetBrains Mono',monospace}
+    .pill-status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:status-pulse 2.4s ease infinite}
+    @keyframes status-pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}70%{box-shadow:0 0 0 8px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+
+    /* Editing banner — appears when editing an existing post */
+    .editing-banner{margin-bottom:18px;padding:12px 18px;background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.25);border-radius:var(--r);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;display:none}
+    .editing-banner.show{display:flex}
+    .editing-banner-label{color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+    .editing-banner-slug{color:var(--text-hi);font-family:'JetBrains Mono',monospace}
+    .editing-banner-actions{display:flex;gap:8px}
 
     .compose-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
     @media(max-width:1100px){.compose-grid{grid-template-columns:1fr}}
@@ -63,8 +77,6 @@
     .compose-preview{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:36px 40px;backdrop-filter:blur(12px);min-height:600px}
     @media(max-width:560px){.compose-preview{padding:24px}}
     .preview-empty{text-align:center;padding:80px 20px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:13px}
-
-    /* Preview matches blog-bacnet.html article styles */
     .preview-article{color:var(--text-lo)}
     .preview-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
     .preview-date{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-faint)}
@@ -88,108 +100,71 @@
     .preview-body hr{border:none;border-top:1px solid var(--border);margin:32px 0}
 
     /* Actions */
-    .compose-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
+    .compose-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
     .btn-sm{padding:9px 16px;font-size:13px;border-radius:var(--r-sm);display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--border);background:var(--bg-card);color:var(--text-lo);font-family:inherit;font-weight:500;transition:var(--ease)}
     .btn-sm:hover{background:var(--bg-card-h);color:var(--text-hi);border-color:var(--border-h)}
     .btn-primary{background:linear-gradient(135deg,var(--blue),#6366f1);color:#fff;border:none;box-shadow:0 0 16px var(--blue-glow)}
     .btn-primary:hover{transform:translateY(-1px);box-shadow:0 0 28px var(--blue-glow)}
+    .btn-danger:hover{color:var(--rose);border-color:rgba(244,63,94,.3);background:rgba(244,63,94,.06)}
+    .btn-sm:disabled{opacity:.5;cursor:wait}
 
-    /* Drafts list */
-    .drafts-section{margin-top:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:24px;backdrop-filter:blur(12px)}
-    .drafts-title{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-    .drafts-title::before{content:'';width:24px;height:1px;background:var(--blue)}
-    .drafts-list{display:flex;flex-direction:column;gap:6px}
-    .draft-row{display:flex;align-items:center;gap:14px;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r-sm);background:rgba(255,255,255,.018);transition:.15s}
-    .draft-row:hover{border-color:var(--border-h);background:rgba(255,255,255,.04)}
-    .draft-title{flex:1;font-size:13.5px;color:var(--text-hi);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .draft-date{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;flex-shrink:0}
-    .draft-actions{display:flex;gap:4px;flex-shrink:0}
-    .draft-btn{background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:12px;padding:4px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
-    .draft-btn:hover{background:rgba(255,255,255,.05);color:var(--text-hi)}
-    .draft-btn.del:hover{color:var(--rose)}
-    .drafts-empty{text-align:center;padding:24px;color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace}
+    /* Server posts list */
+    .posts-section{margin-top:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:24px;backdrop-filter:blur(12px)}
+    .posts-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;flex-wrap:wrap}
+    .posts-title{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-faint);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:10px}
+    .posts-title::before{content:'';width:24px;height:1px;background:var(--blue)}
+    .posts-list{display:flex;flex-direction:column;gap:6px}
+    .post-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r-sm);background:rgba(255,255,255,.018);transition:.15s}
+    .post-row:hover{border-color:var(--border-h);background:rgba(255,255,255,.04)}
+    .post-row.editing{border-color:rgba(139,92,246,.5);background:rgba(139,92,246,.04)}
+    .post-row-info{flex:1;min-width:0}
+    .post-row-title{font-size:13.5px;color:var(--text-hi);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .post-row-meta{display:flex;gap:8px;align-items:center;margin-top:3px;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
+    .post-row-badge{padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.04em}
+    .post-row-badge.pub{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.25)}
+    .post-row-badge.draft{background:rgba(249,115,22,.08);color:var(--orange);border:1px solid rgba(249,115,22,.25)}
+    .post-row-actions{display:flex;gap:4px;flex-shrink:0}
+    .post-row-btn{background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:11px;padding:4px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+    .post-row-btn:hover{background:rgba(255,255,255,.05);color:var(--text-hi)}
+    .post-row-btn.del:hover{color:var(--rose)}
+    .posts-empty{text-align:center;padding:24px;color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace}
 
-    /* Cheatsheet */
     .md-cheat{margin-top:8px;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;line-height:1.7;padding:10px 12px;background:rgba(255,255,255,.018);border:1px solid var(--border);border-radius:var(--r-sm)}
     .md-cheat code{background:rgba(6,182,212,.08);padding:1px 5px;border-radius:3px;color:var(--blue)}
 
-    /* Auto-save indicator */
     .save-ind{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
     .save-ind.saved{color:var(--green)}
     .save-ind.unsaved{color:var(--orange)}
 
-    /* Output modal */
-    .out-overlay{position:fixed;inset:0;z-index:9100;background:rgba(2,8,23,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;transition:opacity .25s,visibility .25s}
-    .out-box{width:min(720px,96vw);max-height:84vh;background:rgba(15,15,28,.97);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.7);overflow:hidden;display:flex;flex-direction:column}
-    .out-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .out-title{font-size:15px;font-weight:700;color:var(--text-hi)}
-    .out-close{background:none;border:none;color:var(--text-lo);cursor:pointer;font-size:22px;line-height:1;padding:0 4px}
-    .out-body{padding:18px 22px;overflow-y:auto;flex:1}
-    .out-body pre{background:#020208;border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.65;color:#c8d3ea;overflow-x:auto;white-space:pre-wrap;word-break:break-word;max-height:50vh;overflow-y:auto}
-    .out-foot{padding:14px 22px;border-top:1px solid var(--border);background:rgba(0,0,0,.18);display:flex;gap:10px;justify-content:flex-end}
+    .user-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:100px;background:var(--bg-card);border:1px solid var(--border);font-size:11px;color:var(--text-lo);font-family:'JetBrains Mono',monospace}
+    .user-pill .u-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
 
-    .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(16px);z-index:9200;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:10px 22px;border-radius:100px;backdrop-filter:blur(12px);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}
+    .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(16px);z-index:9200;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:10px 22px;border-radius:100px;backdrop-filter:blur(12px);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;max-width:90vw}
     .toast.show{opacity:1;transform:translateX(-50%)}
-
-    /* GitHub status pill in nav */
-    #ghStatus.connected{color:var(--green)}
-    #ghStatus.disconnected{color:var(--text-faint)}
-    #ghStatus.error{color:var(--rose)}
-
-    /* Settings modal */
-    .set-overlay{position:fixed;inset:0;z-index:9150;background:rgba(2,8,23,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;padding:80px 24px 24px;transition:opacity .25s,visibility .25s;overflow-y:auto}
-    .set-box{width:min(620px,96vw);background:rgba(15,15,28,.97);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.7);overflow:hidden;display:flex;flex-direction:column}
-    .set-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .set-title{font-size:16px;font-weight:800;letter-spacing:-.02em}
-    .set-close{background:none;border:none;color:var(--text-lo);cursor:pointer;font-size:22px;line-height:1;padding:0 4px}
-    .set-body{padding:20px 22px;display:flex;flex-direction:column;gap:18px;max-height:70vh;overflow-y:auto}
-    .set-section{display:flex;flex-direction:column;gap:8px}
-    .set-section h3{font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-    .set-section h3::before{content:'';width:18px;height:1px;background:var(--blue)}
-    .set-help{font-size:12px;color:var(--text-lo);line-height:1.7}
-    .set-help code{font-family:'JetBrains Mono',monospace;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);padding:1px 6px;border-radius:4px;font-size:11.5px;color:var(--blue)}
-    .set-help a{color:var(--blue);text-decoration:underline}
-    .set-help strong{color:var(--text-hi)}
-    .set-pat-row{display:flex;gap:8px}
-    .set-pat-input{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;color:var(--text-hi);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:var(--ease);min-width:0}
-    .set-pat-input:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
-    .set-cron{background:#020208;border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#c8d3ea;overflow-x:auto;white-space:pre;position:relative;line-height:1.7}
-    .set-cron button{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-lo);font-size:10.5px;padding:3px 8px;border-radius:4px;cursor:pointer;font-family:inherit}
-    .set-cron button:hover{background:rgba(6,182,212,.1);color:var(--blue);border-color:rgba(6,182,212,.3)}
-    .set-warn{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:var(--r-sm);padding:10px 14px;font-size:11.5px;color:var(--orange);line-height:1.6;font-family:'JetBrains Mono',monospace}
-    .set-warn strong{color:var(--text-hi)}
-
-    /* Publish progress modal */
-    .pub-overlay{position:fixed;inset:0;z-index:9180;background:rgba(2,8,23,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;transition:opacity .25s,visibility .25s}
-    .pub-box{width:min(480px,94vw);background:rgba(15,15,28,.98);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.8);padding:32px 28px;text-align:center}
-    .pub-spinner{width:48px;height:48px;border:3px solid rgba(6,182,212,.15);border-top-color:var(--blue);border-radius:50%;animation:pub-spin .8s linear infinite;margin:0 auto 16px}
-    @keyframes pub-spin{to{transform:rotate(360deg)}}
-    .pub-title{font-size:18px;font-weight:700;color:var(--text-hi);margin-bottom:8px}
-    .pub-sub{font-size:13px;color:var(--text-lo);font-family:'JetBrains Mono',monospace;line-height:1.7}
-    .pub-steps{margin-top:18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);line-height:1.9}
-    .pub-step{opacity:.4;transition:opacity .25s,color .25s}
-    .pub-step.active{opacity:1;color:var(--blue)}
-    .pub-step.done{opacity:1;color:var(--green)}
-    .pub-step.error{opacity:1;color:var(--rose)}
-    .pub-step::before{content:'○  ';display:inline-block}
-    .pub-step.active::before{content:'◐  '}
-    .pub-step.done::before{content:'✓  '}
-    .pub-step.error::before{content:'✕  '}
-    .pub-actions{margin-top:20px;display:flex;gap:10px;justify-content:center}
-    .pub-error-detail{margin-top:12px;font-size:11px;color:var(--rose);font-family:'JetBrains Mono',monospace;background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);border-radius:6px;padding:10px;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto}
+    .toast.err{background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.3);color:var(--rose)}
   </style>
 </head>
 <body>
 
-<!-- PIN GATE — cosmetic deterrent, NOT real security. Change ADMIN_PIN below. -->
-<div class="pin-gate" id="pinGate">
-  <div class="pin-box">
-    <div class="pin-icon">🔒</div>
-    <div class="pin-title">Compose</div>
-    <p class="pin-sub">Private composer for blog posts. Not a real security gate.</p>
-    <input type="password" class="pin-input" id="pinInput" placeholder="• • • •" maxlength="32" autocomplete="off">
-    <button class="pin-btn" id="pinSubmit">Unlock</button>
-    <p class="pin-note">Default PIN: change <code style="color:var(--blue)">ADMIN_PIN</code> in the source.</p>
+<!-- ── LOGIN SCREEN ────────────────────────────────────── -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-icon">🔒</div>
+    <div class="login-title">Admin</div>
+    <p class="login-sub">Sign in to manage blog posts</p>
+    <form id="loginForm">
+      <div class="login-field">
+        <label class="login-label" for="luser">Username</label>
+        <input type="text" class="login-input" id="luser" autocomplete="username" required>
+      </div>
+      <div class="login-field">
+        <label class="login-label" for="lpass">Password</label>
+        <input type="password" class="login-input" id="lpass" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="login-btn" id="loginBtn">Sign in</button>
+      <div class="login-err" id="loginErr"></div>
+    </form>
+    <p class="login-note">Credentials live in <code style="color:var(--blue)">/server/.env</code> on the VPS</p>
   </div>
 </div>
 
@@ -207,13 +182,12 @@
     </ul>
     <div class="nav-right">
       <span id="saveInd" class="save-ind">●  Idle</span>
-      <span id="ghStatus" class="save-ind" title="GitHub connection status">●  GH</span>
-      <button class="btn-sm" id="settingsBtn">⚙  Settings</button>
+      <span id="userPill" class="user-pill" style="display:none"><span class="u-dot"></span><span id="userName">admin</span></span>
+      <button class="btn-sm" id="logoutBtn" style="display:none">Log out</button>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
       </button>
-      <button class="btn-sm" id="lockBtn">🔒 Lock</button>
     </div>
   </div>
 </nav>
@@ -225,9 +199,22 @@
   <div class="compose-header">
     <div>
       <h1 class="compose-title">Blog <em>Composer</em></h1>
-      <div class="compose-sub">Write · Preview · Export</div>
+      <div class="compose-sub">Write → Publish → Live</div>
     </div>
-    <span class="compose-status"><span class="compose-status-dot"></span>Auto-save enabled</span>
+    <div class="compose-meta">
+      <span class="pill-status"><span class="pill-status-dot"></span>Backend ready</span>
+    </div>
+  </div>
+
+  <!-- Editing banner — shown when loading an existing post for edit -->
+  <div class="editing-banner" id="editingBanner">
+    <div>
+      <div class="editing-banner-label">✎  Editing existing post</div>
+      <div class="editing-banner-slug" id="editingSlug">slug</div>
+    </div>
+    <div class="editing-banner-actions">
+      <button class="btn-sm" id="bNewPost">+ Start a new post</button>
+    </div>
   </div>
 
   <div class="compose-grid">
@@ -248,7 +235,7 @@
         <div class="cf-field">
           <label class="cf-label">Slug <kbd>auto</kbd></label>
           <input type="text" class="cf-input" id="cSlug" placeholder="bacnet-smart-buildings">
-          <div class="cf-help">Used in filename: <code>blog-{slug}.html</code></div>
+          <div class="cf-help">URL: <code>/blog/{slug}</code></div>
         </div>
         <div class="cf-field">
           <label class="cf-label">Category</label>
@@ -290,29 +277,26 @@
         </div>
         <textarea class="cf-textarea body" id="cBody" placeholder="Write your post in Markdown. ## H2 for sections. **bold**, *italic*, `code`, [link](url), ![img](url). > callout. --- horizontal rule. Triple-backtick fences for code blocks."></textarea>
         <div class="md-cheat">
-          <code>## H2</code> · <code>### H3</code> · <code>**bold**</code> · <code>*italic*</code> · <code>`code`</code> · <code>```fence```</code> · <code>[txt](url)</code> · <code>![alt](url)</code> · <code>- list</code> · <code>1. list</code> · <code>&gt; callout</code> · <code>---</code> hr
+          <code>## H2</code> · <code>### H3</code> · <code>**bold**</code> · <code>*italic*</code> · <code>`code`</code> · <code>```fence```</code> · <code>[txt](url)</code> · <code>![alt](url)</code> · <code>- list</code> · <code>&gt; callout</code> · <code>---</code> hr
         </div>
       </div>
 
       <div class="cf-field">
-        <label class="cf-label">Tags <span style="color:var(--text-faint)">— comma-separated, shown as chips at end</span></label>
+        <label class="cf-label">Tags <span style="color:var(--text-faint)">— comma-separated, shown as chips at the end</span></label>
         <input type="text" class="cf-input" id="cTags" placeholder="BACnet, BAS, Networking">
       </div>
 
       <div class="compose-actions">
-        <button class="btn-sm btn-primary" id="bPublish">🚀  Publish to Site</button>
-        <button class="btn-sm" id="bDownload">⬇  Download HTML</button>
-        <button class="btn-sm" id="bCardSnippet">📋  Copy card snippet</button>
-        <button class="btn-sm" id="bSave">💾  Save draft</button>
+        <button class="btn-sm btn-primary" id="bPublish">🚀  Publish</button>
+        <button class="btn-sm" id="bSaveDraft">💾  Save as draft</button>
+        <button class="btn-sm btn-danger" id="bDelete" style="display:none">🗑  Delete</button>
         <button class="btn-sm" id="bClear" style="margin-left:auto">✕  Clear</button>
       </div>
     </div>
 
     <!-- RIGHT: PREVIEW -->
     <div class="compose-preview" id="previewWrap">
-      <div class="preview-empty" id="previewEmpty">
-        ↳  Start typing — preview renders here.
-      </div>
+      <div class="preview-empty" id="previewEmpty">↳  Start typing — preview renders here.</div>
       <article class="preview-article" id="previewArticle" style="display:none">
         <div class="preview-meta">
           <span class="preview-date" id="pvDate"></span>
@@ -325,139 +309,66 @@
     </div>
   </div>
 
-  <!-- DRAFTS -->
-  <div class="drafts-section">
-    <div class="drafts-title">Saved drafts</div>
-    <div class="drafts-list" id="draftsList">
-      <div class="drafts-empty">No drafts yet — your work auto-saves every 8 seconds.</div>
+  <!-- SERVER POSTS -->
+  <div class="posts-section">
+    <div class="posts-head">
+      <div class="posts-title">Posts on the server <span id="postsCount" style="color:var(--text-lo)">(loading…)</span></div>
+      <button class="btn-sm" id="bRefreshPosts">↻ Refresh</button>
+    </div>
+    <div class="posts-list" id="serverPostsList">
+      <div class="posts-empty">Loading…</div>
+    </div>
+  </div>
+
+  <!-- LOCAL DRAFTS -->
+  <div class="posts-section">
+    <div class="posts-head">
+      <div class="posts-title">Local drafts <span style="color:var(--text-lo);font-size:10.5px">(this browser only — auto-saves every 8s)</span></div>
+      <button class="btn-sm" id="bClearAllDrafts">Clear all</button>
+    </div>
+    <div class="posts-list" id="draftsList">
+      <div class="posts-empty">No drafts yet.</div>
     </div>
   </div>
 </div>
 
-<!-- Output modal (for copy/preview operations) -->
-<div class="out-overlay" id="outOverlay" style="opacity:0;visibility:hidden;pointer-events:none">
-  <div class="out-box">
-    <div class="out-head">
-      <div class="out-title" id="outTitle">Output</div>
-      <button class="out-close" id="outClose" aria-label="Close">×</button>
-    </div>
-    <div class="out-body"><pre id="outPre"></pre></div>
-    <div class="out-foot">
-      <button class="btn-sm" id="outCopy">📋  Copy to clipboard</button>
-      <button class="btn-sm btn-primary" id="outCloseBtn">Done</button>
-    </div>
-  </div>
-</div>
-
-<!-- Settings modal -->
-<div class="set-overlay" id="setOverlay" style="opacity:0;visibility:hidden;pointer-events:none">
-  <div class="set-box">
-    <div class="set-head">
-      <span class="set-title">⚙  Settings</span>
-      <button class="set-close" id="setClose" aria-label="Close">×</button>
-    </div>
-    <div class="set-body">
-
-      <div class="set-section">
-        <h3>GitHub Publishing</h3>
-        <p class="set-help">Paste a <strong>GitHub Personal Access Token</strong> with <code>public_repo</code> scope. The composer uses it to commit new posts directly to your repo. <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=Portfolio%20Admin" target="_blank" rel="noopener">Generate one →</a></p>
-        <div class="set-pat-row">
-          <input type="password" class="set-pat-input" id="patInput" placeholder="ghp_••••••••••••••••" autocomplete="off" spellcheck="false">
-          <button class="btn-sm" id="patSave">Save</button>
-          <button class="btn-sm" id="patTest">Test</button>
-        </div>
-        <div class="set-pat-row" style="margin-top:4px">
-          <button class="btn-sm" id="patClear" style="font-size:11px">🗑  Remove token</button>
-          <span id="patStatus" style="flex:1;text-align:right;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;padding:6px 0">no token</span>
-        </div>
-        <div class="set-warn">
-          <strong>⚠ Security:</strong> the token is stored in your browser's localStorage on this device only. Anyone with physical access to your browser could read it. Use a token scoped to <code style="color:var(--text-hi)">public_repo</code> only, and revoke it if your laptop is lost.
-        </div>
-      </div>
-
-      <div class="set-section">
-        <h3>VPS Auto-Deploy</h3>
-        <p class="set-help">After the composer pushes to GitHub, your VPS still has to pull the new files. Pick one:</p>
-
-        <p class="set-help"><strong>Option A — Cron polling (easiest, ~1 min delay):</strong></p>
-        <div class="set-cron"><button data-copy="* * * * * cd /var/www/rdpfister.com/html && /usr/bin/git pull origin main >> /var/log/portfolio-deploy.log 2>&1">copy</button>* * * * * cd /var/www/rdpfister.com/html && /usr/bin/git pull origin main >> /var/log/portfolio-deploy.log 2>&1</div>
-        <p class="set-help" style="font-size:11px;color:var(--text-faint)">SSH into your VPS and run <code>sudo crontab -e</code>, paste the line above, save. Every minute the VPS pulls from main. Adjust the path if your repo lives elsewhere.</p>
-
-        <p class="set-help" style="margin-top:14px"><strong>Option B — GitHub webhook (instant):</strong></p>
-        <p class="set-help" style="font-size:11px;color:var(--text-faint)">More setup but instant: add a small webhook receiver on the VPS, configure a webhook in repo Settings → Webhooks pointing at it. Ask me if you want help wiring this up — I can build the listener.</p>
-      </div>
-
-      <div class="set-section">
-        <h3>Repository</h3>
-        <p class="set-help">Currently publishing to <code>ryanpfister/myPortfolio</code> branch <code>main</code>. Hardcoded — edit <code>GH_OWNER</code>/<code>GH_REPO</code> in admin.html source to change.</p>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- Publish progress modal -->
-<div class="pub-overlay" id="pubOverlay" style="opacity:0;visibility:hidden;pointer-events:none">
-  <div class="pub-box">
-    <div class="pub-spinner" id="pubSpinner"></div>
-    <div class="pub-title" id="pubTitle">Publishing…</div>
-    <div class="pub-sub" id="pubSub">Committing to GitHub</div>
-    <div class="pub-steps" id="pubSteps">
-      <div class="pub-step" data-step="post">Creating <code>blog-<span id="psSlug">slug</span>.html</code></div>
-      <div class="pub-step" data-step="index">Updating <code>blog.html</code> index</div>
-      <div class="pub-step" data-step="done">Live on GitHub — your VPS will pull within ~1 minute</div>
-    </div>
-    <div class="pub-error-detail" id="pubError" style="display:none"></div>
-    <div class="pub-actions" id="pubActions" style="display:none">
-      <button class="btn-sm btn-primary" id="pubDone">Done</button>
-    </div>
-  </div>
-</div>
-
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
 // ════════════════════════════════════════════════════════════
-// CONFIG
+// API CLIENT
 // ════════════════════════════════════════════════════════════
-// CHANGE THIS to whatever PIN you want. This is NOT real security —
-// just a deterrent for accidental access. Anyone who views the page
-// source can see it. Move the page to a non-public folder if you
-// want real protection.
-const ADMIN_PIN = 'pfister';
-
-// ════════════════════════════════════════════════════════════
-// PIN GATE
-// ════════════════════════════════════════════════════════════
-const gate = document.getElementById('pinGate');
-const pinInput = document.getElementById('pinInput');
-const pinSubmit = document.getElementById('pinSubmit');
-
-function unlock() {
-  gate.classList.add('unlocked');
-  sessionStorage.setItem('rp_admin_unlocked', '1');
-  setTimeout(init, 400);
-}
-function lock() {
-  sessionStorage.removeItem('rp_admin_unlocked');
-  gate.classList.remove('unlocked');
-  pinInput.value = '';
-  pinInput.focus();
-}
-function tryPin() {
-  if (pinInput.value === ADMIN_PIN) unlock();
-  else {
-    pinInput.classList.add('err');
-    setTimeout(() => pinInput.classList.remove('err'), 400);
-    pinInput.value = '';
+async function api(path, opts = {}) {
+  const r = await fetch(path, {
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    ...opts,
+    body: opts.body ? JSON.stringify(opts.body) : undefined,
+  });
+  const text = await r.text();
+  let json;
+  try { json = text ? JSON.parse(text) : null; } catch { json = { raw: text }; }
+  if (!r.ok) {
+    const err = new Error(json?.error || `${r.status} ${r.statusText}`);
+    err.status = r.status;
+    err.detail = json;
+    throw err;
   }
+  return json;
 }
-pinSubmit.addEventListener('click', tryPin);
-pinInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryPin(); });
-if (sessionStorage.getItem('rp_admin_unlocked') === '1') unlock();
-else setTimeout(() => pinInput.focus(), 100);
-document.getElementById('lockBtn').addEventListener('click', lock);
+
+const apiPosts = {
+  listAdmin: () => api('/api/admin/posts'),
+  get:       slug => api(`/api/admin/posts/${encodeURIComponent(slug)}`),
+  create:    data => api('/api/admin/posts', { method: 'POST', body: data }),
+  update:    (slug, data) => api(`/api/admin/posts/${encodeURIComponent(slug)}`, { method: 'PUT', body: data }),
+  remove:    slug => api(`/api/admin/posts/${encodeURIComponent(slug)}`, { method: 'DELETE' }),
+};
+const apiAuth = {
+  me: () => api('/api/auth/me'),
+  login: (username, password) => api('/api/auth/login', { method: 'POST', body: { username, password } }),
+  logout: () => api('/api/auth/logout', { method: 'POST' }),
+};
 
 // ════════════════════════════════════════════════════════════
 // THEME
@@ -471,8 +382,8 @@ function setIcon(t){themeBtn.querySelector('.icon-sun').style.display=t==='dark'
 // ════════════════════════════════════════════════════════════
 // CURSOR
 // ════════════════════════════════════════════════════════════
-const dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
 if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  const dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
   let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
   document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
   (function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();
@@ -486,27 +397,18 @@ const toast = document.getElementById('toast');
 let toastTimer;
 function showToast(msg, type='ok') {
   toast.textContent = msg;
+  toast.classList.remove('err');
+  if (type === 'err') toast.classList.add('err');
   toast.classList.add('show');
-  if (type === 'err') {
-    toast.style.background = 'rgba(244,63,94,.12)';
-    toast.style.borderColor = 'rgba(244,63,94,.3)';
-    toast.style.color = 'var(--rose)';
-  } else {
-    toast.style.background = '';
-    toast.style.borderColor = '';
-    toast.style.color = '';
-  }
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
 }
 
 // ════════════════════════════════════════════════════════════
-// MARKDOWN PARSER (intentionally small — supports the post structure)
+// MARKDOWN PARSER (shared with server/md.js, kept in sync)
 // ════════════════════════════════════════════════════════════
-function escHtml(s){return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-
+function escHtml(s){return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function inlineMd(text) {
-  // Order matters: process images before links, code before others.
   return text
     .replace(/`([^`]+)`/g, (_, c) => `<code>${escHtml(c)}</code>`)
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, a, u) => `<img src="${u}" alt="${escHtml(a)}">`)
@@ -514,83 +416,35 @@ function inlineMd(text) {
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
 }
-
 function mdToHtml(md) {
+  if (!md) return '';
   const lines = md.split('\n');
   let html = '', state = null, listType = null, listItems = [], codeBuf = [], quoteBuf = [];
-
-  function flushList() {
-    if (listItems.length) {
-      html += `<${listType}>${listItems.map(i => `<li>${inlineMd(i)}</li>`).join('')}</${listType}>`;
-      listItems = []; listType = null;
-    }
-  }
-  function flushQuote() {
-    if (quoteBuf.length) {
-      html += `<blockquote>${inlineMd(quoteBuf.join(' '))}</blockquote>`;
-      quoteBuf = [];
-    }
-  }
-  function flushCode() {
-    if (codeBuf.length) {
-      html += `<pre>${escHtml(codeBuf.join('\n'))}</pre>`;
-      codeBuf = [];
-    }
-  }
-
-  for (let i = 0; i < lines.length; i++) {
+  function flushList(){if(listItems.length){html+=`<${listType}>${listItems.map(i=>`<li>${inlineMd(i)}</li>`).join('')}</${listType}>`;listItems=[];listType=null;}}
+  function flushQuote(){if(quoteBuf.length){html+=`<blockquote>${inlineMd(quoteBuf.join(' '))}</blockquote>`;quoteBuf=[];}}
+  function flushCode(){if(codeBuf.length){html+=`<pre>${escHtml(codeBuf.join('\n'))}</pre>`;codeBuf=[];}}
+  for (let i=0;i<lines.length;i++){
     const line = lines[i];
-
-    if (state === 'code') {
-      if (line.trim() === '```') { flushCode(); state = null; }
-      else codeBuf.push(line);
-      continue;
-    }
-    if (line.trim().startsWith('```')) { flushList(); flushQuote(); state = 'code'; continue; }
-
-    if (line.startsWith('### ')) { flushList(); flushQuote(); html += `<h3>${inlineMd(line.slice(4))}</h3>`; continue; }
-    if (line.startsWith('## ')) { flushList(); flushQuote(); html += `<h2>${inlineMd(line.slice(3))}</h2>`; continue; }
-    if (line.startsWith('# ')) { flushList(); flushQuote(); html += `<h2>${inlineMd(line.slice(2))}</h2>`; continue; }
-    if (line.trim() === '---') { flushList(); flushQuote(); html += '<hr>'; continue; }
-
-    if (line.startsWith('> ')) { flushList(); quoteBuf.push(line.slice(2)); continue; }
-    else flushQuote();
-
-    const ul = line.match(/^- (.+)/);
-    const ol = line.match(/^\d+\. (.+)/);
-    if (ul) {
-      if (listType && listType !== 'ul') flushList();
-      listType = 'ul'; listItems.push(ul[1]); continue;
-    }
-    if (ol) {
-      if (listType && listType !== 'ol') flushList();
-      listType = 'ol'; listItems.push(ol[1]); continue;
-    }
+    if (state==='code'){if(line.trim()==='```'){flushCode();state=null;}else codeBuf.push(line);continue;}
+    if (line.trim().startsWith('```')){flushList();flushQuote();state='code';continue;}
+    if (line.startsWith('### ')){flushList();flushQuote();html+=`<h3>${inlineMd(line.slice(4))}</h3>`;continue;}
+    if (line.startsWith('## ')){flushList();flushQuote();html+=`<h2>${inlineMd(line.slice(3))}</h2>`;continue;}
+    if (line.startsWith('# ')){flushList();flushQuote();html+=`<h2>${inlineMd(line.slice(2))}</h2>`;continue;}
+    if (line.trim()==='---'){flushList();flushQuote();html+='<hr>';continue;}
+    if (line.startsWith('> ')){flushList();quoteBuf.push(line.slice(2));continue;}else flushQuote();
+    const ul = line.match(/^- (.+)/), ol = line.match(/^\d+\. (.+)/);
+    if (ul){if(listType&&listType!=='ul')flushList();listType='ul';listItems.push(ul[1]);continue;}
+    if (ol){if(listType&&listType!=='ol')flushList();listType='ol';listItems.push(ol[1]);continue;}
     flushList();
-
-    if (line.trim() === '') continue;
+    if (line.trim()==='')continue;
     html += `<p>${inlineMd(line)}</p>`;
   }
   flushList(); flushQuote(); flushCode();
   return html;
 }
 
-// Convert preview HTML (which uses <pre>, <blockquote>, <code>) into
-// the final article's HTML (which uses .code-block, .callout, inline <code>).
-function mdToArticleHtml(md) {
-  let h = mdToHtml(md);
-  // Convert <blockquote> → .callout div (blog uses .callout class with <strong> coloring)
-  h = h.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, '<div class="callout">$1</div>');
-  // Convert <pre>...</pre> → .code-block div with line breaks
-  h = h.replace(/<pre>([\s\S]*?)<\/pre>/g, (_, c) => {
-    const lines = c.split('\n').map(l => l || '&nbsp;').join('<br>');
-    return `<div class="code-block">${lines}</div>`;
-  });
-  return h;
-}
-
 // ════════════════════════════════════════════════════════════
-// CATEGORY → blog index card badge color
+// CATEGORY meta
 // ════════════════════════════════════════════════════════════
 const catMeta = {
   'building-automation': { label: 'Building Automation', badge: 'badge-cyan' },
@@ -622,26 +476,37 @@ const pvTitle = document.getElementById('pvTitle');
 const pvIntro = document.getElementById('pvIntro');
 const pvBody = document.getElementById('pvBody');
 
-function slugify(s) {
-  return s.toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-    .slice(0, 80);
+// "Editing existing" state
+let currentSlug = null; // null = creating a new post; string = editing
+const editingBanner = document.getElementById('editingBanner');
+const editingSlugEl = document.getElementById('editingSlug');
+const bDelete = document.getElementById('bDelete');
+
+function setEditingState(slug) {
+  currentSlug = slug;
+  if (slug) {
+    editingBanner.classList.add('show');
+    editingSlugEl.textContent = '/blog/' + slug;
+    bDelete.style.display = 'inline-flex';
+  } else {
+    editingBanner.classList.remove('show');
+    bDelete.style.display = 'none';
+  }
 }
 
+function slugify(s) {
+  return String(s).toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
+}
 function fmtDate(iso) {
   if (!iso) return '';
   const d = new Date(iso + 'T12:00:00');
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  return d.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 }
 
 function updatePreview() {
   const hasContent = F.title.value || F.intro.value || F.body.value;
   previewEmpty.style.display = hasContent ? 'none' : 'block';
   previewArticle.style.display = hasContent ? 'block' : 'none';
-
   pvDate.textContent = fmtDate(F.date.value) || 'Date';
   const cat = catMeta[F.category.value] || catMeta.tech;
   pvCat.textContent = cat.label;
@@ -649,17 +514,12 @@ function updatePreview() {
   pvTitle.textContent = F.title.value || 'Your post title';
   pvIntro.textContent = F.intro.value || 'The lead paragraph appears here, styled as a highlighted callout.';
   pvBody.innerHTML = mdToHtml(F.body.value);
-
   setSaveState('unsaved');
 }
-
 Object.values(F).forEach(el => el.addEventListener('input', updatePreview));
-
-F.title.addEventListener('input', () => {
-  if (!F.slug.dataset.touched) F.slug.value = slugify(F.title.value);
-});
+F.title.addEventListener('input', () => { if (!F.slug.dataset.touched) F.slug.value = slugify(F.title.value); });
 F.slug.addEventListener('input', () => { F.slug.dataset.touched = '1'; });
-if (!F.date.value) F.date.value = new Date().toISOString().slice(0,10);
+if (!F.date.value) F.date.value = new Date().toISOString().slice(0, 10);
 
 // ════════════════════════════════════════════════════════════
 // MARKDOWN TOOLBAR
@@ -669,52 +529,49 @@ document.querySelectorAll('.md-tools button').forEach(btn => {
     const ta = F.body;
     const start = ta.selectionStart, end = ta.selectionEnd;
     const sel = ta.value.slice(start, end);
-    let insert = '', cursorOffset = 0;
+    let insert = '';
     switch (btn.dataset.md) {
-      case 'h2':    insert = `\n## ${sel||'Heading'}\n`; cursorOffset = 4; break;
-      case 'h3':    insert = `\n### ${sel||'Subheading'}\n`; cursorOffset = 5; break;
-      case 'bold':  insert = `**${sel||'bold text'}**`; cursorOffset = 2; break;
-      case 'italic':insert = `*${sel||'italic text'}*`; cursorOffset = 1; break;
-      case 'code':  insert = `\`${sel||'code'}\``; cursorOffset = 1; break;
-      case 'codeblock': insert = `\n\`\`\`\n${sel||'code here'}\n\`\`\`\n`; cursorOffset = 5; break;
-      case 'link':  insert = `[${sel||'link text'}](https://)`; cursorOffset = sel ? sel.length+3 : 11; break;
-      case 'image': insert = `![${sel||'alt text'}](https://)`; cursorOffset = sel ? sel.length+4 : 11; break;
-      case 'list':  insert = `\n- ${sel||'item 1'}\n- item 2\n- item 3\n`; cursorOffset = 3; break;
-      case 'quote': insert = `\n> ${sel||'a quote or callout'}\n`; cursorOffset = 3; break;
-      case 'hr':    insert = `\n---\n`; cursorOffset = 5; break;
+      case 'h2':    insert = `\n## ${sel||'Heading'}\n`; break;
+      case 'h3':    insert = `\n### ${sel||'Subheading'}\n`; break;
+      case 'bold':  insert = `**${sel||'bold text'}**`; break;
+      case 'italic':insert = `*${sel||'italic text'}*`; break;
+      case 'code':  insert = `\`${sel||'code'}\``; break;
+      case 'codeblock': insert = `\n\`\`\`\n${sel||'code here'}\n\`\`\`\n`; break;
+      case 'link':  insert = `[${sel||'link text'}](https://)`; break;
+      case 'image': insert = `![${sel||'alt text'}](https://)`; break;
+      case 'list':  insert = `\n- ${sel||'item 1'}\n- item 2\n- item 3\n`; break;
+      case 'quote': insert = `\n> ${sel||'a quote or callout'}\n`; break;
+      case 'hr':    insert = `\n---\n`; break;
     }
     ta.value = ta.value.slice(0,start) + insert + ta.value.slice(end);
-    const newPos = sel ? start + insert.length : start + cursorOffset;
     ta.focus();
-    ta.setSelectionRange(newPos, newPos + (sel ? 0 : Math.max(0, insert.length - cursorOffset - cursorOffset)));
+    const newPos = start + insert.length;
+    ta.setSelectionRange(newPos, newPos);
     updatePreview();
   });
 });
 
 // ════════════════════════════════════════════════════════════
-// DRAFTS
+// LOCAL DRAFTS (autosave to localStorage)
 // ════════════════════════════════════════════════════════════
-const DRAFTS_KEY = 'rp_blog_drafts_v1';
-const CURRENT_KEY = 'rp_blog_current_v1';
+const DRAFTS_KEY = 'rp_blog_drafts_v2';
+const CURRENT_KEY = 'rp_blog_current_v2';
 const saveInd = document.getElementById('saveInd');
-let saveTimer = null;
 
 function setSaveState(state) {
   saveInd.classList.remove('saved','unsaved');
-  if (state === 'saved') { saveInd.classList.add('saved'); saveInd.textContent = '●  Saved'; }
+  if (state === 'saved') { saveInd.classList.add('saved'); saveInd.textContent = '●  Saved locally'; }
   else if (state === 'unsaved') { saveInd.classList.add('unsaved'); saveInd.textContent = '●  Editing…'; }
   else saveInd.textContent = '●  Idle';
 }
 
 function snapshot() {
   return {
-    title: F.title.value, slug: F.slug.value, date: F.date.value,
-    category: F.category.value, excerpt: F.excerpt.value,
-    intro: F.intro.value, body: F.body.value, tags: F.tags.value,
-    savedAt: Date.now()
+    slug: F.slug.value, title: F.title.value, date: F.date.value, category: F.category.value,
+    excerpt: F.excerpt.value, intro: F.intro.value, body_md: F.body.value, tags: F.tags.value,
+    editing: currentSlug, savedAt: Date.now(),
   };
 }
-
 function loadSnapshot(s) {
   F.title.value = s.title || '';
   F.slug.value = s.slug || '';
@@ -722,603 +579,273 @@ function loadSnapshot(s) {
   F.category.value = s.category || 'building-automation';
   F.excerpt.value = s.excerpt || '';
   F.intro.value = s.intro || '';
-  F.body.value = s.body || '';
+  F.body.value = s.body_md || s.body || '';
   F.tags.value = s.tags || '';
   F.slug.dataset.touched = s.slug ? '1' : '';
+  setEditingState(s.editing || null);
   updatePreview();
 }
-
 function autoSave() {
   const snap = snapshot();
-  // Skip empty snapshots
-  if (!snap.title && !snap.body) return;
+  if (!snap.title && !snap.body_md) return;
   localStorage.setItem(CURRENT_KEY, JSON.stringify(snap));
   setSaveState('saved');
 }
-
-function saveDraftExplicit() {
-  const snap = snapshot();
-  if (!snap.title) { showToast('Add a title before saving', 'err'); return; }
-  const drafts = loadDrafts();
-  const id = snap.slug || slugify(snap.title);
-  drafts[id] = snap;
-  localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
-  renderDrafts();
-  showToast(`✓ Draft saved: ${snap.title}`);
-}
+setInterval(autoSave, 8000);
+window.addEventListener('beforeunload', autoSave);
 
 function loadDrafts() {
-  try { return JSON.parse(localStorage.getItem(DRAFTS_KEY) || '{}'); }
-  catch { return {}; }
+  try { return JSON.parse(localStorage.getItem(DRAFTS_KEY) || '{}'); } catch { return {}; }
 }
-
 function renderDrafts() {
   const drafts = loadDrafts();
   const list = document.getElementById('draftsList');
   const ids = Object.keys(drafts).sort((a,b) => (drafts[b].savedAt||0) - (drafts[a].savedAt||0));
-  if (ids.length === 0) {
-    list.innerHTML = '<div class="drafts-empty">No drafts yet — your work auto-saves every 8 seconds.</div>';
-    return;
-  }
+  if (!ids.length) { list.innerHTML = '<div class="posts-empty">No drafts yet.</div>'; return; }
   list.innerHTML = ids.map(id => {
     const d = drafts[id];
     const when = new Date(d.savedAt||Date.now()).toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
-    return `<div class="draft-row">
-      <span class="draft-title">${escHtml(d.title || '(untitled)')}</span>
-      <span class="draft-date">${when}</span>
-      <span class="draft-actions">
-        <button class="draft-btn" data-load="${id}">Load</button>
-        <button class="draft-btn del" data-del="${id}">Delete</button>
-      </span>
+    return `<div class="post-row">
+      <div class="post-row-info">
+        <div class="post-row-title">${escHtml(d.title || '(untitled)')}</div>
+        <div class="post-row-meta"><span>${escHtml(d.slug || '—')}</span><span>${when}</span></div>
+      </div>
+      <div class="post-row-actions">
+        <button class="post-row-btn" data-load="${escHtml(id)}">Load</button>
+        <button class="post-row-btn del" data-del="${escHtml(id)}">Delete</button>
+      </div>
     </div>`;
   }).join('');
   list.querySelectorAll('[data-load]').forEach(b => b.addEventListener('click', () => {
-    loadSnapshot(drafts[b.dataset.load]);
-    showToast(`✓ Loaded: ${drafts[b.dataset.load].title}`);
+    loadSnapshot(drafts[b.dataset.load]); showToast(`✓ Loaded: ${drafts[b.dataset.load].title || '(untitled)'}`);
   }));
   list.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
     if (!confirm('Delete this draft?')) return;
     delete drafts[b.dataset.del];
     localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
-    renderDrafts();
-    showToast('✓ Draft deleted');
+    renderDrafts(); showToast('✓ Draft deleted');
   }));
 }
 
-// Auto-save every 8s if dirty
-setInterval(autoSave, 8000);
-window.addEventListener('beforeunload', autoSave);
-
-// ════════════════════════════════════════════════════════════
-// HTML GENERATION (final blog post file)
-// ════════════════════════════════════════════════════════════
-function buildBlogHtml() {
-  const title = F.title.value || 'Untitled';
-  const slug = F.slug.value || slugify(title);
-  const date = F.date.value;
-  const dateFmt = fmtDate(date);
-  const cat = catMeta[F.category.value] || catMeta.tech;
-  const excerpt = F.excerpt.value;
-  const intro = F.intro.value;
-  const tags = F.tags.value.split(',').map(t=>t.trim()).filter(Boolean);
-  const bodyHtml = mdToArticleHtml(F.body.value);
-
-  return `<!DOCTYPE html>
-<html lang="en" data-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escHtml(title)} | Ryan Pfister</title>
-  <meta name="description" content="${escHtml(excerpt)}">
-  <link rel="canonical" href="https://rdpfister.com/blog-${slug}.html">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="${escHtml(title)}">
-  <meta property="og:description" content="${escHtml(excerpt)}">
-  <meta property="og:url" content="https://rdpfister.com/blog-${slug}.html">
-  <meta property="article:published_time" content="${date}">
-  <meta property="article:author" content="Ryan Pfister">
-  <script type="application/ld+json">${JSON.stringify({
-    "@context":"https://schema.org","@type":"Article",
-    "headline":title,
-    "author":{"@type":"Person","name":"Ryan Pfister","url":"https://rdpfister.com"},
-    "datePublished":date,
-    "publisher":{"@type":"Person","name":"Ryan Pfister"},
-    "description":excerpt
-  })}<\/script>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=20260518c">
-  <style>
-    .article-wrap{max-width:720px;margin:0 auto}
-    .article-header{padding:140px 0 56px;position:relative}
-    .article-back{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-lo);margin-bottom:32px;transition:var(--ease)}
-    .article-back:hover{color:var(--blue)}
-    .article-back svg{width:14px;height:14px}
-    .article-meta{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
-    .article-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint)}
-    .article-h1{font-size:clamp(32px,6vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
-    .article-intro{font-size:18px;color:var(--text-lo);line-height:1.85;border-left:3px solid var(--blue);padding-left:20px}
-    .article-author{display:flex;align-items:center;gap:12px;margin-top:32px;padding-top:28px;border-top:1px solid var(--border)}
-    .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--blue-dim);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--blue);font-size:16px;flex-shrink:0}
-    .author-name{font-size:14px;font-weight:700}
-    .author-role{font-size:12px;color:var(--text-lo)}
-    .article-body{padding:56px 0 80px;font-size:16px;color:var(--text-lo);line-height:1.9}
-    .article-body h2{font-size:26px;font-weight:800;color:var(--text-hi);letter-spacing:-.3px;margin:48px 0 16px}
-    .article-body h3{font-size:19px;font-weight:700;color:var(--text-hi);margin:32px 0 12px}
-    .article-body p{margin-bottom:20px}
-    .article-body strong{color:var(--text-hi);font-weight:600}
-    .article-body a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
-    .article-body ul,.article-body ol{margin:0 0 20px 20px}
-    .article-body li{margin-bottom:8px;line-height:1.75}
-    .article-body li::marker{color:var(--blue)}
-    .article-body code{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);padding:1px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:.88em;color:var(--blue)}
-    .article-body img{max-width:100%;border-radius:var(--r);margin:20px 0;border:1px solid var(--border)}
-    .article-body hr{border:none;border-top:1px solid var(--border);margin:36px 0}
-    .code-block{background:var(--bg-0);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin:28px 0;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.9;overflow-x:auto;color:var(--text-lo)}
-    .callout{background:var(--blue-dim);border:1px solid rgba(6,182,212,.2);border-radius:var(--r);padding:20px 24px;margin:28px 0;font-size:15px;backdrop-filter:blur(12px)}
-    .callout strong{color:var(--blue)}
-    .article-tags{display:flex;flex-wrap:wrap;gap:8px;padding-top:32px;border-top:1px solid var(--border);margin-bottom:48px}
-  </style>
-</head>
-<body>
-
-<div class="c-dot" id="cDot"></div>
-<div class="c-ring" id="cRing"></div>
-
-<div id="progress"></div>
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
-    <ul class="nav-links">
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="resume.html">Resume</a></li>
-      <li><a href="certifications.html">Certs</a></li>
-      <li><a href="blog.html" class="active">Blog</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      </button>
-      <a href="index.html#contact" class="nav-cta">Contact</a>
-    </div>
-  </div>
-</nav>
-
-<div class="page-bg"></div>
-<div class="page-dots"></div>
-
-<div class="container">
-  <div class="article-wrap">
-    <div class="article-header">
-      <a href="blog.html" class="article-back">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-        Back to Blog
-      </a>
-      <div class="article-meta">
-        <span class="article-date">${dateFmt}</span>
-        <span class="badge ${cat.badge}">${cat.label}</span>
-      </div>
-      <h1 class="article-h1">${escHtml(title)}</h1>
-      <p class="article-intro">${escHtml(intro)}</p>
-      <div class="article-author">
-        <div class="author-avatar">RP</div>
-        <div><div class="author-name">Ryan Pfister</div><div class="author-role">Smart Building Intern at Siemens &middot; Security Systems Student</div></div>
-      </div>
-    </div>
-
-    <div class="article-body">
-${bodyHtml}
-    </div>
-
-    <div class="article-tags">
-      ${tags.map(t => `<span class="chip">${escHtml(t)}</span>`).join('\n      ')}
-    </div>
-
-  </div>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <p class="footer-copy">&copy; 2025 Ryan Pfister</p>
-    <div class="footer-links">
-      <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener">GitHub</a>
-      <a href="mailto:mifd413@gmail.com">Email</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-  const html=document.documentElement,toggle=document.getElementById('themeToggle');
-  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
-  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
-  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
-  const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);},{passive:true});if(window.scrollY>20)nav.classList.add('scrolled');
-  const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
-  if(dot&&ring&&matchMedia('(hover:hover)').matches){let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
-  const bar=document.getElementById('progress');window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
-<\/script>
-</body>
-</html>`;
-}
-
-function buildCardSnippet() {
-  const title = F.title.value || 'Untitled';
-  const slug = F.slug.value || slugify(title);
-  const date = F.date.value;
-  const cat = catMeta[F.category.value] || catMeta.tech;
-  const excerpt = F.excerpt.value;
-  const monthYear = date ? new Date(date+'T12:00:00').toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
-
-  return `<!-- Drop this inside the .blog-grid in blog.html -->
-<a href="blog-${slug}.html" class="post-card fade-up">
-  <div class="post-meta">
-    <span class="post-date">${monthYear}</span>
-    <span class="post-cat badge ${cat.badge}">${cat.label}</span>
-  </div>
-  <div class="post-title">${escHtml(title)}</div>
-  <p class="post-excerpt">${escHtml(excerpt)}</p>
-  <div class="post-read">
-    Read article
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-  </div>
-</a>`;
-}
-
-// ════════════════════════════════════════════════════════════
-// OUTPUT MODAL
-// ════════════════════════════════════════════════════════════
-const outOverlay = document.getElementById('outOverlay');
-const outTitle = document.getElementById('outTitle');
-const outPre = document.getElementById('outPre');
-function showOutput(title, content) {
-  outTitle.textContent = title;
-  outPre.textContent = content;
-  outOverlay.style.cssText = 'opacity:1;visibility:visible;pointer-events:auto';
-}
-function closeOutput() {
-  outOverlay.style.cssText = 'opacity:0;visibility:hidden;pointer-events:none';
-}
-document.getElementById('outClose').addEventListener('click', closeOutput);
-document.getElementById('outCloseBtn').addEventListener('click', closeOutput);
-outOverlay.addEventListener('click', e => { if (e.target === outOverlay) closeOutput(); });
-document.getElementById('outCopy').addEventListener('click', () => {
-  navigator.clipboard.writeText(outPre.textContent).then(() => showToast('✓ Copied to clipboard'));
+document.getElementById('bClearAllDrafts').addEventListener('click', () => {
+  if (!confirm('Delete ALL local drafts? This cannot be undone.')) return;
+  localStorage.removeItem(DRAFTS_KEY);
+  renderDrafts(); showToast('✓ All drafts cleared');
 });
 
 // ════════════════════════════════════════════════════════════
-// BUTTONS
+// SERVER POSTS LIST
 // ════════════════════════════════════════════════════════════
-document.getElementById('bDownload').addEventListener('click', () => {
+async function refreshServerPosts() {
+  const list = document.getElementById('serverPostsList');
+  const count = document.getElementById('postsCount');
+  list.innerHTML = '<div class="posts-empty">Loading…</div>';
+  count.textContent = '(loading…)';
+  try {
+    const { posts } = await apiPosts.listAdmin();
+    count.textContent = `(${posts.length})`;
+    if (!posts.length) { list.innerHTML = '<div class="posts-empty">No posts yet. Compose one above.</div>'; return; }
+    list.innerHTML = posts.map(p => {
+      const editing = p.slug === currentSlug ? ' editing' : '';
+      const badge = p.published ? '<span class="post-row-badge pub">published</span>' : '<span class="post-row-badge draft">draft</span>';
+      return `<div class="post-row${editing}">
+        <div class="post-row-info">
+          <div class="post-row-title">${escHtml(p.title)}</div>
+          <div class="post-row-meta">
+            <span>/blog/${escHtml(p.slug)}</span>
+            <span>${escHtml(p.date)}</span>
+            ${badge}
+          </div>
+        </div>
+        <div class="post-row-actions">
+          <button class="post-row-btn" data-edit="${escHtml(p.slug)}">Edit</button>
+          ${p.published ? `<a class="post-row-btn" href="/blog/${escHtml(p.slug)}" target="_blank" rel="noopener">View</a>` : ''}
+          <button class="post-row-btn del" data-del="${escHtml(p.slug)}">Delete</button>
+        </div>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => loadServerPost(b.dataset.edit)));
+    list.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteServerPost(b.dataset.del)));
+  } catch (e) {
+    list.innerHTML = `<div class="posts-empty">Failed to load posts: ${escHtml(e.message)}</div>`;
+    count.textContent = '(error)';
+  }
+}
+
+async function loadServerPost(slug) {
+  try {
+    const { post } = await apiPosts.get(slug);
+    loadSnapshot({
+      slug: post.slug, title: post.title, date: post.date, category: post.category,
+      excerpt: post.excerpt, intro: post.intro, body_md: post.body_md, tags: post.tags,
+      editing: post.slug,
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast(`✓ Loaded: ${post.title}`);
+    refreshServerPosts();
+  } catch (e) {
+    showToast(`✕ ${e.message}`, 'err');
+  }
+}
+
+async function deleteServerPost(slug) {
+  if (!confirm(`Delete post "${slug}" from the server? This cannot be undone.`)) return;
+  try {
+    await apiPosts.remove(slug);
+    if (currentSlug === slug) setEditingState(null);
+    showToast(`✓ Deleted ${slug}`);
+    refreshServerPosts();
+  } catch (e) {
+    showToast(`✕ ${e.message}`, 'err');
+  }
+}
+
+document.getElementById('bRefreshPosts').addEventListener('click', refreshServerPosts);
+
+// ════════════════════════════════════════════════════════════
+// PUBLISH / SAVE-DRAFT / DELETE / NEW
+// ════════════════════════════════════════════════════════════
+function buildPayload(published) {
+  return {
+    title: F.title.value, slug: F.slug.value || slugify(F.title.value),
+    date: F.date.value, category: F.category.value,
+    excerpt: F.excerpt.value, intro: F.intro.value, body_md: F.body.value, tags: F.tags.value,
+    published: !!published,
+  };
+}
+
+async function publishOrUpdate(published) {
   if (!F.title.value) { showToast('Title is required', 'err'); return; }
-  const slug = F.slug.value || slugify(F.title.value);
-  const html = buildBlogHtml();
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `blog-${slug}.html`;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
-  showToast(`✓ Downloaded blog-${slug}.html`);
+  const payload = buildPayload(published);
+  const slug = payload.slug;
+  const bPub = document.getElementById('bPublish');
+  const bSave = document.getElementById('bSaveDraft');
+  bPub.disabled = true; bSave.disabled = true;
+  try {
+    if (currentSlug) {
+      // Update — send new_slug if slug changed
+      const updateBody = { ...payload };
+      if (slug !== currentSlug) updateBody.new_slug = slug;
+      const { post } = await apiPosts.update(currentSlug, updateBody);
+      setEditingState(post.slug);
+      showToast(published ? `✓ Published: ${post.title}` : `✓ Saved as draft: ${post.title}`);
+    } else {
+      const { post } = await apiPosts.create(payload);
+      setEditingState(post.slug);
+      showToast(published ? `🚀 Published: ${post.title}` : `✓ Saved as draft: ${post.title}`);
+    }
+    refreshServerPosts();
+  } catch (e) {
+    showToast(`✕ ${e.message}`, 'err');
+  } finally {
+    bPub.disabled = false; bSave.disabled = false;
+  }
+}
+
+document.getElementById('bPublish').addEventListener('click', () => publishOrUpdate(true));
+document.getElementById('bSaveDraft').addEventListener('click', () => publishOrUpdate(false));
+
+document.getElementById('bDelete').addEventListener('click', async () => {
+  if (!currentSlug) return;
+  if (!confirm(`Delete post "${currentSlug}" from the server? This cannot be undone.`)) return;
+  try {
+    await apiPosts.remove(currentSlug);
+    showToast('✓ Deleted');
+    setEditingState(null);
+    refreshServerPosts();
+  } catch (e) {
+    showToast(`✕ ${e.message}`, 'err');
+  }
 });
 
-document.getElementById('bCardSnippet').addEventListener('click', () => {
-  if (!F.title.value) { showToast('Title is required', 'err'); return; }
-  const snippet = buildCardSnippet();
-  navigator.clipboard.writeText(snippet).then(() => showToast('✓ Card snippet copied — paste into blog.html'))
-    .catch(() => showOutput('Blog index card snippet', snippet));
-});
-
-// bCopyHtml was removed from the toolbar — listener intentionally omitted.
-
-document.getElementById('bSave').addEventListener('click', saveDraftExplicit);
-
+document.getElementById('bNewPost').addEventListener('click', startNewPost);
 document.getElementById('bClear').addEventListener('click', () => {
-  if (!confirm('Clear the form? Any unsaved changes will be lost (last auto-save is preserved).')) return;
+  if (!confirm('Clear the form? Unsaved changes will be lost (autosave is preserved).')) return;
+  startNewPost();
+});
+
+function startNewPost() {
   Object.values(F).forEach(el => el.value = '');
-  F.date.value = new Date().toISOString().slice(0,10);
+  F.date.value = new Date().toISOString().slice(0, 10);
   F.category.value = 'building-automation';
   F.slug.dataset.touched = '';
+  setEditingState(null);
   updatePreview();
-  showToast('✓ Cleared');
-});
+  showToast('✓ New post');
+}
 
 // ════════════════════════════════════════════════════════════
-// GITHUB PUBLISHER
+// AUTH
 // ════════════════════════════════════════════════════════════
-const GH_OWNER = 'ryanpfister';
-const GH_REPO  = 'myPortfolio';
-const GH_BRANCH = 'main';
-const GH_PAT_KEY = 'rp_gh_pat_v1';
-const POSTS_MARKER = '<!-- POSTS:INSERT-HERE';
+const loginScreen = document.getElementById('loginScreen');
+const loginForm = document.getElementById('loginForm');
+const loginErr = document.getElementById('loginErr');
+const loginBtn = document.getElementById('loginBtn');
+const luser = document.getElementById('luser');
+const lpass = document.getElementById('lpass');
+const userPill = document.getElementById('userPill');
+const userName = document.getElementById('userName');
+const logoutBtn = document.getElementById('logoutBtn');
 
-function getPat() { return localStorage.getItem(GH_PAT_KEY) || ''; }
-function setPat(v) { v ? localStorage.setItem(GH_PAT_KEY, v) : localStorage.removeItem(GH_PAT_KEY); }
-
-function utf8ToBase64(str) {
-  // Robust UTF-8 → base64 (handles emoji, non-ASCII)
-  const bytes = new TextEncoder().encode(str);
-  let bin = '';
-  for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
-  return btoa(bin);
+function showLogin() {
+  loginScreen.classList.remove('gone');
+  userPill.style.display = 'none';
+  logoutBtn.style.display = 'none';
+  setTimeout(() => luser.focus(), 100);
 }
-function base64ToUtf8(b64) {
-  const bin = atob(b64.replace(/\n/g, ''));
-  const bytes = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-  return new TextDecoder().decode(bytes);
-}
-
-async function ghApi(path, method = 'GET', body = null) {
-  const pat = getPat();
-  if (!pat) throw new Error('No GitHub PAT — open Settings to add one.');
-  const r = await fetch(`https://api.github.com${path}`, {
-    method,
-    headers: {
-      'Authorization': `Bearer ${pat}`,
-      'Accept': 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'Content-Type': 'application/json',
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const text = await r.text();
-  let json;
-  try { json = text ? JSON.parse(text) : null; } catch { json = { raw: text }; }
-  if (!r.ok) {
-    const msg = json?.message || r.statusText;
-    const err = new Error(`GitHub API ${r.status}: ${msg}`);
-    err.detail = json;
-    throw err;
-  }
-  return json;
-}
-
-async function ghGetFile(path) {
-  try {
-    return await ghApi(`/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(path)}?ref=${GH_BRANCH}`);
-  } catch (e) {
-    if (e.message.includes('404')) return null;
-    throw e;
-  }
-}
-
-async function ghPutFile(path, content, message, sha) {
-  const body = { message, content: utf8ToBase64(content), branch: GH_BRANCH };
-  if (sha) body.sha = sha;
-  return ghApi(`/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(path)}`, 'PUT', body);
-}
-
-async function ghCheckAuth() {
-  const u = await ghApi('/user');
-  // Also check repo access
-  await ghApi(`/repos/${GH_OWNER}/${GH_REPO}`);
-  return u;
-}
-
-// ── Status pill in nav ──
-const ghStatusEl = document.getElementById('ghStatus');
-function refreshGhStatus() {
-  if (getPat()) {
-    ghStatusEl.classList.remove('disconnected', 'error');
-    ghStatusEl.classList.add('connected');
-    ghStatusEl.textContent = '●  GH connected';
-    ghStatusEl.title = 'Token configured — ready to publish';
-  } else {
-    ghStatusEl.classList.remove('connected', 'error');
-    ghStatusEl.classList.add('disconnected');
-    ghStatusEl.textContent = '●  GH off';
-    ghStatusEl.title = 'No token — click Settings to add one';
-  }
-}
-
-// ── Settings modal ──
-const setOverlay = document.getElementById('setOverlay');
-const patInput = document.getElementById('patInput');
-const patStatus = document.getElementById('patStatus');
-
-function openSettings() {
-  patInput.value = getPat();
-  updatePatStatus(getPat() ? 'saved' : 'empty');
-  setOverlay.style.cssText = 'opacity:1;visibility:visible;pointer-events:auto';
-}
-function closeSettings() {
-  setOverlay.style.cssText = 'opacity:0;visibility:hidden;pointer-events:none';
-}
-function updatePatStatus(state, msg) {
-  if (state === 'empty') { patStatus.textContent = 'no token'; patStatus.style.color = 'var(--text-faint)'; }
-  else if (state === 'saved') { patStatus.textContent = '✓ saved'; patStatus.style.color = 'var(--green)'; }
-  else if (state === 'testing') { patStatus.textContent = 'testing…'; patStatus.style.color = 'var(--blue)'; }
-  else if (state === 'ok') { patStatus.textContent = `✓ ${msg}`; patStatus.style.color = 'var(--green)'; }
-  else if (state === 'err') { patStatus.textContent = `✕ ${msg}`; patStatus.style.color = 'var(--rose)'; }
-}
-
-document.getElementById('settingsBtn').addEventListener('click', openSettings);
-document.getElementById('setClose').addEventListener('click', closeSettings);
-setOverlay.addEventListener('click', e => { if (e.target === setOverlay) closeSettings(); });
-
-document.getElementById('patSave').addEventListener('click', () => {
-  const v = patInput.value.trim();
-  setPat(v);
-  refreshGhStatus();
-  updatePatStatus(v ? 'saved' : 'empty');
-  showToast(v ? '✓ Token saved locally' : '✓ Token removed');
-});
-
-document.getElementById('patClear').addEventListener('click', () => {
-  if (!confirm('Remove the saved GitHub token from this browser?')) return;
-  setPat('');
-  patInput.value = '';
-  refreshGhStatus();
-  updatePatStatus('empty');
-  showToast('✓ Token removed');
-});
-
-document.getElementById('patTest').addEventListener('click', async () => {
-  const v = patInput.value.trim();
-  if (!v) { updatePatStatus('err', 'enter a token first'); return; }
-  // Temporarily save so ghApi reads it
-  const previous = getPat();
-  setPat(v);
-  updatePatStatus('testing');
-  try {
-    const u = await ghCheckAuth();
-    updatePatStatus('ok', `as ${u.login}`);
-  } catch (e) {
-    setPat(previous); // rollback
-    updatePatStatus('err', e.message.slice(0, 60));
-  }
-});
-
-// Copy cron command
-document.querySelectorAll('[data-copy]').forEach(b => {
-  b.addEventListener('click', () => {
-    navigator.clipboard.writeText(b.dataset.copy).then(() => {
-      const orig = b.textContent;
-      b.textContent = '✓ copied';
-      setTimeout(() => b.textContent = orig, 1500);
-    });
-  });
-});
-
-// ── Publish flow ──
-const pubOverlay = document.getElementById('pubOverlay');
-const pubSpinner = document.getElementById('pubSpinner');
-const pubTitle = document.getElementById('pubTitle');
-const pubSub = document.getElementById('pubSub');
-const pubError = document.getElementById('pubError');
-const pubActions = document.getElementById('pubActions');
-const psSlug = document.getElementById('psSlug');
-const pubSteps = pubOverlay.querySelectorAll('.pub-step');
-
-function setStep(name, state) {
-  pubOverlay.querySelectorAll('.pub-step').forEach(s => {
-    if (s.dataset.step === name) {
-      s.classList.remove('active', 'done', 'error');
-      if (state) s.classList.add(state);
-    }
-  });
-}
-function resetPublishUI() {
-  pubSteps.forEach(s => s.classList.remove('active', 'done', 'error'));
-  pubError.style.display = 'none';
-  pubError.textContent = '';
-  pubActions.style.display = 'none';
-  pubSpinner.style.display = 'block';
-  pubTitle.textContent = 'Publishing…';
-  pubSub.textContent = 'Committing to GitHub';
-}
-function showPublishUI() {
-  resetPublishUI();
-  pubOverlay.style.cssText = 'opacity:1;visibility:visible;pointer-events:auto';
-}
-function closePublishUI() {
-  pubOverlay.style.cssText = 'opacity:0;visibility:hidden;pointer-events:none';
-}
-document.getElementById('pubDone').addEventListener('click', closePublishUI);
-
-async function publishToGitHub() {
-  if (!F.title.value) { showToast('Title is required', 'err'); return; }
-  if (!getPat()) {
-    showToast('Set a GitHub token in Settings first', 'err');
-    openSettings();
-    return;
-  }
-  const slug = F.slug.value || slugify(F.title.value);
-  psSlug.textContent = slug;
-  showPublishUI();
-
-  try {
-    // STEP 1: create or update the blog post file
-    setStep('post', 'active');
-    const blogHtml = buildBlogHtml();
-    const postPath = `blog-${slug}.html`;
-    const existing = await ghGetFile(postPath);
-    await ghPutFile(
-      postPath,
-      blogHtml,
-      existing ? `blog: update "${F.title.value}"` : `blog: publish "${F.title.value}"`,
-      existing?.sha
-    );
-    setStep('post', 'done');
-
-    // STEP 2: update blog.html index — insert card after marker, dedupe by slug
-    setStep('index', 'active');
-    const blogFile = await ghGetFile('blog.html');
-    if (!blogFile) throw new Error('blog.html not found in repo');
-    let blogContent = base64ToUtf8(blogFile.content);
-
-    // Remove any existing card linking to this slug (de-dupe on republish)
-    const dedup = new RegExp(
-      `\\s*<a href="${postPath.replace(/\./g, '\\.')}" class="post-card[\\s\\S]*?</a>\\s*`,
-      'g'
-    );
-    blogContent = blogContent.replace(dedup, '\n      ');
-
-    // Insert fresh card after the marker comment
-    if (!blogContent.includes(POSTS_MARKER)) {
-      throw new Error('Marker <!-- POSTS:INSERT-HERE -->  missing from blog.html. Add it inside .blog-grid.');
-    }
-    const card = buildCardSnippet().replace(/^<!--[\s\S]*?-->\n/, ''); // strip the leading comment
-    blogContent = blogContent.replace(
-      /<!-- POSTS:INSERT-HERE[^\n]*-->/,
-      m => `${m}\n\n      ${card}`
-    );
-
-    await ghPutFile(
-      'blog.html',
-      blogContent,
-      `blog: link "${F.title.value}" on index`,
-      blogFile.sha
-    );
-    setStep('index', 'done');
-
-    // Done
-    setStep('done', 'done');
-    pubSpinner.style.display = 'none';
-    pubTitle.textContent = '✓ Published';
-    pubSub.textContent = 'Now waiting for your VPS to pull';
-    pubActions.style.display = 'flex';
-    showToast('✓ Published to GitHub');
-    // Unlock achievement-style nicety: clear the current auto-save so a new post starts fresh
-  } catch (e) {
-    console.error(e);
-    pubSteps.forEach(s => {
-      if (s.classList.contains('active')) { s.classList.remove('active'); s.classList.add('error'); }
-    });
-    pubSpinner.style.display = 'none';
-    pubTitle.textContent = '✕ Publish failed';
-    pubSub.textContent = '';
-    pubError.style.display = 'block';
-    pubError.textContent = e.message + (e.detail?.documentation_url ? `\n\n${e.detail.documentation_url}` : '');
-    pubActions.style.display = 'flex';
-  }
-}
-
-document.getElementById('bPublish').addEventListener('click', publishToGitHub);
-
-refreshGhStatus();
-
-// ════════════════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════════════════
-function init() {
-  // Restore last auto-save (current session)
+function showApp(user) {
+  loginScreen.classList.add('gone');
+  userPill.style.display = 'inline-flex';
+  logoutBtn.style.display = 'inline-flex';
+  userName.textContent = user.username;
+  // Bootstrap state once authenticated
+  refreshServerPosts();
+  renderDrafts();
+  // Restore last autosave
   try {
     const saved = JSON.parse(localStorage.getItem(CURRENT_KEY) || 'null');
     if (saved) loadSnapshot(saved);
   } catch {}
-  renderDrafts();
-  updatePreview();
   setSaveState('idle');
 }
-if (sessionStorage.getItem('rp_admin_unlocked') === '1') init();
+
+loginForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  loginErr.classList.remove('show');
+  loginBtn.disabled = true; loginBtn.textContent = 'Signing in…';
+  try {
+    const { user } = await apiAuth.login(luser.value.trim(), lpass.value);
+    showApp(user);
+  } catch (e) {
+    loginErr.textContent = e.message;
+    loginErr.classList.add('show');
+    luser.classList.add('err'); lpass.classList.add('err');
+    setTimeout(() => { luser.classList.remove('err'); lpass.classList.remove('err'); }, 400);
+  } finally {
+    loginBtn.disabled = false; loginBtn.textContent = 'Sign in';
+  }
+});
+
+logoutBtn.addEventListener('click', async () => {
+  try { await apiAuth.logout(); } catch {}
+  showLogin();
+  showToast('✓ Signed out');
+});
+
+// ════════════════════════════════════════════════════════════
+// BOOT
+// ════════════════════════════════════════════════════════════
+(async function init() {
+  try {
+    const { ok, user } = await apiAuth.me();
+    if (ok && user) showApp(user); else showLogin();
+  } catch {
+    // Backend unreachable — still allow local-only drafting
+    showLogin();
+    loginErr.textContent = 'Backend unreachable. Local drafts still work.';
+    loginErr.classList.add('show');
+  }
+})();
 </script>
 </body>
 </html>

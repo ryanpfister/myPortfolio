@@ -1,0 +1,7 @@
+node_modules/
+.env
+portfolio.db
+portfolio.db-journal
+portfolio.db-wal
+portfolio.db-shm
+*.log

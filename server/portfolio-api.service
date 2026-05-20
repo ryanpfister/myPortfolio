@@ -1,0 +1,33 @@
+[Unit]
+Description=rdpfister.com API
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/rdpfister.com/html/server
+EnvironmentFile=/var/www/rdpfister.com/html/server/.env
+ExecStart=/usr/bin/node /var/www/rdpfister.com/html/server/index.js
+Restart=always
+RestartSec=3
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+RestrictSUIDSGID=true
+
+# Persistence dirs (the SQLite db)
+ReadWritePaths=/var/www/rdpfister.com/html/server
+
+# Limits
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

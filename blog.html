@@ -125,35 +125,8 @@
         </div>
       </a>
 
-      <!-- POSTS:INSERT-HERE — admin.html publisher injects new post cards immediately after this marker. Do not remove. -->
-
-      <!-- Post 2 -->
-      <a href="#" class="post-card fade-up">
-        <div class="post-meta">
-          <span class="post-date">Coming soon</span>
-          <span class="post-cat badge badge-violet">Cybersecurity</span>
-        </div>
-        <div class="post-title">Why OT Security Is the Next Big Frontier</div>
-        <p class="post-excerpt">Operational Technology networks — the systems that control buildings, factories, and utilities — are increasingly connected to IT networks. That convergence creates security risks most organizations aren't ready for.</p>
-        <div class="post-read">
-          Coming soon
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </div>
-      </a>
-
-      <!-- Post 3 -->
-      <a href="#" class="post-card fade-up">
-        <div class="post-meta">
-          <span class="post-date">Coming soon</span>
-          <span class="post-cat badge badge-green">Public Safety</span>
-        </div>
-        <div class="post-title">What Tech Can Learn from the Fire Service</div>
-        <p class="post-excerpt">Firefighting has one of the most rigorous incident management systems in the world — ICS. After years working both sides, I believe tech could learn a lot from how emergency services handle chaos.</p>
-        <div class="post-read">
-          Coming soon
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </div>
-      </a>
+      <!-- POSTS:INSERT-HERE — dynamic cards from /api/posts injected by JS below. The legacy admin can also append static cards directly after this marker. -->
+      <div id="dynamicPosts" style="display:contents"></div>
 
     </div>
 
@@ -193,6 +166,49 @@ const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
 if(dot&&ring){let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button,.chip,.pill').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}}),{threshold:.06});
 document.querySelectorAll('.fade-up,.stagger').forEach(el=>io.observe(el));
+
+/* ── Dynamic post fetch from /api/posts ─────────────────────── */
+(function(){
+  const target = document.getElementById('dynamicPosts');
+  if (!target) return;
+  const CAT_META = {
+    'building-automation': { label:'Building Automation', badge:'badge-cyan' },
+    'cybersecurity':       { label:'Cybersecurity',       badge:'badge-violet' },
+    'networking':          { label:'Networking',          badge:'badge-blue' },
+    'public-safety':       { label:'Public Safety',       badge:'badge-green' },
+    'web':                 { label:'Web Development',     badge:'badge-orange' },
+    'tech':                { label:'Tech',                badge:'badge-blue' },
+  };
+  function fmtMonth(iso){if(!iso)return '';const d=new Date(iso+'T12:00:00Z');return d.toLocaleDateString('en-US',{month:'short',year:'numeric',timeZone:'UTC'});}
+  function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+  fetch('/api/posts')
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(({posts}) => {
+      if (!posts || !posts.length) return;
+      // Skip the BACnet post — it's already featured statically above.
+      const filtered = posts.filter(p => p.slug !== 'bacnet');
+      target.innerHTML = filtered.map(p => {
+        const cat = CAT_META[p.category] || CAT_META.tech;
+        return `<a href="/blog/${esc(p.slug)}" class="post-card fade-up">
+          <div class="post-meta">
+            <span class="post-date">${esc(fmtMonth(p.date))}</span>
+            <span class="post-cat badge ${cat.badge}">${esc(cat.label)}</span>
+          </div>
+          <div class="post-title">${esc(p.title)}</div>
+          <p class="post-excerpt">${esc(p.excerpt)}</p>
+          <div class="post-read">
+            Read article
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+        </a>`;
+      }).join('');
+      target.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+    })
+    .catch(() => {
+      // Quietly fail if API is down — the featured post still renders.
+    });
+})();
 </script>
 </body>
 </html>
