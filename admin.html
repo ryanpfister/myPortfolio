@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compose | Ryan Pfister</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#020817">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css?v=20260518c">
+  <style>
+    /* ── PIN GATE ─────────────────────────────────────── */
+    .pin-gate{position:fixed;inset:0;z-index:9000;background:var(--bg-0);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center;transition:opacity .35s,visibility .35s}
+    .pin-gate.unlocked{opacity:0;visibility:hidden;pointer-events:none}
+    .pin-box{max-width:380px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:36px 32px;backdrop-filter:blur(20px);position:relative}
+    .pin-box::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--purple),transparent)}
+    .pin-icon{font-size:28px;margin-bottom:14px}
+    .pin-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+    .pin-sub{font-size:12.5px;color:var(--text-lo);margin-bottom:22px;line-height:1.6}
+    .pin-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;color:var(--text-hi);font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;text-align:center;letter-spacing:.3em;margin-bottom:14px;transition:var(--ease)}
+    .pin-input:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
+    .pin-input.err{border-color:rgba(244,63,94,.5);animation:pin-shake .35s}
+    @keyframes pin-shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+    .pin-btn{width:100%;background:linear-gradient(135deg,var(--blue),#6366f1);color:#fff;border:none;border-radius:var(--r-sm);padding:11px 22px;font-weight:600;font-size:14px;cursor:pointer;transition:var(--ease)}
+    .pin-btn:hover{transform:translateY(-1px);box-shadow:0 0 24px var(--blue-glow)}
+    .pin-note{font-size:11px;color:var(--text-faint);margin-top:18px;line-height:1.5;font-family:'JetBrains Mono',monospace}
+
+    /* ── COMPOSER LAYOUT ──────────────────────────────── */
+    .compose-wrap{max-width:1400px;margin:0 auto;padding:100px 28px 60px}
+    .compose-header{margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+    .compose-title{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.04em;line-height:1.1}
+    .compose-title em{font-style:normal;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .compose-sub{font-size:14px;color:var(--text-lo);margin-top:6px;font-family:'JetBrains Mono',monospace}
+    .compose-status{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:100px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:var(--green);font-size:12px;font-family:'JetBrains Mono',monospace}
+    .compose-status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:archived-pulse 2.4s ease infinite}
+
+    .compose-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+    @media(max-width:1100px){.compose-grid{grid-template-columns:1fr}}
+
+    /* Form panel */
+    .compose-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:28px;backdrop-filter:blur(12px);display:flex;flex-direction:column;gap:18px;position:sticky;top:90px;max-height:calc(100vh - 110px);overflow-y:auto}
+    @media(max-width:1100px){.compose-form{position:static;max-height:none}}
+    .cf-field{display:flex;flex-direction:column;gap:6px}
+    .cf-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.1em;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+    .cf-label kbd{font-family:inherit;font-size:9.5px;background:rgba(255,255,255,.05);padding:2px 6px;border-radius:4px;border:1px solid var(--border);color:var(--text-lo);text-transform:none;letter-spacing:0}
+    .cf-input,.cf-select,.cf-textarea{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;color:var(--text-hi);font-family:inherit;font-size:13.5px;outline:none;transition:var(--ease);width:100%}
+    .cf-input:focus,.cf-select:focus,.cf-textarea:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
+    .cf-textarea{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;resize:vertical;min-height:80px}
+    .cf-textarea.body{min-height:300px;font-size:13px}
+    .cf-help{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;margin-top:-2px}
+    .cf-row{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+
+    /* Markdown toolbar */
+    .md-tools{display:flex;flex-wrap:wrap;gap:5px;padding:6px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-bottom:none;border-radius:var(--r-sm) var(--r-sm) 0 0}
+    .md-tools button{background:transparent;border:1px solid transparent;border-radius:5px;padding:5px 10px;color:var(--text-lo);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11.5px;transition:.15s}
+    .md-tools button:hover{background:rgba(6,182,212,.1);color:var(--blue);border-color:rgba(6,182,212,.2)}
+    .cf-textarea.body{border-top-left-radius:0;border-top-right-radius:0;border-top:none}
+
+    /* Preview panel */
+    .compose-preview{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:36px 40px;backdrop-filter:blur(12px);min-height:600px}
+    @media(max-width:560px){.compose-preview{padding:24px}}
+    .preview-empty{text-align:center;padding:80px 20px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:13px}
+
+    /* Preview matches blog-bacnet.html article styles */
+    .preview-article{color:var(--text-lo)}
+    .preview-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+    .preview-date{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-faint)}
+    .preview-cat{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:100px}
+    .preview-h1{font-size:clamp(24px,4vw,36px);font-weight:900;letter-spacing:-.04em;line-height:1.15;color:var(--text-hi);margin-bottom:14px}
+    .preview-intro{font-size:15px;color:var(--text-lo);line-height:1.85;border-left:3px solid var(--blue);padding-left:18px;margin-bottom:32px}
+    .preview-body{font-size:14.5px;line-height:1.9}
+    .preview-body h2{font-size:22px;font-weight:800;color:var(--text-hi);margin:32px 0 12px;letter-spacing:-.02em}
+    .preview-body h3{font-size:17px;font-weight:700;color:var(--text-hi);margin:24px 0 10px}
+    .preview-body p{margin-bottom:16px}
+    .preview-body strong{color:var(--text-hi);font-weight:600}
+    .preview-body em{color:var(--text-hi)}
+    .preview-body a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+    .preview-body ul,.preview-body ol{margin:0 0 16px 18px}
+    .preview-body li{margin-bottom:6px}
+    .preview-body li::marker{color:var(--blue)}
+    .preview-body code{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.88em;color:var(--blue)}
+    .preview-body pre{background:var(--bg-0);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin:20px 0;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;color:var(--text-lo)}
+    .preview-body blockquote{background:var(--blue-dim);border:1px solid rgba(6,182,212,.2);border-radius:var(--r);padding:14px 18px;margin:20px 0;font-size:14px}
+    .preview-body img{max-width:100%;border-radius:var(--r);margin:20px 0;border:1px solid var(--border)}
+    .preview-body hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+    /* Actions */
+    .compose-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
+    .btn-sm{padding:9px 16px;font-size:13px;border-radius:var(--r-sm);display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:1px solid var(--border);background:var(--bg-card);color:var(--text-lo);font-family:inherit;font-weight:500;transition:var(--ease)}
+    .btn-sm:hover{background:var(--bg-card-h);color:var(--text-hi);border-color:var(--border-h)}
+    .btn-primary{background:linear-gradient(135deg,var(--blue),#6366f1);color:#fff;border:none;box-shadow:0 0 16px var(--blue-glow)}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 0 28px var(--blue-glow)}
+
+    /* Drafts list */
+    .drafts-section{margin-top:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:24px;backdrop-filter:blur(12px)}
+    .drafts-title{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+    .drafts-title::before{content:'';width:24px;height:1px;background:var(--blue)}
+    .drafts-list{display:flex;flex-direction:column;gap:6px}
+    .draft-row{display:flex;align-items:center;gap:14px;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r-sm);background:rgba(255,255,255,.018);transition:.15s}
+    .draft-row:hover{border-color:var(--border-h);background:rgba(255,255,255,.04)}
+    .draft-title{flex:1;font-size:13.5px;color:var(--text-hi);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .draft-date{font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;flex-shrink:0}
+    .draft-actions{display:flex;gap:4px;flex-shrink:0}
+    .draft-btn{background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:12px;padding:4px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+    .draft-btn:hover{background:rgba(255,255,255,.05);color:var(--text-hi)}
+    .draft-btn.del:hover{color:var(--rose)}
+    .drafts-empty{text-align:center;padding:24px;color:var(--text-faint);font-size:13px;font-family:'JetBrains Mono',monospace}
+
+    /* Cheatsheet */
+    .md-cheat{margin-top:8px;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;line-height:1.7;padding:10px 12px;background:rgba(255,255,255,.018);border:1px solid var(--border);border-radius:var(--r-sm)}
+    .md-cheat code{background:rgba(6,182,212,.08);padding:1px 5px;border-radius:3px;color:var(--blue)}
+
+    /* Auto-save indicator */
+    .save-ind{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace}
+    .save-ind.saved{color:var(--green)}
+    .save-ind.unsaved{color:var(--orange)}
+
+    /* Output modal */
+    .out-overlay{position:fixed;inset:0;z-index:9100;background:rgba(2,8,23,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;transition:opacity .25s,visibility .25s}
+    .out-box{width:min(720px,96vw);max-height:84vh;background:rgba(15,15,28,.97);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.7);overflow:hidden;display:flex;flex-direction:column}
+    .out-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .out-title{font-size:15px;font-weight:700;color:var(--text-hi)}
+    .out-close{background:none;border:none;color:var(--text-lo);cursor:pointer;font-size:22px;line-height:1;padding:0 4px}
+    .out-body{padding:18px 22px;overflow-y:auto;flex:1}
+    .out-body pre{background:#020208;border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.65;color:#c8d3ea;overflow-x:auto;white-space:pre-wrap;word-break:break-word;max-height:50vh;overflow-y:auto}
+    .out-foot{padding:14px 22px;border-top:1px solid var(--border);background:rgba(0,0,0,.18);display:flex;gap:10px;justify-content:flex-end}
+
+    .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(16px);z-index:9200;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:10px 22px;border-radius:100px;backdrop-filter:blur(12px);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateX(-50%)}
+  </style>
+</head>
+<body>
+
+<!-- PIN GATE — cosmetic deterrent, NOT real security. Change ADMIN_PIN below. -->
+<div class="pin-gate" id="pinGate">
+  <div class="pin-box">
+    <div class="pin-icon">🔒</div>
+    <div class="pin-title">Compose</div>
+    <p class="pin-sub">Private composer for blog posts. Not a real security gate.</p>
+    <input type="password" class="pin-input" id="pinInput" placeholder="• • • •" maxlength="32" autocomplete="off">
+    <button class="pin-btn" id="pinSubmit">Unlock</button>
+    <p class="pin-note">Default PIN: change <code style="color:var(--blue)">ADMIN_PIN</code> in the source.</p>
+  </div>
+</div>
+
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
+
+<div id="progress"></div>
+<nav id="nav" class="scrolled">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="projects.html">Projects</a></li>
+    </ul>
+    <div class="nav-right">
+      <span id="saveInd" class="save-ind">●  Idle</span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <button class="btn-sm" id="lockBtn">🔒 Lock</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-bg"></div>
+<div class="page-dots"></div>
+
+<div class="compose-wrap">
+  <div class="compose-header">
+    <div>
+      <h1 class="compose-title">Blog <em>Composer</em></h1>
+      <div class="compose-sub">Write · Preview · Export</div>
+    </div>
+    <span class="compose-status"><span class="compose-status-dot"></span>Auto-save enabled</span>
+  </div>
+
+  <div class="compose-grid">
+    <!-- LEFT: FORM -->
+    <div class="compose-form">
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Title</label>
+          <input type="text" class="cf-input" id="cTitle" placeholder="BACnet: The Protocol That Makes Smart Buildings Talk">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Date</label>
+          <input type="date" class="cf-input" id="cDate">
+        </div>
+      </div>
+
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label">Slug <kbd>auto</kbd></label>
+          <input type="text" class="cf-input" id="cSlug" placeholder="bacnet-smart-buildings">
+          <div class="cf-help">Used in filename: <code>blog-{slug}.html</code></div>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Category</label>
+          <select class="cf-select" id="cCategory">
+            <option value="building-automation">Building Automation</option>
+            <option value="cybersecurity">Cybersecurity</option>
+            <option value="networking">Networking</option>
+            <option value="public-safety">Public Safety</option>
+            <option value="web">Web Development</option>
+            <option value="tech">Tech / General</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cf-field">
+        <label class="cf-label">Excerpt <span style="color:var(--text-faint)">— for the blog index card</span></label>
+        <textarea class="cf-textarea" id="cExcerpt" rows="2" placeholder="One- to two-sentence teaser shown on the blog index card."></textarea>
+      </div>
+
+      <div class="cf-field">
+        <label class="cf-label">Intro paragraph <span style="color:var(--text-faint)">— the highlighted lead under the H1</span></label>
+        <textarea class="cf-textarea" id="cIntro" rows="3" placeholder="The opening paragraph displayed in a callout style under the title."></textarea>
+      </div>
+
+      <div class="cf-field">
+        <label class="cf-label">Body <kbd>markdown</kbd></label>
+        <div class="md-tools">
+          <button data-md="h2">## H2</button>
+          <button data-md="h3">### H3</button>
+          <button data-md="bold">**B**</button>
+          <button data-md="italic">*I*</button>
+          <button data-md="code">`code`</button>
+          <button data-md="codeblock">```</button>
+          <button data-md="link">[link]</button>
+          <button data-md="image">![img]</button>
+          <button data-md="list">- list</button>
+          <button data-md="quote">&gt; quote</button>
+          <button data-md="hr">---</button>
+        </div>
+        <textarea class="cf-textarea body" id="cBody" placeholder="Write your post in Markdown. ## H2 for sections. **bold**, *italic*, `code`, [link](url), ![img](url). > callout. --- horizontal rule. Triple-backtick fences for code blocks."></textarea>
+        <div class="md-cheat">
+          <code>## H2</code> · <code>### H3</code> · <code>**bold**</code> · <code>*italic*</code> · <code>`code`</code> · <code>```fence```</code> · <code>[txt](url)</code> · <code>![alt](url)</code> · <code>- list</code> · <code>1. list</code> · <code>&gt; callout</code> · <code>---</code> hr
+        </div>
+      </div>
+
+      <div class="cf-field">
+        <label class="cf-label">Tags <span style="color:var(--text-faint)">— comma-separated, shown as chips at end</span></label>
+        <input type="text" class="cf-input" id="cTags" placeholder="BACnet, BAS, Networking">
+      </div>
+
+      <div class="compose-actions">
+        <button class="btn-sm btn-primary" id="bDownload">⬇  Download HTML</button>
+        <button class="btn-sm" id="bCardSnippet">📋  Copy blog-card snippet</button>
+        <button class="btn-sm" id="bCopyHtml">📄  Copy full HTML</button>
+        <button class="btn-sm" id="bSave">💾  Save draft</button>
+        <button class="btn-sm" id="bClear" style="margin-left:auto">✕  Clear</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: PREVIEW -->
+    <div class="compose-preview" id="previewWrap">
+      <div class="preview-empty" id="previewEmpty">
+        ↳  Start typing — preview renders here.
+      </div>
+      <article class="preview-article" id="previewArticle" style="display:none">
+        <div class="preview-meta">
+          <span class="preview-date" id="pvDate"></span>
+          <span class="preview-cat badge badge-blue" id="pvCat"></span>
+        </div>
+        <h1 class="preview-h1" id="pvTitle"></h1>
+        <p class="preview-intro" id="pvIntro"></p>
+        <div class="preview-body" id="pvBody"></div>
+      </article>
+    </div>
+  </div>
+
+  <!-- DRAFTS -->
+  <div class="drafts-section">
+    <div class="drafts-title">Saved drafts</div>
+    <div class="drafts-list" id="draftsList">
+      <div class="drafts-empty">No drafts yet — your work auto-saves every 8 seconds.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Output modal (for copy/preview operations) -->
+<div class="out-overlay" id="outOverlay" style="opacity:0;visibility:hidden;pointer-events:none">
+  <div class="out-box">
+    <div class="out-head">
+      <div class="out-title" id="outTitle">Output</div>
+      <button class="out-close" id="outClose" aria-label="Close">×</button>
+    </div>
+    <div class="out-body"><pre id="outPre"></pre></div>
+    <div class="out-foot">
+      <button class="btn-sm" id="outCopy">📋  Copy to clipboard</button>
+      <button class="btn-sm btn-primary" id="outCloseBtn">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════════════════════════
+// CHANGE THIS to whatever PIN you want. This is NOT real security —
+// just a deterrent for accidental access. Anyone who views the page
+// source can see it. Move the page to a non-public folder if you
+// want real protection.
+const ADMIN_PIN = 'pfister';
+
+// ════════════════════════════════════════════════════════════
+// PIN GATE
+// ════════════════════════════════════════════════════════════
+const gate = document.getElementById('pinGate');
+const pinInput = document.getElementById('pinInput');
+const pinSubmit = document.getElementById('pinSubmit');
+
+function unlock() {
+  gate.classList.add('unlocked');
+  sessionStorage.setItem('rp_admin_unlocked', '1');
+  setTimeout(init, 400);
+}
+function lock() {
+  sessionStorage.removeItem('rp_admin_unlocked');
+  gate.classList.remove('unlocked');
+  pinInput.value = '';
+  pinInput.focus();
+}
+function tryPin() {
+  if (pinInput.value === ADMIN_PIN) unlock();
+  else {
+    pinInput.classList.add('err');
+    setTimeout(() => pinInput.classList.remove('err'), 400);
+    pinInput.value = '';
+  }
+}
+pinSubmit.addEventListener('click', tryPin);
+pinInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryPin(); });
+if (sessionStorage.getItem('rp_admin_unlocked') === '1') unlock();
+else setTimeout(() => pinInput.focus(), 100);
+document.getElementById('lockBtn').addEventListener('click', lock);
+
+// ════════════════════════════════════════════════════════════
+// THEME
+// ════════════════════════════════════════════════════════════
+const htmlEl = document.documentElement;
+const themeBtn = document.getElementById('themeToggle');
+(function(){const t=localStorage.getItem('theme')||'dark';htmlEl.setAttribute('data-theme',t);setIcon(t);})();
+themeBtn.addEventListener('click',()=>{const n=htmlEl.getAttribute('data-theme')==='dark'?'light':'dark';htmlEl.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+function setIcon(t){themeBtn.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';themeBtn.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+
+// ════════════════════════════════════════════════════════════
+// CURSOR
+// ════════════════════════════════════════════════════════════
+const dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
+if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+  (function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();
+  document.querySelectorAll('a,button,input,select,textarea').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});
+}
+
+// ════════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════════
+const toast = document.getElementById('toast');
+let toastTimer;
+function showToast(msg, type='ok') {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  if (type === 'err') {
+    toast.style.background = 'rgba(244,63,94,.12)';
+    toast.style.borderColor = 'rgba(244,63,94,.3)';
+    toast.style.color = 'var(--rose)';
+  } else {
+    toast.style.background = '';
+    toast.style.borderColor = '';
+    toast.style.color = '';
+  }
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+// ════════════════════════════════════════════════════════════
+// MARKDOWN PARSER (intentionally small — supports the post structure)
+// ════════════════════════════════════════════════════════════
+function escHtml(s){return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function inlineMd(text) {
+  // Order matters: process images before links, code before others.
+  return text
+    .replace(/`([^`]+)`/g, (_, c) => `<code>${escHtml(c)}</code>`)
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, a, u) => `<img src="${u}" alt="${escHtml(a)}">`)
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, t, u) => `<a href="${u}">${escHtml(t)}</a>`)
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+}
+
+function mdToHtml(md) {
+  const lines = md.split('\n');
+  let html = '', state = null, listType = null, listItems = [], codeBuf = [], quoteBuf = [];
+
+  function flushList() {
+    if (listItems.length) {
+      html += `<${listType}>${listItems.map(i => `<li>${inlineMd(i)}</li>`).join('')}</${listType}>`;
+      listItems = []; listType = null;
+    }
+  }
+  function flushQuote() {
+    if (quoteBuf.length) {
+      html += `<blockquote>${inlineMd(quoteBuf.join(' '))}</blockquote>`;
+      quoteBuf = [];
+    }
+  }
+  function flushCode() {
+    if (codeBuf.length) {
+      html += `<pre>${escHtml(codeBuf.join('\n'))}</pre>`;
+      codeBuf = [];
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (state === 'code') {
+      if (line.trim() === '```') { flushCode(); state = null; }
+      else codeBuf.push(line);
+      continue;
+    }
+    if (line.trim().startsWith('```')) { flushList(); flushQuote(); state = 'code'; continue; }
+
+    if (line.startsWith('### ')) { flushList(); flushQuote(); html += `<h3>${inlineMd(line.slice(4))}</h3>`; continue; }
+    if (line.startsWith('## ')) { flushList(); flushQuote(); html += `<h2>${inlineMd(line.slice(3))}</h2>`; continue; }
+    if (line.startsWith('# ')) { flushList(); flushQuote(); html += `<h2>${inlineMd(line.slice(2))}</h2>`; continue; }
+    if (line.trim() === '---') { flushList(); flushQuote(); html += '<hr>'; continue; }
+
+    if (line.startsWith('> ')) { flushList(); quoteBuf.push(line.slice(2)); continue; }
+    else flushQuote();
+
+    const ul = line.match(/^- (.+)/);
+    const ol = line.match(/^\d+\. (.+)/);
+    if (ul) {
+      if (listType && listType !== 'ul') flushList();
+      listType = 'ul'; listItems.push(ul[1]); continue;
+    }
+    if (ol) {
+      if (listType && listType !== 'ol') flushList();
+      listType = 'ol'; listItems.push(ol[1]); continue;
+    }
+    flushList();
+
+    if (line.trim() === '') continue;
+    html += `<p>${inlineMd(line)}</p>`;
+  }
+  flushList(); flushQuote(); flushCode();
+  return html;
+}
+
+// Convert preview HTML (which uses <pre>, <blockquote>, <code>) into
+// the final article's HTML (which uses .code-block, .callout, inline <code>).
+function mdToArticleHtml(md) {
+  let h = mdToHtml(md);
+  // Convert <blockquote> → .callout div (blog uses .callout class with <strong> coloring)
+  h = h.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, '<div class="callout">$1</div>');
+  // Convert <pre>...</pre> → .code-block div with line breaks
+  h = h.replace(/<pre>([\s\S]*?)<\/pre>/g, (_, c) => {
+    const lines = c.split('\n').map(l => l || '&nbsp;').join('<br>');
+    return `<div class="code-block">${lines}</div>`;
+  });
+  return h;
+}
+
+// ════════════════════════════════════════════════════════════
+// CATEGORY → blog index card badge color
+// ════════════════════════════════════════════════════════════
+const catMeta = {
+  'building-automation': { label: 'Building Automation', badge: 'badge-cyan' },
+  'cybersecurity':       { label: 'Cybersecurity',       badge: 'badge-violet' },
+  'networking':          { label: 'Networking',          badge: 'badge-blue' },
+  'public-safety':       { label: 'Public Safety',       badge: 'badge-green' },
+  'web':                 { label: 'Web Development',     badge: 'badge-orange' },
+  'tech':                { label: 'Tech',                badge: 'badge-blue' },
+};
+
+// ════════════════════════════════════════════════════════════
+// FORM STATE + LIVE PREVIEW
+// ════════════════════════════════════════════════════════════
+const F = {
+  title:    document.getElementById('cTitle'),
+  slug:     document.getElementById('cSlug'),
+  date:     document.getElementById('cDate'),
+  category: document.getElementById('cCategory'),
+  excerpt:  document.getElementById('cExcerpt'),
+  intro:    document.getElementById('cIntro'),
+  body:     document.getElementById('cBody'),
+  tags:     document.getElementById('cTags'),
+};
+const previewEmpty = document.getElementById('previewEmpty');
+const previewArticle = document.getElementById('previewArticle');
+const pvDate = document.getElementById('pvDate');
+const pvCat = document.getElementById('pvCat');
+const pvTitle = document.getElementById('pvTitle');
+const pvIntro = document.getElementById('pvIntro');
+const pvBody = document.getElementById('pvBody');
+
+function slugify(s) {
+  return s.toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 80);
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function updatePreview() {
+  const hasContent = F.title.value || F.intro.value || F.body.value;
+  previewEmpty.style.display = hasContent ? 'none' : 'block';
+  previewArticle.style.display = hasContent ? 'block' : 'none';
+
+  pvDate.textContent = fmtDate(F.date.value) || 'Date';
+  const cat = catMeta[F.category.value] || catMeta.tech;
+  pvCat.textContent = cat.label;
+  pvCat.className = 'preview-cat badge ' + cat.badge;
+  pvTitle.textContent = F.title.value || 'Your post title';
+  pvIntro.textContent = F.intro.value || 'The lead paragraph appears here, styled as a highlighted callout.';
+  pvBody.innerHTML = mdToHtml(F.body.value);
+
+  setSaveState('unsaved');
+}
+
+Object.values(F).forEach(el => el.addEventListener('input', updatePreview));
+
+F.title.addEventListener('input', () => {
+  if (!F.slug.dataset.touched) F.slug.value = slugify(F.title.value);
+});
+F.slug.addEventListener('input', () => { F.slug.dataset.touched = '1'; });
+if (!F.date.value) F.date.value = new Date().toISOString().slice(0,10);
+
+// ════════════════════════════════════════════════════════════
+// MARKDOWN TOOLBAR
+// ════════════════════════════════════════════════════════════
+document.querySelectorAll('.md-tools button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const ta = F.body;
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const sel = ta.value.slice(start, end);
+    let insert = '', cursorOffset = 0;
+    switch (btn.dataset.md) {
+      case 'h2':    insert = `\n## ${sel||'Heading'}\n`; cursorOffset = 4; break;
+      case 'h3':    insert = `\n### ${sel||'Subheading'}\n`; cursorOffset = 5; break;
+      case 'bold':  insert = `**${sel||'bold text'}**`; cursorOffset = 2; break;
+      case 'italic':insert = `*${sel||'italic text'}*`; cursorOffset = 1; break;
+      case 'code':  insert = `\`${sel||'code'}\``; cursorOffset = 1; break;
+      case 'codeblock': insert = `\n\`\`\`\n${sel||'code here'}\n\`\`\`\n`; cursorOffset = 5; break;
+      case 'link':  insert = `[${sel||'link text'}](https://)`; cursorOffset = sel ? sel.length+3 : 11; break;
+      case 'image': insert = `![${sel||'alt text'}](https://)`; cursorOffset = sel ? sel.length+4 : 11; break;
+      case 'list':  insert = `\n- ${sel||'item 1'}\n- item 2\n- item 3\n`; cursorOffset = 3; break;
+      case 'quote': insert = `\n> ${sel||'a quote or callout'}\n`; cursorOffset = 3; break;
+      case 'hr':    insert = `\n---\n`; cursorOffset = 5; break;
+    }
+    ta.value = ta.value.slice(0,start) + insert + ta.value.slice(end);
+    const newPos = sel ? start + insert.length : start + cursorOffset;
+    ta.focus();
+    ta.setSelectionRange(newPos, newPos + (sel ? 0 : Math.max(0, insert.length - cursorOffset - cursorOffset)));
+    updatePreview();
+  });
+});
+
+// ════════════════════════════════════════════════════════════
+// DRAFTS
+// ════════════════════════════════════════════════════════════
+const DRAFTS_KEY = 'rp_blog_drafts_v1';
+const CURRENT_KEY = 'rp_blog_current_v1';
+const saveInd = document.getElementById('saveInd');
+let saveTimer = null;
+
+function setSaveState(state) {
+  saveInd.classList.remove('saved','unsaved');
+  if (state === 'saved') { saveInd.classList.add('saved'); saveInd.textContent = '●  Saved'; }
+  else if (state === 'unsaved') { saveInd.classList.add('unsaved'); saveInd.textContent = '●  Editing…'; }
+  else saveInd.textContent = '●  Idle';
+}
+
+function snapshot() {
+  return {
+    title: F.title.value, slug: F.slug.value, date: F.date.value,
+    category: F.category.value, excerpt: F.excerpt.value,
+    intro: F.intro.value, body: F.body.value, tags: F.tags.value,
+    savedAt: Date.now()
+  };
+}
+
+function loadSnapshot(s) {
+  F.title.value = s.title || '';
+  F.slug.value = s.slug || '';
+  F.date.value = s.date || new Date().toISOString().slice(0,10);
+  F.category.value = s.category || 'building-automation';
+  F.excerpt.value = s.excerpt || '';
+  F.intro.value = s.intro || '';
+  F.body.value = s.body || '';
+  F.tags.value = s.tags || '';
+  F.slug.dataset.touched = s.slug ? '1' : '';
+  updatePreview();
+}
+
+function autoSave() {
+  const snap = snapshot();
+  // Skip empty snapshots
+  if (!snap.title && !snap.body) return;
+  localStorage.setItem(CURRENT_KEY, JSON.stringify(snap));
+  setSaveState('saved');
+}
+
+function saveDraftExplicit() {
+  const snap = snapshot();
+  if (!snap.title) { showToast('Add a title before saving', 'err'); return; }
+  const drafts = loadDrafts();
+  const id = snap.slug || slugify(snap.title);
+  drafts[id] = snap;
+  localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
+  renderDrafts();
+  showToast(`✓ Draft saved: ${snap.title}`);
+}
+
+function loadDrafts() {
+  try { return JSON.parse(localStorage.getItem(DRAFTS_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+function renderDrafts() {
+  const drafts = loadDrafts();
+  const list = document.getElementById('draftsList');
+  const ids = Object.keys(drafts).sort((a,b) => (drafts[b].savedAt||0) - (drafts[a].savedAt||0));
+  if (ids.length === 0) {
+    list.innerHTML = '<div class="drafts-empty">No drafts yet — your work auto-saves every 8 seconds.</div>';
+    return;
+  }
+  list.innerHTML = ids.map(id => {
+    const d = drafts[id];
+    const when = new Date(d.savedAt||Date.now()).toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
+    return `<div class="draft-row">
+      <span class="draft-title">${escHtml(d.title || '(untitled)')}</span>
+      <span class="draft-date">${when}</span>
+      <span class="draft-actions">
+        <button class="draft-btn" data-load="${id}">Load</button>
+        <button class="draft-btn del" data-del="${id}">Delete</button>
+      </span>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('[data-load]').forEach(b => b.addEventListener('click', () => {
+    loadSnapshot(drafts[b.dataset.load]);
+    showToast(`✓ Loaded: ${drafts[b.dataset.load].title}`);
+  }));
+  list.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => {
+    if (!confirm('Delete this draft?')) return;
+    delete drafts[b.dataset.del];
+    localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
+    renderDrafts();
+    showToast('✓ Draft deleted');
+  }));
+}
+
+// Auto-save every 8s if dirty
+setInterval(autoSave, 8000);
+window.addEventListener('beforeunload', autoSave);
+
+// ════════════════════════════════════════════════════════════
+// HTML GENERATION (final blog post file)
+// ════════════════════════════════════════════════════════════
+function buildBlogHtml() {
+  const title = F.title.value || 'Untitled';
+  const slug = F.slug.value || slugify(title);
+  const date = F.date.value;
+  const dateFmt = fmtDate(date);
+  const cat = catMeta[F.category.value] || catMeta.tech;
+  const excerpt = F.excerpt.value;
+  const intro = F.intro.value;
+  const tags = F.tags.value.split(',').map(t=>t.trim()).filter(Boolean);
+  const bodyHtml = mdToArticleHtml(F.body.value);
+
+  return `<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${escHtml(title)} | Ryan Pfister</title>
+  <meta name="description" content="${escHtml(excerpt)}">
+  <link rel="canonical" href="https://rdpfister.com/blog-${slug}.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="${escHtml(title)}">
+  <meta property="og:description" content="${escHtml(excerpt)}">
+  <meta property="og:url" content="https://rdpfister.com/blog-${slug}.html">
+  <meta property="article:published_time" content="${date}">
+  <meta property="article:author" content="Ryan Pfister">
+  <script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"Article",
+    "headline":title,
+    "author":{"@type":"Person","name":"Ryan Pfister","url":"https://rdpfister.com"},
+    "datePublished":date,
+    "publisher":{"@type":"Person","name":"Ryan Pfister"},
+    "description":excerpt
+  })}<\/script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css?v=20260518c">
+  <style>
+    .article-wrap{max-width:720px;margin:0 auto}
+    .article-header{padding:140px 0 56px;position:relative}
+    .article-back{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-lo);margin-bottom:32px;transition:var(--ease)}
+    .article-back:hover{color:var(--blue)}
+    .article-back svg{width:14px;height:14px}
+    .article-meta{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+    .article-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint)}
+    .article-h1{font-size:clamp(32px,6vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
+    .article-intro{font-size:18px;color:var(--text-lo);line-height:1.85;border-left:3px solid var(--blue);padding-left:20px}
+    .article-author{display:flex;align-items:center;gap:12px;margin-top:32px;padding-top:28px;border-top:1px solid var(--border)}
+    .author-avatar{width:44px;height:44px;border-radius:50%;background:var(--blue-dim);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--blue);font-size:16px;flex-shrink:0}
+    .author-name{font-size:14px;font-weight:700}
+    .author-role{font-size:12px;color:var(--text-lo)}
+    .article-body{padding:56px 0 80px;font-size:16px;color:var(--text-lo);line-height:1.9}
+    .article-body h2{font-size:26px;font-weight:800;color:var(--text-hi);letter-spacing:-.3px;margin:48px 0 16px}
+    .article-body h3{font-size:19px;font-weight:700;color:var(--text-hi);margin:32px 0 12px}
+    .article-body p{margin-bottom:20px}
+    .article-body strong{color:var(--text-hi);font-weight:600}
+    .article-body a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+    .article-body ul,.article-body ol{margin:0 0 20px 20px}
+    .article-body li{margin-bottom:8px;line-height:1.75}
+    .article-body li::marker{color:var(--blue)}
+    .article-body code{background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);padding:1px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:.88em;color:var(--blue)}
+    .article-body img{max-width:100%;border-radius:var(--r);margin:20px 0;border:1px solid var(--border)}
+    .article-body hr{border:none;border-top:1px solid var(--border);margin:36px 0}
+    .code-block{background:var(--bg-0);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin:28px 0;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.9;overflow-x:auto;color:var(--text-lo)}
+    .callout{background:var(--blue-dim);border:1px solid rgba(6,182,212,.2);border-radius:var(--r);padding:20px 24px;margin:28px 0;font-size:15px;backdrop-filter:blur(12px)}
+    .callout strong{color:var(--blue)}
+    .article-tags{display:flex;flex-wrap:wrap;gap:8px;padding-top:32px;border-top:1px solid var(--border);margin-bottom:48px}
+  </style>
+</head>
+<body>
+
+<div class="c-dot" id="cDot"></div>
+<div class="c-ring" id="cRing"></div>
+
+<div id="progress"></div>
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="certifications.html">Certs</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <a href="index.html#contact" class="nav-cta">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-bg"></div>
+<div class="page-dots"></div>
+
+<div class="container">
+  <div class="article-wrap">
+    <div class="article-header">
+      <a href="blog.html" class="article-back">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Blog
+      </a>
+      <div class="article-meta">
+        <span class="article-date">${dateFmt}</span>
+        <span class="badge ${cat.badge}">${cat.label}</span>
+      </div>
+      <h1 class="article-h1">${escHtml(title)}</h1>
+      <p class="article-intro">${escHtml(intro)}</p>
+      <div class="article-author">
+        <div class="author-avatar">RP</div>
+        <div><div class="author-name">Ryan Pfister</div><div class="author-role">Smart Building Intern at Siemens &middot; Security Systems Student</div></div>
+      </div>
+    </div>
+
+    <div class="article-body">
+${bodyHtml}
+    </div>
+
+    <div class="article-tags">
+      ${tags.map(t => `<span class="chip">${escHtml(t)}</span>`).join('\n      ')}
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-copy">&copy; 2025 Ryan Pfister</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/rdpfister/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ryanpfister" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:mifd413@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const html=document.documentElement,toggle=document.getElementById('themeToggle');
+  (function(){const t=localStorage.getItem('theme')||'dark';html.setAttribute('data-theme',t);setIcon(t);})();
+  toggle.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);setIcon(n);});
+  function setIcon(t){toggle.querySelector('.icon-sun').style.display=t==='dark'?'block':'none';toggle.querySelector('.icon-moon').style.display=t==='light'?'block':'none';}
+  const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>20);},{passive:true});if(window.scrollY>20)nav.classList.add('scrolled');
+  const dot=document.getElementById('cDot'),ring=document.getElementById('cRing');
+  if(dot&&ring&&matchMedia('(hover:hover)').matches){let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});(function track(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(track);})();document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('big'));el.addEventListener('mouseleave',()=>ring.classList.remove('big'));});}
+  const bar=document.getElementById('progress');window.addEventListener('scroll',()=>{bar.style.width=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';},{passive:true});
+<\/script>
+</body>
+</html>`;
+}
+
+function buildCardSnippet() {
+  const title = F.title.value || 'Untitled';
+  const slug = F.slug.value || slugify(title);
+  const date = F.date.value;
+  const cat = catMeta[F.category.value] || catMeta.tech;
+  const excerpt = F.excerpt.value;
+  const monthYear = date ? new Date(date+'T12:00:00').toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '';
+
+  return `<!-- Drop this inside the .blog-grid in blog.html -->
+<a href="blog-${slug}.html" class="post-card fade-up">
+  <div class="post-meta">
+    <span class="post-date">${monthYear}</span>
+    <span class="post-cat badge ${cat.badge}">${cat.label}</span>
+  </div>
+  <div class="post-title">${escHtml(title)}</div>
+  <p class="post-excerpt">${escHtml(excerpt)}</p>
+  <div class="post-read">
+    Read article
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+  </div>
+</a>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// OUTPUT MODAL
+// ════════════════════════════════════════════════════════════
+const outOverlay = document.getElementById('outOverlay');
+const outTitle = document.getElementById('outTitle');
+const outPre = document.getElementById('outPre');
+function showOutput(title, content) {
+  outTitle.textContent = title;
+  outPre.textContent = content;
+  outOverlay.style.cssText = 'opacity:1;visibility:visible;pointer-events:auto';
+}
+function closeOutput() {
+  outOverlay.style.cssText = 'opacity:0;visibility:hidden;pointer-events:none';
+}
+document.getElementById('outClose').addEventListener('click', closeOutput);
+document.getElementById('outCloseBtn').addEventListener('click', closeOutput);
+outOverlay.addEventListener('click', e => { if (e.target === outOverlay) closeOutput(); });
+document.getElementById('outCopy').addEventListener('click', () => {
+  navigator.clipboard.writeText(outPre.textContent).then(() => showToast('✓ Copied to clipboard'));
+});
+
+// ════════════════════════════════════════════════════════════
+// BUTTONS
+// ════════════════════════════════════════════════════════════
+document.getElementById('bDownload').addEventListener('click', () => {
+  if (!F.title.value) { showToast('Title is required', 'err'); return; }
+  const slug = F.slug.value || slugify(F.title.value);
+  const html = buildBlogHtml();
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `blog-${slug}.html`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
+  showToast(`✓ Downloaded blog-${slug}.html`);
+});
+
+document.getElementById('bCardSnippet').addEventListener('click', () => {
+  if (!F.title.value) { showToast('Title is required', 'err'); return; }
+  const snippet = buildCardSnippet();
+  navigator.clipboard.writeText(snippet).then(() => showToast('✓ Card snippet copied — paste into blog.html'))
+    .catch(() => showOutput('Blog index card snippet', snippet));
+});
+
+document.getElementById('bCopyHtml').addEventListener('click', () => {
+  if (!F.title.value) { showToast('Title is required', 'err'); return; }
+  const html = buildBlogHtml();
+  navigator.clipboard.writeText(html).then(() => showToast('✓ Full HTML copied'))
+    .catch(() => showOutput('Full blog post HTML', html));
+});
+
+document.getElementById('bSave').addEventListener('click', saveDraftExplicit);
+
+document.getElementById('bClear').addEventListener('click', () => {
+  if (!confirm('Clear the form? Any unsaved changes will be lost (last auto-save is preserved).')) return;
+  Object.values(F).forEach(el => el.value = '');
+  F.date.value = new Date().toISOString().slice(0,10);
+  F.category.value = 'building-automation';
+  F.slug.dataset.touched = '';
+  updatePreview();
+  showToast('✓ Cleared');
+});
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+function init() {
+  // Restore last auto-save (current session)
+  try {
+    const saved = JSON.parse(localStorage.getItem(CURRENT_KEY) || 'null');
+    if (saved) loadSnapshot(saved);
+  } catch {}
+  renderDrafts();
+  updatePreview();
+  setSaveState('idle');
+}
+if (sessionStorage.getItem('rp_admin_unlocked') === '1') init();
+</script>
+</body>
+</html>
