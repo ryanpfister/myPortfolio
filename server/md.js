@@ -71,6 +71,21 @@ function mdToArticleHtml(md) {
     flushList();
 
     if (line.trim() === '') continue;
+
+    // Raw HTML block passthrough — lines that look like an opening HTML tag
+    // are emitted verbatim, along with subsequent non-blank lines (until a blank
+    // line breaks the block). Lets posts include <table>, <div class="callout">,
+    // <div class="code-block">, etc. without paragraph-wrapping.
+    if (/^<[a-z][a-z0-9-]*(\s|>|\/>|$)/i.test(line.trim())) {
+      const htmlLines = [line];
+      while (i + 1 < lines.length && lines[i + 1].trim() !== '') {
+        i++;
+        htmlLines.push(lines[i]);
+      }
+      html += htmlLines.join('\n');
+      continue;
+    }
+
     html += `<p>${inline(line)}</p>`;
   }
   flushList(); flushQuote(); flushCode();

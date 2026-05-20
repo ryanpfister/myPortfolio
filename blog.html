@@ -92,41 +92,11 @@
   <div class="container">
     <div class="blog-grid">
 
-      <!-- Featured post -->
-      <a href="blog-bacnet.html" class="featured-post fade-up">
-        <div class="featured-body">
-          <div class="post-meta" style="margin-bottom:16px">
-            <span class="post-date">May 2025</span>
-            <span class="post-cat badge badge-cyan">Building Automation</span>
-          </div>
-          <div class="post-title" style="font-size:clamp(22px,3vw,28px);margin-bottom:16px">BACnet: The Protocol That Makes Smart Buildings Talk</div>
-          <p class="post-excerpt">Every time you walk into a modern office building and the lights adjust automatically, the HVAC knows the room is occupied, or the access control logs your badge swipe — BACnet is probably involved. Here's how it works and why it matters.</p>
-          <div class="post-read" style="margin-top:24px">
-            Read article
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </div>
-        </div>
-        <div class="featured-visual">
-          <div style="position:relative;z-index:1">
-            <span style="color:var(--blue)">&gt; BACnet/IP</span><br>
-            Device: AHU-1<br>
-            Object: AI-1 (Temp)<br>
-            Value: 72.4°F<br>
-            &nbsp;<br>
-            <span style="color:var(--green)">&gt; COV Subscribe</span><br>
-            Recipient: Controller<br>
-            Confirmed: true<br>
-            Lifetime: 3600s<br>
-            &nbsp;<br>
-            <span style="color:var(--purple)">&gt; WriteProperty</span><br>
-            Object: AO-1 (Damper)<br>
-            Value: 65%
-          </div>
-        </div>
-      </a>
-
-      <!-- POSTS:INSERT-HERE — dynamic cards from /api/posts injected by JS below. The legacy admin can also append static cards directly after this marker. -->
-      <div id="dynamicPosts" style="display:contents"></div>
+      <!-- POSTS:INSERT-HERE — all post cards come from /api/posts dynamically. -->
+      <div id="dynamicPosts" style="display:contents">
+        <!-- Loading skeletons while we fetch -->
+        <div class="post-card" style="opacity:.5"><div class="post-meta"><span class="post-date">…</span></div><div class="post-title">Loading…</div><p class="post-excerpt">Fetching latest posts from the database.</p></div>
+      </div>
 
     </div>
 
@@ -185,11 +155,42 @@ document.querySelectorAll('.fade-up,.stagger').forEach(el=>io.observe(el));
   fetch('/api/posts')
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(({posts}) => {
-      if (!posts || !posts.length) return;
-      // Skip the BACnet post — it's already featured statically above.
-      const filtered = posts.filter(p => p.slug !== 'bacnet');
-      target.innerHTML = filtered.map(p => {
+      if (!posts || !posts.length) {
+        target.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:13px">No posts yet. Check back soon.</div>`;
+        return;
+      }
+      // First post in the list gets the big "featured" treatment.
+      target.innerHTML = posts.map((p, idx) => {
         const cat = CAT_META[p.category] || CAT_META.tech;
+        if (idx === 0) {
+          return `<a href="/blog/${esc(p.slug)}" class="featured-post fade-up">
+            <div class="featured-body">
+              <div class="post-meta" style="margin-bottom:16px">
+                <span class="post-date">${esc(fmtMonth(p.date))}</span>
+                <span class="post-cat badge ${cat.badge}">${esc(cat.label)}</span>
+              </div>
+              <div class="post-title" style="font-size:clamp(22px,3vw,28px);margin-bottom:16px">${esc(p.title)}</div>
+              <p class="post-excerpt">${esc(p.excerpt)}</p>
+              <div class="post-read" style="margin-top:24px">Read article
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              </div>
+            </div>
+            <div class="featured-visual">
+              <div style="position:relative;z-index:1">
+                <span style="color:var(--blue)">&gt; ${esc(cat.label)}</span><br>
+                Latest article<br>
+                Published ${esc(p.date)}<br>
+                &nbsp;<br>
+                <span style="color:var(--green)">&gt; READ</span><br>
+                Slug: ${esc(p.slug)}<br>
+                Author: Ryan Pfister<br>
+                &nbsp;<br>
+                <span style="color:var(--purple)">&gt; CLICK</span><br>
+                To open the post
+              </div>
+            </div>
+          </a>`;
+        }
         return `<a href="/blog/${esc(p.slug)}" class="post-card fade-up">
           <div class="post-meta">
             <span class="post-date">${esc(fmtMonth(p.date))}</span>
@@ -206,7 +207,7 @@ document.querySelectorAll('.fade-up,.stagger').forEach(el=>io.observe(el));
       target.querySelectorAll('.fade-up').forEach(el => io.observe(el));
     })
     .catch(() => {
-      // Quietly fail if API is down — the featured post still renders.
+      target.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:13px">Couldn't reach the blog API. <a href="/blog-bacnet.html" style="color:var(--blue);text-decoration:underline">Read the BACnet post</a> instead.</div>`;
     });
 })();
 </script>

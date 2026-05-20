@@ -437,6 +437,18 @@ function mdToHtml(md) {
     if (ol){if(listType&&listType!=='ol')flushList();listType='ol';listItems.push(ol[1]);continue;}
     flushList();
     if (line.trim()==='')continue;
+
+    // Raw HTML pass-through (keep in sync with server/md.js)
+    if (/^<[a-z][a-z0-9-]*(\s|>|\/>|$)/i.test(line.trim())) {
+      const htmlLines = [line];
+      while (i + 1 < lines.length && lines[i + 1].trim() !== '') {
+        i++;
+        htmlLines.push(lines[i]);
+      }
+      html += htmlLines.join('\n');
+      continue;
+    }
+
     html += `<p>${inlineMd(line)}</p>`;
   }
   flushList(); flushQuote(); flushCode();
