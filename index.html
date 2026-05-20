@@ -770,27 +770,27 @@
                 <div class="wbody">
                   <div class="proj-bd">
                     <div class="pi">
-                      <div class="pico" style="background:rgba(6,182,212,.14)">🌐</div>
+                      <div class="pico" style="background:rgba(244,63,94,.14)">🚨</div>
                       <div class="pinfo">
-                        <div class="pn">Home Lab Network</div>
-                        <div class="pd">Dual-WAN pfSense router · VLANs · Wireshark captures · IDS/IPS monitoring dashboard</div>
-                        <div class="ptags"><span class="chip" style="font-size:10px;padding:2px 8px">Networking</span><span class="chip" style="font-size:10px;padding:2px 8px">Security</span></div>
+                        <div class="pn">Brookhaven CAD System</div>
+                        <div class="pd">Co-built Computer-Aided Dispatch web platform for the Town of Brookhaven · real-time incident logging &amp; unit dispatching</div>
+                        <div class="ptags"><span class="chip" style="font-size:10px;padding:2px 8px">Public Safety</span><span class="chip" style="font-size:10px;padding:2px 8px">Web App</span></div>
                       </div>
                     </div>
                     <div class="pi">
-                      <div class="pico" style="background:rgba(139,92,246,.14)">🏢</div>
+                      <div class="pico" style="background:rgba(6,182,212,.14)">🏢</div>
                       <div class="pinfo">
-                        <div class="pn">BACnet Protocol Lab</div>
-                        <div class="pd">Virtual BAS environment simulating DDC controllers · BACnet/IP object trees · trend logs</div>
+                        <div class="pn">Siemens BAS Commissioning</div>
+                        <div class="pd">Commissioning &amp; startup of building automation systems · BACnet, Modbus, DDC programming on active job sites</div>
                         <div class="ptags"><span class="chip" style="font-size:10px;padding:2px 8px">BAS</span><span class="chip" style="font-size:10px;padding:2px 8px">BACnet</span></div>
                       </div>
                     </div>
                     <div class="pi">
-                      <div class="pico" style="background:rgba(16,185,129,.14)">🔒</div>
+                      <div class="pico" style="background:rgba(16,185,129,.14)">🎟️</div>
                       <div class="pinfo">
-                        <div class="pn">OT Security Assessment</div>
-                        <div class="pd">Building automation network audit · asset mapping · vulnerability scanning · executive report</div>
-                        <div class="ptags"><span class="chip" style="font-size:10px;padding:2px 8px">Security</span><span class="chip" style="font-size:10px;padding:2px 8px">OT/ICS</span></div>
+                        <div class="pn">SectionXI Mobile POS</div>
+                        <div class="pd">Mobile ticketing system for Suffolk County athletics · drove ~120% revenue lift over manual cash process</div>
+                        <div class="ptags"><span class="chip" style="font-size:10px;padding:2px 8px">IT Systems</span><span class="chip" style="font-size:10px;padding:2px 8px">POS</span></div>
                       </div>
                     </div>
                   </div>
@@ -1904,7 +1904,13 @@ window.activateMatrix=function(duration){
       case 'whoami':
         out('<span class="ts">ryan-pfister</span> — Security Systems student, BAS commissioner, FF/EMT');break;
       case 'ls':
-        out('<span class="tk">about.txt</span>  <span class="tk">projects/</span>  <span class="tk">resume.pdf</span>  <span class="tk">skills.json</span>  <span class="tk">certifications/</span>  <span class="tk">contact.vcf</span>');break;
+        if(args[1]==='projects/'||args[1]==='projects'){
+          out('<span class="tk">brookhaven-cad/</span>    <span class="tk">siemens-bas/</span>    <span class="tk">sectionxi-pos/</span>');
+          out('<span class="tk">mifd-website/</span>     <span class="tk">portfolio/</span>      <span class="tk">first-robotics-av/</span>');
+        } else {
+          out('<span class="tk">about.txt</span>  <span class="tk">projects/</span>  <span class="tk">resume.pdf</span>  <span class="tk">skills.json</span>  <span class="tk">certifications/</span>  <span class="tk">contact.vcf</span>');
+        }
+        break;
       case 'cat':
         if(args[1]==='about.txt'||args[1]==='about'){
           out('<span class="tv">Security Systems student at Farmingdale (May 2027).</span>');
@@ -1914,6 +1920,16 @@ window.activateMatrix=function(duration){
           out('<span class="to">{</span> <span class="tk">"bas"</span><span class="to">:</span> <span class="ts">["BACnet","Modbus","Apogee","Desigo"]</span><span class="to">,</span>');
           out('  <span class="tk">"net"</span><span class="to">:</span> <span class="ts">["CCNA","Splunk","pfSense","Wireshark"]</span><span class="to">,</span>');
           out('  <span class="tk">"safety"</span><span class="to">:</span> <span class="ts">["FF I","EMT","BLS","ICS"]</span> <span class="to">}</span>');
+        } else if(args[1]==='brookhaven-cad'||args[1]==='cad'||args[1]==='projects/brookhaven-cad'){
+          out('<span class="ts">▌ Brookhaven Computer-Aided Dispatch</span>');
+          out('<span class="to">────────────────────────────────────────</span>');
+          out('<span class="tv">Co-built web-based CAD platform for the Town of Brookhaven.</span>');
+          out('<span class="tv">Real-time incident logging, unit dispatching, multi-user.</span>');
+          out('<span class="to">stack:</span>   <span class="tc">Web App · Real-time · Multi-user</span>');
+          out('<span class="to">role:</span>    <span class="tc">Team build · Town of Brookhaven</span>');
+          out('<span class="to">status:</span>  <span class="tw">archived (cad.rdpfister.com)</span>');
+        } else if(args[1]==='projects.txt'||args[1]==='projects'){
+          out('<span class="tv">→ Opening projects page…</span>');setTimeout(()=>location.href='projects.html',500);
         } else if(args[1]){out(`<span class="tw">cat: ${esc(args[1])}: No such file</span>`);}
         else{out('<span class="tw">cat: missing operand</span>');}
         break;

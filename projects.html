@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/main.css?v=20260518c">
   <style>
     .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
 
@@ -39,6 +39,31 @@
     .proj-link svg{width:13px;height:13px}
 
     .impact-badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--green);background:var(--green-dim);border:1px solid rgba(16,185,129,.2);padding:4px 12px;border-radius:100px;align-self:flex-start}
+    .archived-badge{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:600;color:var(--orange);background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);padding:4px 12px;border-radius:100px;align-self:flex-start;font-family:'JetBrains Mono',monospace}
+    .archived-dot{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 0 rgba(249,115,22,.5);animation:archived-pulse 2.4s ease infinite}
+    @keyframes archived-pulse{0%{box-shadow:0 0 0 0 rgba(249,115,22,.5)}70%{box-shadow:0 0 0 8px rgba(249,115,22,0)}100%{box-shadow:0 0 0 0 rgba(249,115,22,0)}}
+
+    /* CAD dispatch terminal — custom red/cyan dispatch look */
+    .cad-terminal{background:#020208;border:1px solid rgba(244,63,94,.18);border-radius:var(--r);padding:32px 24px 24px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.9;backdrop-filter:blur(16px);position:relative;overflow:hidden;color:#c8d3ea}
+    .cad-terminal::before{content:'';position:absolute;top:0;left:0;right:0;height:32px;background:linear-gradient(180deg,rgba(244,63,94,.06),transparent);border-bottom:1px solid var(--border)}
+    .cad-terminal .terminal-dots{position:absolute;top:11px;left:14px;display:flex;gap:6px;z-index:1}
+    .cad-terminal .terminal-dots span{width:10px;height:10px;border-radius:50%;display:block}
+    .cad-terminal .terminal-dots span:nth-child(1){background:#f43f5e;opacity:.8}
+    .cad-terminal .terminal-dots span:nth-child(2){background:#f59e0b;opacity:.8}
+    .cad-terminal .terminal-dots span:nth-child(3){background:#10b981;opacity:.8}
+    .cad-terminal .cad-title-bar{position:absolute;top:0;left:50%;transform:translateX(-50%);height:32px;display:flex;align-items:center;font-size:10.5px;color:var(--text-faint);letter-spacing:.1em;text-transform:uppercase;z-index:1}
+    .cad-row{padding:6px 0;border-left:2px solid transparent;padding-left:10px;margin-left:-2px}
+    .cad-row.dispatch{border-left-color:#f43f5e}
+    .cad-row.onscene{border-left-color:#10b981}
+    .cad-row.available{border-left-color:#06b6d4}
+    .cad-k{color:#64748b;display:inline-block;min-width:64px}
+    .cad-v{color:#c8d3ea}
+    .cad-tag{display:inline-block;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;margin-left:4px}
+    .cad-tag-red{background:rgba(244,63,94,.15);color:#f43f5e;border:1px solid rgba(244,63,94,.3)}
+    .cad-tag-green{background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3)}
+    .cad-tag-cyan{background:rgba(6,182,212,.15);color:#06b6d4;border:1px solid rgba(6,182,212,.3)}
+    .cad-foot{margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.05);font-size:10.5px;color:var(--text-faint);display:flex;justify-content:space-between;align-items:center}
+    .cad-live-dot{width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block;margin-right:5px;animation:archived-pulse 2s ease infinite}
 
     /* Code terminal visual */
     .code-terminal{background:rgba(2,8,23,.8);border:1px solid var(--border);border-radius:var(--r);padding:24px 28px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text-lo);line-height:2;backdrop-filter:blur(16px);position:relative;overflow:hidden}
@@ -98,31 +123,56 @@
   <div class="container">
     <div class="projects-grid">
 
-      <!-- Featured: Siemens BAS -->
+      <!-- Featured: Brookhaven CAD -->
       <div class="proj-card featured fade-up tilt">
         <div class="card-shine"></div>
         <div>
-          <div class="proj-label" style="margin-bottom:14px">⚡ Featured &middot; Ongoing</div>
-          <h2 class="proj-featured-title">Siemens <em>Smart Building</em><br>Commissioning</h2>
-          <p class="proj-featured-desc" style="margin:18px 0 20px">Supporting the commissioning, startup, and configuration of BAS systems across active commercial construction sites on Long Island. Protocols, DDC programming, network configuration, and handoff training.</p>
+          <div class="proj-label" style="margin-bottom:14px">⚡ Featured &middot; Production system</div>
+          <h2 class="proj-featured-title">Brookhaven <em>Computer-Aided<br>Dispatch</em> System</h2>
+          <p class="proj-featured-desc" style="margin:18px 0 20px">Co-built a web-based <strong style="color:var(--text-hi)">Computer-Aided Dispatch (CAD)</strong> platform used by the Town of Brookhaven for real-time incident logging, unit dispatching, and call status tracking. Replaced a paper-and-radio workflow with a live, multi-user system.</p>
           <div class="proj-chips" style="margin-bottom:20px">
-            <span class="chip">BACnet</span><span class="chip">Modbus</span><span class="chip">LonWorks</span><span class="chip">Apogee</span><span class="chip">Desigo</span><span class="chip">HVAC Controls</span><span class="chip">DDC</span>
+            <span class="chip">Web App</span><span class="chip">Real-time</span><span class="chip">CAD/Dispatch</span><span class="chip">Public Safety</span><span class="chip">Multi-user</span><span class="chip">Team Build</span>
           </div>
-          <span class="impact-badge">✦ 3 years &middot; Invited back each term</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <span class="impact-badge">✦ Built with a team &middot; Town of Brookhaven</span>
+            <span class="archived-badge"><span class="archived-dot"></span>Archived &middot; cad.rdpfister.com</span>
+          </div>
         </div>
-        <div class="code-terminal">
+        <div class="cad-terminal">
           <div class="terminal-dots"><span></span><span></span><span></span></div>
-          <div class="code-body">
-            <span style="color:var(--text-faint)">// BAS commissioning workflow</span><br>
-            <span style="color:var(--purple)">function</span> <span style="color:var(--blue)">commissionController</span>(ctrl) {<br>
-            &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">configure</span>(<span style="color:var(--green)">BACnet</span>.params);<br>
-            &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">runDiagnostics</span>();<br>
-            &nbsp;&nbsp;ctrl.<span style="color:var(--blue)">verifySequence</span>(ops);<br>
-            &nbsp;&nbsp;<span style="color:var(--purple)">return</span> ctrl.<span style="color:var(--blue)">signOff</span>();<br>
-            }<br><br>
-            <span style="color:var(--text-faint)">&gt; Status: </span><span style="color:var(--green)">COMMISSIONED ✓</span>
+          <div class="cad-title-bar">CAD &middot; LIVE</div>
+          <div class="cad-row dispatch">
+            <span class="cad-k">[22:14:03]</span><span class="cad-v">UNIT 4-1</span><span class="cad-tag cad-tag-red">DISPATCH</span><br>
+            <span class="cad-k" style="padding-left:6px">incident</span>2026-1843 &middot; ALARM-COMM<br>
+            <span class="cad-k" style="padding-left:6px">location</span>123 MAIN ST<br>
+            <span class="cad-k" style="padding-left:6px">status</span><span style="color:#f43f5e">EN-ROUTE →</span>
+          </div>
+          <div class="cad-row onscene">
+            <span class="cad-k">[22:18:41]</span><span class="cad-v">UNIT 4-2</span><span class="cad-tag cad-tag-green">ON-SCENE</span><br>
+            <span class="cad-k" style="padding-left:6px">incident</span>2026-1843<br>
+            <span class="cad-k" style="padding-left:6px">eta</span><span style="color:#10b981">arrived ✓</span>
+          </div>
+          <div class="cad-row available">
+            <span class="cad-k">[22:19:12]</span><span class="cad-v">UNIT 4-3</span><span class="cad-tag cad-tag-cyan">AVAILABLE</span>
+          </div>
+          <div class="cad-foot">
+            <span><span class="cad-live-dot"></span>12 active &middot; 6 units in service</span>
+            <span>v2.4.1</span>
           </div>
         </div>
+      </div>
+
+      <!-- Siemens BAS -->
+      <div class="proj-card fade-up tilt">
+        <div class="card-shine"></div>
+        <div class="proj-icon">🏢</div>
+        <div>
+          <div class="proj-label">Building Automation &middot; Ongoing</div>
+          <div class="proj-title">Siemens Smart Building Commissioning</div>
+        </div>
+        <p class="proj-desc">Supporting commissioning, startup, and configuration of BAS systems across active commercial construction sites on Long Island. Protocols, DDC programming, network configuration, and customer handoff training.</p>
+        <div class="proj-chips"><span class="chip">BACnet</span><span class="chip">Modbus</span><span class="chip">Apogee</span><span class="chip">Desigo</span><span class="chip">DDC</span><span class="chip">HVAC Controls</span></div>
+        <span class="impact-badge">✦ 3 years &middot; Invited back each term</span>
       </div>
 
       <!-- Portfolio site -->
