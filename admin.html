@@ -130,6 +130,53 @@
 
     .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(16px);z-index:9200;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:10px 22px;border-radius:100px;backdrop-filter:blur(12px);opacity:0;transition:opacity .3s,transform .3s;pointer-events:none}
     .toast.show{opacity:1;transform:translateX(-50%)}
+
+    /* GitHub status pill in nav */
+    #ghStatus.connected{color:var(--green)}
+    #ghStatus.disconnected{color:var(--text-faint)}
+    #ghStatus.error{color:var(--rose)}
+
+    /* Settings modal */
+    .set-overlay{position:fixed;inset:0;z-index:9150;background:rgba(2,8,23,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;padding:80px 24px 24px;transition:opacity .25s,visibility .25s;overflow-y:auto}
+    .set-box{width:min(620px,96vw);background:rgba(15,15,28,.97);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.7);overflow:hidden;display:flex;flex-direction:column}
+    .set-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .set-title{font-size:16px;font-weight:800;letter-spacing:-.02em}
+    .set-close{background:none;border:none;color:var(--text-lo);cursor:pointer;font-size:22px;line-height:1;padding:0 4px}
+    .set-body{padding:20px 22px;display:flex;flex-direction:column;gap:18px;max-height:70vh;overflow-y:auto}
+    .set-section{display:flex;flex-direction:column;gap:8px}
+    .set-section h3{font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+    .set-section h3::before{content:'';width:18px;height:1px;background:var(--blue)}
+    .set-help{font-size:12px;color:var(--text-lo);line-height:1.7}
+    .set-help code{font-family:'JetBrains Mono',monospace;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.2);padding:1px 6px;border-radius:4px;font-size:11.5px;color:var(--blue)}
+    .set-help a{color:var(--blue);text-decoration:underline}
+    .set-help strong{color:var(--text-hi)}
+    .set-pat-row{display:flex;gap:8px}
+    .set-pat-input{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;color:var(--text-hi);font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;transition:var(--ease);min-width:0}
+    .set-pat-input:focus{border-color:var(--border-h);box-shadow:0 0 0 3px var(--blue-dim)}
+    .set-cron{background:#020208;border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#c8d3ea;overflow-x:auto;white-space:pre;position:relative;line-height:1.7}
+    .set-cron button{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-lo);font-size:10.5px;padding:3px 8px;border-radius:4px;cursor:pointer;font-family:inherit}
+    .set-cron button:hover{background:rgba(6,182,212,.1);color:var(--blue);border-color:rgba(6,182,212,.3)}
+    .set-warn{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:var(--r-sm);padding:10px 14px;font-size:11.5px;color:var(--orange);line-height:1.6;font-family:'JetBrains Mono',monospace}
+    .set-warn strong{color:var(--text-hi)}
+
+    /* Publish progress modal */
+    .pub-overlay{position:fixed;inset:0;z-index:9180;background:rgba(2,8,23,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;transition:opacity .25s,visibility .25s}
+    .pub-box{width:min(480px,94vw);background:rgba(15,15,28,.98);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.8);padding:32px 28px;text-align:center}
+    .pub-spinner{width:48px;height:48px;border:3px solid rgba(6,182,212,.15);border-top-color:var(--blue);border-radius:50%;animation:pub-spin .8s linear infinite;margin:0 auto 16px}
+    @keyframes pub-spin{to{transform:rotate(360deg)}}
+    .pub-title{font-size:18px;font-weight:700;color:var(--text-hi);margin-bottom:8px}
+    .pub-sub{font-size:13px;color:var(--text-lo);font-family:'JetBrains Mono',monospace;line-height:1.7}
+    .pub-steps{margin-top:18px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-faint);line-height:1.9}
+    .pub-step{opacity:.4;transition:opacity .25s,color .25s}
+    .pub-step.active{opacity:1;color:var(--blue)}
+    .pub-step.done{opacity:1;color:var(--green)}
+    .pub-step.error{opacity:1;color:var(--rose)}
+    .pub-step::before{content:'○  ';display:inline-block}
+    .pub-step.active::before{content:'◐  '}
+    .pub-step.done::before{content:'✓  '}
+    .pub-step.error::before{content:'✕  '}
+    .pub-actions{margin-top:20px;display:flex;gap:10px;justify-content:center}
+    .pub-error-detail{margin-top:12px;font-size:11px;color:var(--rose);font-family:'JetBrains Mono',monospace;background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);border-radius:6px;padding:10px;text-align:left;white-space:pre-wrap;max-height:200px;overflow-y:auto}
   </style>
 </head>
 <body>
@@ -160,6 +207,8 @@
     </ul>
     <div class="nav-right">
       <span id="saveInd" class="save-ind">●  Idle</span>
+      <span id="ghStatus" class="save-ind" title="GitHub connection status">●  GH</span>
+      <button class="btn-sm" id="settingsBtn">⚙  Settings</button>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -251,9 +300,9 @@
       </div>
 
       <div class="compose-actions">
-        <button class="btn-sm btn-primary" id="bDownload">⬇  Download HTML</button>
-        <button class="btn-sm" id="bCardSnippet">📋  Copy blog-card snippet</button>
-        <button class="btn-sm" id="bCopyHtml">📄  Copy full HTML</button>
+        <button class="btn-sm btn-primary" id="bPublish">🚀  Publish to Site</button>
+        <button class="btn-sm" id="bDownload">⬇  Download HTML</button>
+        <button class="btn-sm" id="bCardSnippet">📋  Copy card snippet</button>
         <button class="btn-sm" id="bSave">💾  Save draft</button>
         <button class="btn-sm" id="bClear" style="margin-left:auto">✕  Clear</button>
       </div>
@@ -296,6 +345,71 @@
     <div class="out-foot">
       <button class="btn-sm" id="outCopy">📋  Copy to clipboard</button>
       <button class="btn-sm btn-primary" id="outCloseBtn">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="set-overlay" id="setOverlay" style="opacity:0;visibility:hidden;pointer-events:none">
+  <div class="set-box">
+    <div class="set-head">
+      <span class="set-title">⚙  Settings</span>
+      <button class="set-close" id="setClose" aria-label="Close">×</button>
+    </div>
+    <div class="set-body">
+
+      <div class="set-section">
+        <h3>GitHub Publishing</h3>
+        <p class="set-help">Paste a <strong>GitHub Personal Access Token</strong> with <code>public_repo</code> scope. The composer uses it to commit new posts directly to your repo. <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=Portfolio%20Admin" target="_blank" rel="noopener">Generate one →</a></p>
+        <div class="set-pat-row">
+          <input type="password" class="set-pat-input" id="patInput" placeholder="ghp_••••••••••••••••" autocomplete="off" spellcheck="false">
+          <button class="btn-sm" id="patSave">Save</button>
+          <button class="btn-sm" id="patTest">Test</button>
+        </div>
+        <div class="set-pat-row" style="margin-top:4px">
+          <button class="btn-sm" id="patClear" style="font-size:11px">🗑  Remove token</button>
+          <span id="patStatus" style="flex:1;text-align:right;font-size:11px;color:var(--text-faint);font-family:'JetBrains Mono',monospace;padding:6px 0">no token</span>
+        </div>
+        <div class="set-warn">
+          <strong>⚠ Security:</strong> the token is stored in your browser's localStorage on this device only. Anyone with physical access to your browser could read it. Use a token scoped to <code style="color:var(--text-hi)">public_repo</code> only, and revoke it if your laptop is lost.
+        </div>
+      </div>
+
+      <div class="set-section">
+        <h3>VPS Auto-Deploy</h3>
+        <p class="set-help">After the composer pushes to GitHub, your VPS still has to pull the new files. Pick one:</p>
+
+        <p class="set-help"><strong>Option A — Cron polling (easiest, ~1 min delay):</strong></p>
+        <div class="set-cron"><button data-copy="* * * * * cd /var/www/rdpfister.com/html && /usr/bin/git pull origin main >> /var/log/portfolio-deploy.log 2>&1">copy</button>* * * * * cd /var/www/rdpfister.com/html && /usr/bin/git pull origin main >> /var/log/portfolio-deploy.log 2>&1</div>
+        <p class="set-help" style="font-size:11px;color:var(--text-faint)">SSH into your VPS and run <code>sudo crontab -e</code>, paste the line above, save. Every minute the VPS pulls from main. Adjust the path if your repo lives elsewhere.</p>
+
+        <p class="set-help" style="margin-top:14px"><strong>Option B — GitHub webhook (instant):</strong></p>
+        <p class="set-help" style="font-size:11px;color:var(--text-faint)">More setup but instant: add a small webhook receiver on the VPS, configure a webhook in repo Settings → Webhooks pointing at it. Ask me if you want help wiring this up — I can build the listener.</p>
+      </div>
+
+      <div class="set-section">
+        <h3>Repository</h3>
+        <p class="set-help">Currently publishing to <code>ryanpfister/myPortfolio</code> branch <code>main</code>. Hardcoded — edit <code>GH_OWNER</code>/<code>GH_REPO</code> in admin.html source to change.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Publish progress modal -->
+<div class="pub-overlay" id="pubOverlay" style="opacity:0;visibility:hidden;pointer-events:none">
+  <div class="pub-box">
+    <div class="pub-spinner" id="pubSpinner"></div>
+    <div class="pub-title" id="pubTitle">Publishing…</div>
+    <div class="pub-sub" id="pubSub">Committing to GitHub</div>
+    <div class="pub-steps" id="pubSteps">
+      <div class="pub-step" data-step="post">Creating <code>blog-<span id="psSlug">slug</span>.html</code></div>
+      <div class="pub-step" data-step="index">Updating <code>blog.html</code> index</div>
+      <div class="pub-step" data-step="done">Live on GitHub — your VPS will pull within ~1 minute</div>
+    </div>
+    <div class="pub-error-detail" id="pubError" style="display:none"></div>
+    <div class="pub-actions" id="pubActions" style="display:none">
+      <button class="btn-sm btn-primary" id="pubDone">Done</button>
     </div>
   </div>
 </div>
@@ -901,12 +1015,7 @@ document.getElementById('bCardSnippet').addEventListener('click', () => {
     .catch(() => showOutput('Blog index card snippet', snippet));
 });
 
-document.getElementById('bCopyHtml').addEventListener('click', () => {
-  if (!F.title.value) { showToast('Title is required', 'err'); return; }
-  const html = buildBlogHtml();
-  navigator.clipboard.writeText(html).then(() => showToast('✓ Full HTML copied'))
-    .catch(() => showOutput('Full blog post HTML', html));
-});
+// bCopyHtml was removed from the toolbar — listener intentionally omitted.
 
 document.getElementById('bSave').addEventListener('click', saveDraftExplicit);
 
@@ -919,6 +1028,282 @@ document.getElementById('bClear').addEventListener('click', () => {
   updatePreview();
   showToast('✓ Cleared');
 });
+
+// ════════════════════════════════════════════════════════════
+// GITHUB PUBLISHER
+// ════════════════════════════════════════════════════════════
+const GH_OWNER = 'ryanpfister';
+const GH_REPO  = 'myPortfolio';
+const GH_BRANCH = 'main';
+const GH_PAT_KEY = 'rp_gh_pat_v1';
+const POSTS_MARKER = '<!-- POSTS:INSERT-HERE';
+
+function getPat() { return localStorage.getItem(GH_PAT_KEY) || ''; }
+function setPat(v) { v ? localStorage.setItem(GH_PAT_KEY, v) : localStorage.removeItem(GH_PAT_KEY); }
+
+function utf8ToBase64(str) {
+  // Robust UTF-8 → base64 (handles emoji, non-ASCII)
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function base64ToUtf8(b64) {
+  const bin = atob(b64.replace(/\n/g, ''));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+async function ghApi(path, method = 'GET', body = null) {
+  const pat = getPat();
+  if (!pat) throw new Error('No GitHub PAT — open Settings to add one.');
+  const r = await fetch(`https://api.github.com${path}`, {
+    method,
+    headers: {
+      'Authorization': `Bearer ${pat}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const text = await r.text();
+  let json;
+  try { json = text ? JSON.parse(text) : null; } catch { json = { raw: text }; }
+  if (!r.ok) {
+    const msg = json?.message || r.statusText;
+    const err = new Error(`GitHub API ${r.status}: ${msg}`);
+    err.detail = json;
+    throw err;
+  }
+  return json;
+}
+
+async function ghGetFile(path) {
+  try {
+    return await ghApi(`/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(path)}?ref=${GH_BRANCH}`);
+  } catch (e) {
+    if (e.message.includes('404')) return null;
+    throw e;
+  }
+}
+
+async function ghPutFile(path, content, message, sha) {
+  const body = { message, content: utf8ToBase64(content), branch: GH_BRANCH };
+  if (sha) body.sha = sha;
+  return ghApi(`/repos/${GH_OWNER}/${GH_REPO}/contents/${encodeURIComponent(path)}`, 'PUT', body);
+}
+
+async function ghCheckAuth() {
+  const u = await ghApi('/user');
+  // Also check repo access
+  await ghApi(`/repos/${GH_OWNER}/${GH_REPO}`);
+  return u;
+}
+
+// ── Status pill in nav ──
+const ghStatusEl = document.getElementById('ghStatus');
+function refreshGhStatus() {
+  if (getPat()) {
+    ghStatusEl.classList.remove('disconnected', 'error');
+    ghStatusEl.classList.add('connected');
+    ghStatusEl.textContent = '●  GH connected';
+    ghStatusEl.title = 'Token configured — ready to publish';
+  } else {
+    ghStatusEl.classList.remove('connected', 'error');
+    ghStatusEl.classList.add('disconnected');
+    ghStatusEl.textContent = '●  GH off';
+    ghStatusEl.title = 'No token — click Settings to add one';
+  }
+}
+
+// ── Settings modal ──
+const setOverlay = document.getElementById('setOverlay');
+const patInput = document.getElementById('patInput');
+const patStatus = document.getElementById('patStatus');
+
+function openSettings() {
+  patInput.value = getPat();
+  updatePatStatus(getPat() ? 'saved' : 'empty');
+  setOverlay.style.cssText = 'opacity:1;visibility:visible;pointer-events:auto';
+}
+function closeSettings() {
+  setOverlay.style.cssText = 'opacity:0;visibility:hidden;pointer-events:none';
+}
+function updatePatStatus(state, msg) {
+  if (state === 'empty') { patStatus.textContent = 'no token'; patStatus.style.color = 'var(--text-faint)'; }
+  else if (state === 'saved') { patStatus.textContent = '✓ saved'; patStatus.style.color = 'var(--green)'; }
+  else if (state === 'testing') { patStatus.textContent = 'testing…'; patStatus.style.color = 'var(--blue)'; }
+  else if (state === 'ok') { patStatus.textContent = `✓ ${msg}`; patStatus.style.color = 'var(--green)'; }
+  else if (state === 'err') { patStatus.textContent = `✕ ${msg}`; patStatus.style.color = 'var(--rose)'; }
+}
+
+document.getElementById('settingsBtn').addEventListener('click', openSettings);
+document.getElementById('setClose').addEventListener('click', closeSettings);
+setOverlay.addEventListener('click', e => { if (e.target === setOverlay) closeSettings(); });
+
+document.getElementById('patSave').addEventListener('click', () => {
+  const v = patInput.value.trim();
+  setPat(v);
+  refreshGhStatus();
+  updatePatStatus(v ? 'saved' : 'empty');
+  showToast(v ? '✓ Token saved locally' : '✓ Token removed');
+});
+
+document.getElementById('patClear').addEventListener('click', () => {
+  if (!confirm('Remove the saved GitHub token from this browser?')) return;
+  setPat('');
+  patInput.value = '';
+  refreshGhStatus();
+  updatePatStatus('empty');
+  showToast('✓ Token removed');
+});
+
+document.getElementById('patTest').addEventListener('click', async () => {
+  const v = patInput.value.trim();
+  if (!v) { updatePatStatus('err', 'enter a token first'); return; }
+  // Temporarily save so ghApi reads it
+  const previous = getPat();
+  setPat(v);
+  updatePatStatus('testing');
+  try {
+    const u = await ghCheckAuth();
+    updatePatStatus('ok', `as ${u.login}`);
+  } catch (e) {
+    setPat(previous); // rollback
+    updatePatStatus('err', e.message.slice(0, 60));
+  }
+});
+
+// Copy cron command
+document.querySelectorAll('[data-copy]').forEach(b => {
+  b.addEventListener('click', () => {
+    navigator.clipboard.writeText(b.dataset.copy).then(() => {
+      const orig = b.textContent;
+      b.textContent = '✓ copied';
+      setTimeout(() => b.textContent = orig, 1500);
+    });
+  });
+});
+
+// ── Publish flow ──
+const pubOverlay = document.getElementById('pubOverlay');
+const pubSpinner = document.getElementById('pubSpinner');
+const pubTitle = document.getElementById('pubTitle');
+const pubSub = document.getElementById('pubSub');
+const pubError = document.getElementById('pubError');
+const pubActions = document.getElementById('pubActions');
+const psSlug = document.getElementById('psSlug');
+const pubSteps = pubOverlay.querySelectorAll('.pub-step');
+
+function setStep(name, state) {
+  pubOverlay.querySelectorAll('.pub-step').forEach(s => {
+    if (s.dataset.step === name) {
+      s.classList.remove('active', 'done', 'error');
+      if (state) s.classList.add(state);
+    }
+  });
+}
+function resetPublishUI() {
+  pubSteps.forEach(s => s.classList.remove('active', 'done', 'error'));
+  pubError.style.display = 'none';
+  pubError.textContent = '';
+  pubActions.style.display = 'none';
+  pubSpinner.style.display = 'block';
+  pubTitle.textContent = 'Publishing…';
+  pubSub.textContent = 'Committing to GitHub';
+}
+function showPublishUI() {
+  resetPublishUI();
+  pubOverlay.style.cssText = 'opacity:1;visibility:visible;pointer-events:auto';
+}
+function closePublishUI() {
+  pubOverlay.style.cssText = 'opacity:0;visibility:hidden;pointer-events:none';
+}
+document.getElementById('pubDone').addEventListener('click', closePublishUI);
+
+async function publishToGitHub() {
+  if (!F.title.value) { showToast('Title is required', 'err'); return; }
+  if (!getPat()) {
+    showToast('Set a GitHub token in Settings first', 'err');
+    openSettings();
+    return;
+  }
+  const slug = F.slug.value || slugify(F.title.value);
+  psSlug.textContent = slug;
+  showPublishUI();
+
+  try {
+    // STEP 1: create or update the blog post file
+    setStep('post', 'active');
+    const blogHtml = buildBlogHtml();
+    const postPath = `blog-${slug}.html`;
+    const existing = await ghGetFile(postPath);
+    await ghPutFile(
+      postPath,
+      blogHtml,
+      existing ? `blog: update "${F.title.value}"` : `blog: publish "${F.title.value}"`,
+      existing?.sha
+    );
+    setStep('post', 'done');
+
+    // STEP 2: update blog.html index — insert card after marker, dedupe by slug
+    setStep('index', 'active');
+    const blogFile = await ghGetFile('blog.html');
+    if (!blogFile) throw new Error('blog.html not found in repo');
+    let blogContent = base64ToUtf8(blogFile.content);
+
+    // Remove any existing card linking to this slug (de-dupe on republish)
+    const dedup = new RegExp(
+      `\\s*<a href="${postPath.replace(/\./g, '\\.')}" class="post-card[\\s\\S]*?</a>\\s*`,
+      'g'
+    );
+    blogContent = blogContent.replace(dedup, '\n      ');
+
+    // Insert fresh card after the marker comment
+    if (!blogContent.includes(POSTS_MARKER)) {
+      throw new Error('Marker <!-- POSTS:INSERT-HERE -->  missing from blog.html. Add it inside .blog-grid.');
+    }
+    const card = buildCardSnippet().replace(/^<!--[\s\S]*?-->\n/, ''); // strip the leading comment
+    blogContent = blogContent.replace(
+      /<!-- POSTS:INSERT-HERE[^\n]*-->/,
+      m => `${m}\n\n      ${card}`
+    );
+
+    await ghPutFile(
+      'blog.html',
+      blogContent,
+      `blog: link "${F.title.value}" on index`,
+      blogFile.sha
+    );
+    setStep('index', 'done');
+
+    // Done
+    setStep('done', 'done');
+    pubSpinner.style.display = 'none';
+    pubTitle.textContent = '✓ Published';
+    pubSub.textContent = 'Now waiting for your VPS to pull';
+    pubActions.style.display = 'flex';
+    showToast('✓ Published to GitHub');
+    // Unlock achievement-style nicety: clear the current auto-save so a new post starts fresh
+  } catch (e) {
+    console.error(e);
+    pubSteps.forEach(s => {
+      if (s.classList.contains('active')) { s.classList.remove('active'); s.classList.add('error'); }
+    });
+    pubSpinner.style.display = 'none';
+    pubTitle.textContent = '✕ Publish failed';
+    pubSub.textContent = '';
+    pubError.style.display = 'block';
+    pubError.textContent = e.message + (e.detail?.documentation_url ? `\n\n${e.detail.documentation_url}` : '');
+    pubActions.style.display = 'flex';
+  }
+}
+
+document.getElementById('bPublish').addEventListener('click', publishToGitHub);
+
+refreshGhStatus();
 
 // ════════════════════════════════════════════════════════════
 // INIT
