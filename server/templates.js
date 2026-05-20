@@ -98,10 +98,10 @@ function renderPost(post) {
     <a href="/" class="nav-logo">Ryan <span>Pfister</span></a>
     <ul class="nav-links">
       <li><a href="/#about">About</a></li>
-      <li><a href="/projects.html">Projects</a></li>
-      <li><a href="/resume.html">Resume</a></li>
-      <li><a href="/certifications.html">Certs</a></li>
-      <li><a href="/blog.html" class="active">Blog</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <li><a href="/resume">Resume</a></li>
+      <li><a href="/certifications">Certs</a></li>
+      <li><a href="/blog" class="active">Blog</a></li>
     </ul>
     <div class="nav-right">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
@@ -119,7 +119,7 @@ function renderPost(post) {
 <div class="container">
   <div class="article-wrap">
     <div class="article-header">
-      <a href="/blog.html" class="article-back">
+      <a href="/blog" class="article-back">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
         Back to Blog
       </a>

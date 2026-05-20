@@ -537,13 +537,13 @@
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Ryan <span>Pfister</span></a>
+    <a href="/" class="nav-logo">Ryan <span>Pfister</span></a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="resume.html">Resume</a></li>
-      <li><a href="certifications.html">Certs</a></li>
-      <li><a href="blog.html">Blog</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <li><a href="/resume">Resume</a></li>
+      <li><a href="/certifications">Certs</a></li>
+      <li><a href="/blog">Blog</a></li>
     </ul>
     <div class="nav-right">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
@@ -565,10 +565,10 @@
 <div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-hidden="true"
      style="opacity:0;visibility:hidden;pointer-events:none">
   <a href="#about" class="nav-overlay-link">About</a>
-  <a href="projects.html" class="nav-overlay-link">Projects</a>
-  <a href="resume.html" class="nav-overlay-link">Resume</a>
-  <a href="certifications.html" class="nav-overlay-link">Certs</a>
-  <a href="blog.html" class="nav-overlay-link">Blog</a>
+  <a href="/projects" class="nav-overlay-link">Projects</a>
+  <a href="/resume" class="nav-overlay-link">Resume</a>
+  <a href="/certifications" class="nav-overlay-link">Certs</a>
+  <a href="/blog" class="nav-overlay-link">Blog</a>
   <div class="nav-overlay-sep"></div>
   <div class="nav-overlay-contact">
     <a href="mailto:mifd413@gmail.com" class="nav-overlay-sm" aria-label="Email">
@@ -1561,12 +1561,12 @@ secs.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{
     {g:'Sections',i:'⚡',t:'Skills',k:'skills tech bacnet networking',fn:()=>jump('#skills')},
     {g:'Sections',i:'🏆',t:'Honors & Awards',k:'honors awards recognition',fn:()=>jump('#honors')},
     {g:'Sections',i:'📧',t:'Contact',k:'contact reach',fn:()=>jump('#contact')},
-    {g:'Pages',i:'📁',t:'Projects',k:'projects portfolio work',fn:()=>location.href='projects.html'},
+    {g:'Pages',i:'📁',t:'Projects',k:'projects portfolio work',fn:()=>location.href='/projects'},
     {g:'Pages',i:'📄',t:'Resume (Google Docs)',k:'resume cv google docs',fn:()=>open('https://docs.google.com/document/d/1Sp4twV6HZFVnLygU4M9cBYQgJsJLY_nZ/view','_blank')},
     {g:'Pages',i:'⬇️',t:'Resume PDF (download)',k:'resume pdf download',fn:()=>open('https://docs.google.com/document/d/1Sp4twV6HZFVnLygU4M9cBYQgJsJLY_nZ/export?format=pdf','_blank')},
-    {g:'Pages',i:'🖥️',t:'Resume (styled on-site)',k:'resume styled portfolio',fn:()=>location.href='resume.html'},
-    {g:'Pages',i:'🔐',t:'Certifications',k:'certs certifications credentials',fn:()=>location.href='certifications.html'},
-    {g:'Pages',i:'📝',t:'Blog',k:'blog articles posts writing',fn:()=>location.href='blog.html'},
+    {g:'Pages',i:'🖥️',t:'Resume (styled on-site)',k:'resume styled portfolio',fn:()=>location.href='/resume'},
+    {g:'Pages',i:'🔐',t:'Certifications',k:'certs certifications credentials',fn:()=>location.href='/certifications'},
+    {g:'Pages',i:'📝',t:'Blog',k:'blog articles posts writing',fn:()=>location.href='/blog'},
     {g:'Actions',i:'📋',t:'Copy email address',k:'copy email clipboard',fn:()=>copyEmailToCb()},
     {g:'Actions',i:'✉️',t:'Send me an email',k:'mailto email send write',fn:()=>location.href='mailto:mifd413@gmail.com'},
     {g:'Actions',i:'🌓',t:'Toggle theme',k:'theme dark light mode',fn:()=>document.getElementById('themeToggle').click()},
@@ -1947,11 +1947,11 @@ window.activateMatrix=function(duration){
           out('<span class="to">styled:</span>    <span class="tc">open resume</span>  <span class="to">(rdpfister.com version)</span>');
           out('<span class="to">linkedin:</span>  <span class="tc">open linkedin</span>');
         } else if(args[1]==='projects.txt'||args[1]==='projects'){
-          out('<span class="tv">→ Opening projects page…</span>');setTimeout(()=>location.href='projects.html',500);
+          out('<span class="tv">→ Opening projects page…</span>');setTimeout(()=>location.href='/projects',500);
         } else if(args[1]){out(`<span class="tw">cat: ${esc(args[1])}: No such file</span>`);}
         else{out('<span class="tw">cat: missing operand</span>');}
         break;
-      case 'projects':out('<span class="tv">→ Opening projects page…</span>');setTimeout(()=>location.href='projects.html',700);break;
+      case 'projects':out('<span class="tv">→ Opening projects page…</span>');setTimeout(()=>location.href='/projects',700);break;
       case 'contact':out('<span class="tv">→ Jumping to contact section…</span>');setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),500);break;
       case 'skills':out('<span class="tv">→ Jumping to skills section…</span>');setTimeout(()=>document.getElementById('skills').scrollIntoView({behavior:'smooth'}),500);break;
       case 'theme':document.getElementById('themeToggle').click();out('<span class="ts">✓ theme toggled</span>');break;
@@ -1986,11 +1986,11 @@ window.activateMatrix=function(duration){
         const target={
           'github':'https://github.com/ryanpfister',
           'linkedin':'https://www.linkedin.com/in/rdpfister/',
-          'resume':'resume.html',
+          'resume':'/resume',
           'resume-pdf':'https://docs.google.com/document/d/1Sp4twV6HZFVnLygU4M9cBYQgJsJLY_nZ/export?format=pdf',
           'resume-doc':'https://docs.google.com/document/d/1Sp4twV6HZFVnLygU4M9cBYQgJsJLY_nZ/view',
-          'projects':'projects.html',
-          'blog':'blog.html',
+          'projects':'/projects',
+          'blog':'/blog',
           'mifd':'https://middleislandfd.com',
           'middleislandfd':'https://middleislandfd.com'
         }[args[1]];
